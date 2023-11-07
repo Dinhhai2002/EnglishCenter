@@ -10,33 +10,26 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>11</java.version>
-		<maven.compiler.source>8</maven.compiler.source>
-		<maven.compiler.target>8</maven.compiler.target>
+		<java.version>17</java.version>
+		
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		
 	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
-		<!--<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-test</artifactId>
-		    <version>3.1.0</version>
-		    <scope>test</scope>
-		</dependency>-->
-		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-rest -->
-		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-data-rest</artifactId>
-		    <version>3.1.0</version>
-		</dependency>
 
+	<dependencies>
+		
+		
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+	
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -45,16 +38,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.13</version>
-		</dependency>
+
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
@@ -68,19 +53,16 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.8.9</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.5.13</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>fluent-hc</artifactId>
-			<version>4.5.13</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.mindrot.bcrypt/bcrypt -->
@@ -104,7 +86,6 @@
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
-			<version>2.3.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.vladmihalcea</groupId>
@@ -119,8 +100,7 @@
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.15</version>
-		</dependency>
+			</dependency>
 		
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
@@ -137,12 +117,7 @@
 			<artifactId>json-simple</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
+		
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -153,12 +128,7 @@
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
 		<!-- Google API Client Library for Java -->
-		<dependency>
-			<groupId>com.google.api-client</groupId>
-			<artifactId>google-api-client</artifactId>
-			<version>1.31.1</version>
-		</dependency>
-		
+	
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
@@ -193,17 +163,7 @@
             <artifactId>firebase-admin</artifactId>
             <version>6.10.0</version>
         </dependency>
-     <!-- <dependency>
-  		 	 <groupId>io.springfox</groupId>
-   			 <artifactId>springfox-boot-starter</artifactId>
-    		<version>3.0.0</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>io.springfox</groupId>
-		    <artifactId>springfox-swagger-ui</artifactId>
-		    <version>2.9.2</version>
-		</dependency>-->
+   
 		
         <dependency>
             <groupId>com.google.cloud</groupId>
@@ -215,12 +175,15 @@
             <artifactId>google-api-client</artifactId>
             <version>1.30.4</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
-		<!--<dependency>
-		    <groupId>org.springframework.security</groupId>
-		    <artifactId>spring-security-config</artifactId>
-		    <version>6.1.0</version>
-		</dependency>-->
+        <!-- https://mvnrepository.com/artifact/com.google.api.client/google-api-client-googleapis-auth-oauth
+		<dependency>
+		    <groupId>com.google.api.client</groupId>
+		    <artifactId>google-api-client-googleapis-auth-oauth</artifactId>
+		    <version>1.2.3-alpha</version>
+		</dependency>
+		 -->
+
+    
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -229,11 +192,13 @@
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/com.github.kevinsawicki/http-request -->
+		<!--
 		<dependency>
 		    <groupId>com.github.kevinsawicki</groupId>
 		    <artifactId>http-request</artifactId>
 		    <version>5.3</version>
 		</dependency>
+		-->
 		
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
@@ -248,7 +213,14 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>4.1.2</version>
 		</dependency>
-
+		
+		
+		<dependency>
+		  <groupId>org.projectlombok</groupId>
+		  <artifactId>lombok</artifactId>
+		  <version>1.18.2</version>
+		  <scope>provided</scope>
+		</dependency>
 
 
 	</dependencies>
@@ -258,7 +230,7 @@
 				<!-- Import dependency management from Spring Boot -->
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
-				<version>2.0.2.RELEASE</version>
+				<version>2.1.2.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -266,43 +238,13 @@
 	</dependencyManagement>
 	<build>
 		<plugins>
-			<!-- 
 			
-			<plugin>
-				<groupId>io.swagger</groupId>
-				<artifactId>swagger-maven-plugin</artifactId>
-				<version>3.1.0</version>
-				<configuration>
-					<outputDirectory>${project.build.directory}/generated/swagger</outputDirectory>
-					<outputFilename>swagger.json</outputFilename>
-					<resourcePackages>
-						<resourcePackage>com.example.api</resourcePackage>
-					</resourcePackages>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>compile</phase>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			-->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.1.1</version>
-				<configuration>
-<excludes>
-						<exclude>**/*.properties</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
+			
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>2.6.0</version>
+				<version>2.2.6.RELEASE</version>
+				
 				<executions>
 					<execution>
 						<goals>
@@ -316,8 +258,9 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>com.english_center</finalName>
+		<finalName>com.englishcenter.main</finalName>
 	</build>
+	
 	<repositories>
 		<repository>
 			<id>org.jboss.repository.releases</id>

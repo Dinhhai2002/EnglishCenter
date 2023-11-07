@@ -1,7 +1,7 @@
 package com.english_center.third_party;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -24,6 +27,9 @@ public class GoogleDriver {
 	@Autowired
 	private GoogleCredential googleCredential;
 
+	@Autowired
+	private ResourceLoader resourceLoader;
+
 	@Value("${key.driver}")
 	private String keyDriver;
 
@@ -36,15 +42,19 @@ public class GoogleDriver {
 	@SuppressWarnings("deprecation")
 	@Bean
 	public GoogleCredential googleCredential() throws GeneralSecurityException, IOException {
-		System.out.println(keyDriver);
+
+//		Resource resource = resourceLoader.getResource("classpath:englishcenter.p12");
+		 ClassPathResource resource = new ClassPathResource("englishcenter.p12");
+		InputStream inputStream = resource.getInputStream();
+
 		Collection<String> elenco = new ArrayList<>();
 		elenco.add("https://www.googleapis.com/auth/drive");
 		HttpTransport httpTransport = new NetHttpTransport();
 		JacksonFactory jsonFactory = new JacksonFactory();
 		return new GoogleCredential.Builder().setTransport(httpTransport).setJsonFactory(jsonFactory)
 				.setServiceAccountId("video-driver@englishcenter-398815.iam.gserviceaccount.com")
-				.setServiceAccountScopes(elenco).setServiceAccountPrivateKeyFromP12File(
-						new File("E:\\Java\\aloapp\\english_center\\src\\main\\resources\\englishcenter.p12"))
+				.setServiceAccountScopes(elenco).setServiceAccountPrivateKeyFromP12File(inputStream)
+//				E:\\Java\\aloapp\\english_center\\src\\main\\resources\\
 				.build();
 	}
 }

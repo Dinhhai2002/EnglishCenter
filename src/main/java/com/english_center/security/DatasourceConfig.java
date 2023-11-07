@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -44,6 +45,9 @@ public class DatasourceConfig {
 
 	@Value("${spring.datasource.password}")
 	private String password;
+	
+	@Autowired
+	private Environment environment;
 
 	@Bean
 	public DataSource dataSource() {
@@ -77,9 +81,9 @@ public class DatasourceConfig {
 
 	private Properties hibernateProperties() {
 		Properties properties = new Properties();
-		properties.put(org.hibernate.cfg.Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
-		properties.put(org.hibernate.cfg.Environment.SHOW_SQL, false);
-		properties.put(org.hibernate.cfg.Environment.FORMAT_SQL, true);
+		properties.put(org.hibernate.cfg.Environment.DIALECT, environment.getRequiredProperty("hibernate.dialect"));
+		properties.put(org.hibernate.cfg.Environment.SHOW_SQL, environment.getRequiredProperty("hibernate.show_sql"));
+		properties.put(org.hibernate.cfg.Environment.FORMAT_SQL, environment.getRequiredProperty("hibernate.format_sql"));
 		return properties;
 	}
 

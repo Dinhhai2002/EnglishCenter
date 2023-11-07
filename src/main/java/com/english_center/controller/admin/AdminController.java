@@ -1,7 +1,6 @@
 package com.english_center.controller.admin;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,6 @@ import com.english_center.entity.Payment;
 import com.english_center.model.StoreProcedureListResult;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.CountStatisticalResponse;
-import com.english_center.response.ExamResponse;
 import com.english_center.service.CourseService;
 import com.english_center.service.ExamService;
 import com.english_center.service.UserService;

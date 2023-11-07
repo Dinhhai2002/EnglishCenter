@@ -8,11 +8,10 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-
 @Configuration
 @EnableWebMvc
-public class AdditionalConfig implements WebMvcConfigurer {
-
+public class AdditionalConfig {
+//	implements WebMvcConfigurer
 	@Bean
 	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -32,8 +31,5 @@ public class AdditionalConfig implements WebMvcConfigurer {
 //				.allowedMethods("GET", "POST", "PUT", "DELETE").allowedHeaders("*").allowCredentials(true)
 //				.exposedHeaders("Authorization");
 //	}
-	
-
- 
 
 }
