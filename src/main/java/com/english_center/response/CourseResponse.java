@@ -43,6 +43,9 @@ public class CourseResponse {
 	@JsonProperty("type_user_using")
 	private int typeUserUsing;
 
+	@JsonProperty("lessons_present")
+	private int lessonsPresent;
+
 	private List<ChapterResponse> listChapterResponses;
 
 	public int getId() {
@@ -165,6 +168,14 @@ public class CourseResponse {
 		this.durationFormat = durationFormat;
 	}
 
+	public int getLessonsPresent() {
+		return lessonsPresent;
+	}
+
+	public void setLessonsPresent(int lessonsPresent) {
+		this.lessonsPresent = lessonsPresent;
+	}
+
 	public CourseResponse() {
 	}
 
@@ -197,6 +208,26 @@ public class CourseResponse {
 		this.typeUserUsing = typeUserUsing;
 		this.countChapter = listChapter.size();
 		this.countLessons = countLessons;
+	}
+
+	public CourseResponse(Course entity, List<ChapterResponse> listChapter, int typeUserUsing, int countLessons,
+			int lessonsPresent) {
+		this.id = entity.getId();
+		this.name = entity.getName();
+		this.lessons = entity.getLessons();
+		this.description = entity.getDescription();
+		this.price = entity.getPrice();
+		this.banner = entity.getBanner();
+		this.status = entity.getStatus();
+		this.isFree = entity.getIsFree();
+		this.discountPercent = entity.getDiscountPercent();
+		this.listChapterResponses = listChapter;
+		this.duration = entity.getDuration();
+		this.durationFormat = Utils.formatMillisecondsToTime(entity.getDuration());
+		this.typeUserUsing = typeUserUsing;
+		this.countChapter = listChapter.size();
+		this.countLessons = countLessons;
+		this.lessonsPresent = lessonsPresent;
 	}
 
 	public CourseResponse(Course entity, int typeUserUsing) {

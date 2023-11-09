@@ -135,12 +135,8 @@ public class ChapterController extends BaseController {
 		BaseListDataResponse<ChapterResponse> listData = new BaseListDataResponse<>();
 
 		List<ChapterResponse> listChapterResponse = listChapter.getResult().stream().map(x -> {
-			Course course = new Course();
-			try {
-				course = courseService.findOne(x.getCourseId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			Course course = getOneWithExceptionHandler(() -> courseService.findOne(x.getCourseId()));
+
 			return new ChapterResponse(x, course);
 		}).collect(Collectors.toList());
 
@@ -184,9 +180,9 @@ public class ChapterController extends BaseController {
 		}
 
 		if (chapter.getStatus() == 1) {
-			List<Lessons> lessons = lessonsService.findByChapterId(id);
+			List<Lessons> lessons = lessonsService.findByChapterId(id).stream().filter(x -> (x.getStatus() == 1))
+					.collect(Collectors.toList());
 			// lấy danh sách bài học đang hoạt động
-			lessons = lessons.stream().filter(x -> (x.getStatus() == 1)).collect(Collectors.toList());
 
 			if (!lessons.isEmpty()) {
 				response.setData(new LessonsResponse().mapToList(lessons));

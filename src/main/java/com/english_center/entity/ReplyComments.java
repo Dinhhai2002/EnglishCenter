@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "reply_comments")
 public class ReplyComments extends BaseEntity {
@@ -27,36 +30,6 @@ public class ReplyComments extends BaseEntity {
 	@Column(name = "comments_id")
 	private int commentsId;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public int getUserIdReplyComments() {
-		return userIdReplyComments;
-	}
-
-	public void setUserIdReplyComments(int userIdReplyComments) {
-		this.userIdReplyComments = userIdReplyComments;
-	}
-
-	public int getCommentsId() {
-		return commentsId;
-	}
-
-	public void setCommentsId(int commentsId) {
-		this.commentsId = commentsId;
-	}
+	
 
 }

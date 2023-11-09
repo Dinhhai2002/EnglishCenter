@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
+import com.english_center.common.utils.Utils;
 import com.english_center.entity.Image;
 import com.english_center.entity.Users;
 import com.english_center.model.StoreProcedureListResult;
@@ -29,7 +30,6 @@ import com.english_center.response.UserResponse;
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController extends BaseController {
-	
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("")
@@ -77,7 +77,6 @@ public class UserController extends BaseController {
 //		}
 
 		if (!user.getEmail().equals(wrapper.getEmail())) {
-			System.out.println(wrapper.getEmail());
 			Users findUsersByEmail = userService.findUsersByEmail(wrapper.getEmail(), 0);
 			if (findUsersByEmail != null) {
 				response.setStatus(HttpStatus.BAD_REQUEST);
@@ -140,7 +139,7 @@ public class UserController extends BaseController {
 		BaseResponse<UserResponse> response = new BaseResponse();
 
 		Users users = this.getUser();
-		String password = new String(Base64.getDecoder().decode(users.getPassword()));
+		String password = Utils.decodeBase64(users.getPassword());
 
 		if (!wrapper.getOldPassword().equals(password)) {
 			response.setStatus(HttpStatus.BAD_REQUEST);
@@ -155,7 +154,7 @@ public class UserController extends BaseController {
 		}
 
 //		users.setPassword(BCrypt.hashpw(wrapper.getNewPassword(), BCrypt.gensalt(12)));
-		users.setPassword(Base64.getEncoder().encodeToString(wrapper.getNewPassword().getBytes()));
+		users.setPassword(Utils.encodeBase64(wrapper.getNewPassword()));
 		userService.update(users);
 		response.setData(new UserResponse(users));
 		return new ResponseEntity<>(response, HttpStatus.OK);

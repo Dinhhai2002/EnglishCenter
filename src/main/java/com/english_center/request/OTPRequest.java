@@ -8,6 +8,9 @@ import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
+@Data
 public class OTPRequest {
 	@NotEmpty(message = "userName không được phép để trống")
 	@Length(max = 255, message = "user_name Không được phép lớn hơn 255 kí tự")
@@ -20,21 +23,6 @@ public class OTPRequest {
 	@Length(max = 255, message = "email Không được phép lớn hơn 255 kí tự")
 	private String email;
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
 	
 	
 }

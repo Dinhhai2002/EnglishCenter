@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name="class_weekday")
 public class ClassWeekday extends BaseEntity {
@@ -31,47 +34,7 @@ public class ClassWeekday extends BaseEntity {
 	@Column(name="to_hour")
 	private String toHour;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getClassId() {
-		return classId;
-	}
-
-	public void setClassId(int classId) {
-		this.classId = classId;
-	}
-
-
-	public int getHourId() {
-		return hourId;
-	}
-
-	public void setHourId(int hourId) {
-		this.hourId = hourId;
-	}
-
-	public String getFromHour() {
-		return fromHour;
-	}
-
-	public void setFromHour(String fromHour) {
-		this.fromHour = fromHour;
-	}
-
-	public String getToHour() {
-		return toHour;
-	}
-
-	public void setToHour(String toHour) {
-		this.toHour = toHour;
-	}
-
+	
 	
 	
 	

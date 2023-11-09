@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.english_center.common.enums.OtpEnum;
 import com.english_center.common.utils.HttpService;
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
@@ -113,8 +114,6 @@ public class JwtAuthenticationController extends BaseController {
 
 	@Autowired
 	UserRegisterService userRegisterService;
-
-	
 
 	@Value("${password.account.google}")
 	private String passwordAccountGoogle;
@@ -303,7 +302,7 @@ public class JwtAuthenticationController extends BaseController {
 		 * type = 0 => otp register || type = 1 => otp forgot password
 		 */
 
-		if (wrapper.getType() == 0) {
+		if (wrapper.getType() == OtpEnum.REGISTER.getValue()) {
 
 			UserRegister userRegister = userRegisterService.findUsersRegisterByUsersNameAndEmail(wrapper.getUserName(),
 					wrapper.getEmail());
@@ -470,33 +469,7 @@ public class JwtAuthenticationController extends BaseController {
 		StoreProcedureListResult<Exam> exams = examService.spGListExam(categoryExamId, topicExamId, keySearch, status,
 				pagination, 1);
 
-		List<ExamResponse> listExamResponses = exams.getResult().stream().map(x -> {
-			int totaluser = 0;
-			try {
-				totaluser = this.countUserExam(x.getId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			int isQuestion = 0;
-			List<Question> listQuestion = new ArrayList<>();
-			try {
-				listQuestion = questionService.getListByExamId(x.getId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			if (!listQuestion.isEmpty()) {
-				isQuestion = 1;
-			}
-
-			int countComments = 0;
-			try {
-				countComments = this.countComment(x.getId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return new ExamResponse(x, totaluser, isQuestion, countComments);
-		}).collect(Collectors.toList());
+		List<ExamResponse> listExamResponses = getExamResponses(exams.getResult());
 
 		BaseListDataResponse<ExamResponse> listData = new BaseListDataResponse<>();
 		listData.setList(listExamResponses);
@@ -568,20 +541,8 @@ public class JwtAuthenticationController extends BaseController {
 		List<Chapter> listChapter = chapterService.findByCourseId(id);
 
 		List<ChapterResponse> list = listChapter.stream().map(x -> {
-			List<Lessons> listLessons = new ArrayList<>();
-			try {
-				// danh sách bài học theo chương
-				listLessons = lessonsService.spGListLessons(-1, x.getId(), "", 1, new Pagination(0, 20), 0).getResult();
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-//			List<LessonsResponse> lessonsResponses = listLessons.stream().map(lessons -> {
-//
-//				UserCourseProgress userCourseProgress = userCourseProgressService.findByLessonsAndUser(id, id)
-//				
-//				return new LessonsResponse(lessons, 1);
-//			}).collect(Collectors.toList());
+			List<Lessons> listLessons = getListWithExceptionHandler(
+					() -> lessonsService.spGListLessons(-1, x.getId(), "", 1, new Pagination(0, 20), 0).getResult());
 
 			countLessons[0] += listLessons.size();
 			return new ChapterResponse(x, new LessonsResponse().mapToList(listLessons));

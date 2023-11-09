@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name="result")
 public class Result extends BaseEntity {
@@ -43,70 +46,6 @@ public class Result extends BaseEntity {
 	@Column(name="time_complete")
 	private String timeComplete;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public BigDecimal getTotalPoint() {
-		return totalPoint;
-	}
-
-	public void setTotalPoint(BigDecimal totalPoint) {
-		this.totalPoint = totalPoint;
-	}
-
-	public int getTotalQuestionCorrect() {
-		return totalQuestionCorrect;
-	}
-
-	public void setTotalQuestionCorrect(int totalQuestionCorrect) {
-		this.totalQuestionCorrect = totalQuestionCorrect;
-	}
-	
-	
-	public int getTotalQuestionSkip() {
-		return totalQuestionSkip;
-	}
-
-	public void setTotalQuestionSkip(int totalQuestionSkip) {
-		this.totalQuestionSkip = totalQuestionSkip;
-	}
-
-	public int getExamId() {
-		return examId;
-	}
-
-	public void setExamId(int examId) {
-		this.examId = examId;
-	}
-
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
-	public String getTimeComplete() {
-		return timeComplete;
-	}
-
-	public void setTimeComplete(String timeComplete) {
-		this.timeComplete = timeComplete;
-	}
-
-	public String getNameExam() {
-		return nameExam;
-	}
-
-	public void setNameExam(String nameExam) {
-		this.nameExam = nameExam;
-	}
 	
 	
 

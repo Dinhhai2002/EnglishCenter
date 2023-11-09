@@ -7,6 +7,9 @@ import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
+@Data
 public class ResetPasswordRequest {
 	
 	@NotEmpty(message = "user_name không được phép để trống")
@@ -24,30 +27,7 @@ public class ResetPasswordRequest {
 	@JsonProperty("confirm_password")
 	private String confirmPassword;
 	
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-
-	public String getNewPassword() {
-		return newPassword;
-	}
-
-	public void setNewPassword(String newPassword) {
-		this.newPassword = newPassword;
-	}
-
-	public String getConfirmPassword() {
-		return confirmPassword;
-	}
-
-	public void setConfirmPassword(String confirmPassword) {
-		this.confirmPassword = confirmPassword;
-	}
+	
 	
 	
 }

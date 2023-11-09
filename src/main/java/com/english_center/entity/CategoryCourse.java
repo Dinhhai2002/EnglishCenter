@@ -6,8 +6,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 @Entity
 @Table(name="category_course")
+@Data
 public class CategoryCourse  extends BaseEntity {
 	
 	/**
@@ -23,20 +26,6 @@ public class CategoryCourse  extends BaseEntity {
 	
 	
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
+	
 
 }

@@ -7,6 +7,9 @@ import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
+@Data
 public class CRUDCommentsRequest {
 	@NotEmpty(message = "content không được phép để trống")
 	@Length(max = 255, message = "Không được phép lớn hơn 255 kí tự")
@@ -17,23 +20,5 @@ public class CRUDCommentsRequest {
 	@JsonProperty("exam_id")
 	private int examId;
 
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-
-
-	public int getExamId() {
-		return examId;
-	}
-
-	public void setExamId(int examId) {
-		this.examId = examId;
-	}
-	
 	
 }

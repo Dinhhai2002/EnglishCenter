@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name="target")
 public class Target extends BaseEntity {
@@ -31,39 +34,6 @@ public class Target extends BaseEntity {
 	@Column(name="point_target ")
 	private int pointTarget ;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
-	public Date getTimeExam() {
-		return timeExam;
-	}
-
-	public void setTimeExam(Date timeExam) {
-		this.timeExam = timeExam;
-	}
-
-	public int getPointTarget() {
-		return pointTarget;
-	}
-
-	public void setPointTarget(int pointTarget) {
-		this.pointTarget = pointTarget;
-	}
-	
-	
 	
 
 }

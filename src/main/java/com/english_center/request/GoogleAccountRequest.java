@@ -7,6 +7,9 @@ import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
+@Data
 public class GoogleAccountRequest {
 
 	@NotEmpty(message = "email không được phép để trống")
@@ -22,28 +25,5 @@ public class GoogleAccountRequest {
 	@Length(max = 255, message = "fullName Không được phép lớn hơn 255 kí tự")
 	private String fullname;
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
-
-	public String getFullname() {
-		return fullname;
-	}
-
-	public void setFullname(String fullname) {
-		this.fullname = fullname;
-	}
-
+	
 }

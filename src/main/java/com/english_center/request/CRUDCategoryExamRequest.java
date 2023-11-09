@@ -4,6 +4,9 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
+import lombok.Data;
+
+@Data
 public class CRUDCategoryExamRequest {
 
 	@NotEmpty(message = "name không được phép để trống")
@@ -14,20 +17,6 @@ public class CRUDCategoryExamRequest {
 	@Length(max = 255, message = "Không được phép lớn hơn 255 kí tự")
 	private String description;
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
+	
 
 }

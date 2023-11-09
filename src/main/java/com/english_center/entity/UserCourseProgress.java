@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "user_course_progress")
 public class UserCourseProgress extends BaseEntity {
@@ -31,52 +34,6 @@ public class UserCourseProgress extends BaseEntity {
 	@Column(name = "is_completed")
 	private int isCompleted;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
-	public int getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(int courseId) {
-		this.courseId = courseId;
-	}
-
-	public int getChapterId() {
-		return chapterId;
-	}
-
-	public void setChapterId(int chapterId) {
-		this.chapterId = chapterId;
-	}
-
-	public int getLessonsId() {
-		return lessonsId;
-	}
-
-	public void setLessonsId(int lessonsId) {
-		this.lessonsId = lessonsId;
-	}
-
-	public int getIsCompleted() {
-		return isCompleted;
-	}
-
-	public void setIsCompleted(int isCompleted) {
-		this.isCompleted = isCompleted;
-	}
+	
 
 }

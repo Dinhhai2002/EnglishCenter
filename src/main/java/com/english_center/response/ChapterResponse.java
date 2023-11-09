@@ -7,6 +7,9 @@ import com.english_center.entity.Chapter;
 import com.english_center.entity.Course;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
+@Data
 public class ChapterResponse {
 	private int id;
 
@@ -24,6 +27,9 @@ public class ChapterResponse {
 	private List<LessonsResponse> lessonsResponses;
 
 	private int status;
+
+	@JsonProperty("count_lessons_studied")
+	private int countLessonsStudied;
 
 	public int getId() {
 		return id;
@@ -81,6 +87,14 @@ public class ChapterResponse {
 		this.isFree = isFree;
 	}
 
+	public int getCountLessonsStudied() {
+		return countLessonsStudied;
+	}
+
+	public void setCountLessonsStudied(int countLessonsStudied) {
+		this.countLessonsStudied = countLessonsStudied;
+	}
+
 	public ChapterResponse() {
 	}
 
@@ -100,7 +114,7 @@ public class ChapterResponse {
 		this.isFree = entity.getIsFree();
 		this.status = entity.getStatus();
 	}
-
+	
 	public ChapterResponse(Chapter entity, List<LessonsResponse> lessonsResponses) {
 		this.id = entity.getId();
 		this.name = entity.getName();
@@ -108,6 +122,16 @@ public class ChapterResponse {
 		this.isFree = entity.getIsFree();
 		this.lessonsResponses = lessonsResponses;
 		this.status = entity.getStatus();
+	}
+
+	public ChapterResponse(Chapter entity, List<LessonsResponse> lessonsResponses, int countLessonsStudied) {
+		this.id = entity.getId();
+		this.name = entity.getName();
+		this.courseId = entity.getCourseId();
+		this.isFree = entity.getIsFree();
+		this.lessonsResponses = lessonsResponses;
+		this.status = entity.getStatus();
+		this.countLessonsStudied = countLessonsStudied;
 	}
 
 //	public List<ChapterResponse> mapToListAlone(List<Chapter> entities) {

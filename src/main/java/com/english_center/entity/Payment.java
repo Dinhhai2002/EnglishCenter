@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "payment")
 public class Payment extends BaseEntity {
@@ -39,60 +42,5 @@ public class Payment extends BaseEntity {
 	@Column(name = "course_id")
 	private int courseId;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public Date getPaymentDate() {
-		return paymentDate;
-	}
-
-	public void setPaymentDate(Date paymentDate) {
-		this.paymentDate = paymentDate;
-	}
-
-	public BigDecimal getAmount() {
-		return amount;
-	}
-
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
-
-	public int getPaymentMethodId() {
-		return paymentMethodId;
-	}
-
-	public void setPaymentMethodId(int paymentMethodId) {
-		this.paymentMethodId = paymentMethodId;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
-	public int getStudentId() {
-		return studentId;
-	}
-
-	public void setStudentId(int studentId) {
-		this.studentId = studentId;
-	}
-
-	public int getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(int courseId) {
-		this.courseId = courseId;
-	}
 
 }

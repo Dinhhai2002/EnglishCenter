@@ -7,6 +7,9 @@ import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
+@Data
 public class CRUDReplyCommentsRequest {
 
 	@NotEmpty(message = "content không được phép để trống")
@@ -20,21 +23,6 @@ public class CRUDReplyCommentsRequest {
 
 	
 
-	public int getCommentsId() {
-		return commentsId;
-	}
-
-	public void setCommentsId(int commentsId) {
-		this.commentsId = commentsId;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
 	
 	
 }

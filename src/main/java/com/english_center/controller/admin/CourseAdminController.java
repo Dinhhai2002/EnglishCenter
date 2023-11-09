@@ -92,45 +92,16 @@ public class CourseAdminController extends BaseController {
 
 //		xử lí trả về danh sách khóa học kèm theo user đó có đăng kí hay chưa
 		List<CourseResponse> listCourseResponses = listCourse.getResult().stream().map(x -> {
-			typeUserUsing[0] = UserCourseUsingStatusEnum.EXPIRED.getValue();
-			StoreProcedureListResult<UserCourse> listCourses = new StoreProcedureListResult<>();
-			try {
-				listCourses = userCourseService.spGUserCourse(x.getId(), 1, currentUser.getId(), -1, 0, pagination, 0);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 
-			if (listCourses.getResult().isEmpty()) {
-				typeUserUsing[0] = UserCourseUsingStatusEnum.NO_REGISTER.getValue();
-			}
+			List<UserCourse> listCourses = getUserCourses(x.getId(), currentUser.getId());
 
-			if (!listCourses.getResult().isEmpty() && listCourses.getResult().stream()
-					.filter(y -> y.getIsExpired() == 1).collect(Collectors.toList()).isEmpty()) {
-				typeUserUsing[0] = UserCourseUsingStatusEnum.REGISTERED.getValue();
-			}
+			typeUserUsing[0] = determineUserCourseStatus(listCourses).getValue();
 
 			// xử lí map danh sách chương và bài học trong khóa học
-			int[] countLessons = { 0 };
-			List<Chapter> listChapter = new ArrayList<>();
-			try {
-				listChapter = chapterService.findByCourseId(x.getId());
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
+			List<ChapterResponse> listChapterResponse = getChapterResponses(x, currentUser);
 
-			List<ChapterResponse> listChapterResponse = listChapter.stream().map(y -> {
-				List<Lessons> listLessons = new ArrayList<>();
-				try {
-					listLessons = lessonsService.spGListLessons(-1, y.getId(), "", 1, new Pagination(0, 20), 0)
-							.getResult();
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return new ChapterResponse(y, new LessonsResponse().mapToList(listLessons));
-			}).collect(Collectors.toList());
-
-			return new CourseResponse(x, listChapterResponse, typeUserUsing[0], countLessons[0]);
+			return new CourseResponse(x, listChapterResponse, typeUserUsing[0], 0,
+					this.getLessonsPresentCourse(x.getId(), currentUser.getId()));
 		}).collect(Collectors.toList());
 
 		listData.setList(listCourseResponses);
@@ -257,5 +228,38 @@ public class CourseAdminController extends BaseController {
 		response.setData(new ImageResponse(image));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	private List<UserCourse> getUserCourses(int courseId, int userId) {
+		return	getListWithExceptionHandler(() -> userCourseService
+				.spGUserCourse(courseId, 1, userId, -1, 0, new Pagination(0, 1000), 0).getResult());
+	}
+
+	private UserCourseUsingStatusEnum determineUserCourseStatus(List<UserCourse> userCourses) {
+		if (userCourses.isEmpty()) {
+			return UserCourseUsingStatusEnum.NO_REGISTER;
+		}
+
+		if (userCourses.stream().anyMatch(userCourse -> userCourse.getIsExpired() == 0)) {
+			return UserCourseUsingStatusEnum.REGISTERED;
+		}
+
+		return UserCourseUsingStatusEnum.EXPIRED;
+	}
+
+	private List<ChapterResponse> getChapterResponses(Course course, Users currentUser) {
+		List<Chapter> listChapter = getListWithExceptionHandler(() -> chapterService.findByCourseId(course.getId()));
+
+		return listChapter.stream().map(chapter -> {
+			List<Lessons> listLessons = getLessonsForChapter(chapter);
+			return new ChapterResponse(chapter, new LessonsResponse().mapToList(listLessons),
+					countLessonsIsStudiedInChapter(course.getId(), chapter.getId(), currentUser.getId()));
+		}).collect(Collectors.toList());
+	}
+
+	private List<Lessons> getLessonsForChapter(Chapter chapter) {
+		return getListWithExceptionHandler(() -> lessonsService
+				.spGListLessons(-1, chapter.getId(), "", 1, new Pagination(0, 1000), 0).getResult());
+
 	}
 }

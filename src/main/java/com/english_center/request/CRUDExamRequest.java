@@ -7,6 +7,9 @@ import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
+@Data
 public class CRUDExamRequest {
 	@NotEmpty(message = "name không được phép để trống")
 	@Length(max = 255, message = "Không được phép lớn hơn 255 kí tự")
@@ -28,52 +31,5 @@ public class CRUDExamRequest {
 	@JsonProperty("total_question")
 	private int totalQuestion;
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public int getCategoryExamId() {
-		return categoryExamId;
-	}
-
-	public void setCategoryExamId(int categoryExamId) {
-		this.categoryExamId = categoryExamId;
-	}
-
-	public int getTopicId() {
-		return topicId;
-	}
-
-	public void setTopicId(int topicId) {
-		this.topicId = topicId;
-	}
-
-	public int getTimeMinutes() {
-		return timeMinutes;
-	}
-
-	public void setTimeMinutes(int timeMinutes) {
-		this.timeMinutes = timeMinutes;
-	}
-
-	public int getTotalQuestion() {
-		return totalQuestion;
-	}
-
-	public void setTotalQuestion(int totalQuestion) {
-		this.totalQuestion = totalQuestion;
-	}
-
+	
 }

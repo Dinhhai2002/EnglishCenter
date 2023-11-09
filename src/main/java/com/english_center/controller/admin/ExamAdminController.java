@@ -66,13 +66,13 @@ public class ExamAdminController extends BaseController {
 
 	@Autowired
 	QuestionService questionService;
-	
+
 	@Autowired
 	Drive googleDrive;
 
 	@Value("${upload.path}")
 	private String fileUpload;
-	
+
 	@Value("${key.folder.upload}")
 	private String folderUpload;
 
@@ -80,10 +80,10 @@ public class ExamAdminController extends BaseController {
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	public ResponseEntity<BaseResponse<List<ExamResponse>>> getAllNoAudio() throws Exception {
 		BaseResponse<List<ExamResponse>> response = new BaseResponse<>();
-		List<Exam> listexamResult = new ArrayList<>();
 		Pagination pagination = new Pagination(0, 20);
 		StoreProcedureListResult<Exam> exams = examService.spGListExam(-1, -1, "", -1, pagination, 0);
-		listexamResult = exams.getResult().stream().filter(x -> (x.getAudioId() == 0)).collect(Collectors.toList());
+		List<Exam> listexamResult = exams.getResult().stream().filter(x -> (x.getAudioId() == 0))
+				.collect(Collectors.toList());
 		response.setData(new ExamResponse().mapToList(listexamResult));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -93,16 +93,13 @@ public class ExamAdminController extends BaseController {
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	public ResponseEntity<BaseResponse<List<ExamResponse>>> getAllNoQuestion() throws Exception {
 		BaseResponse<List<ExamResponse>> response = new BaseResponse<>();
-		List<Exam> listexamResult = new ArrayList<>();
 		List<Exam> exams = examService.spGListExam(-1, -1, "", -1, new Pagination(0, 20), 0).getResult();
 
-		listexamResult = exams.stream().filter(x -> {
-			List<Question> listQuestion = new ArrayList<>();
-			try {
-				listQuestion = questionService.getListByExamId(x.getId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		List<Exam> listexamResult = exams.stream().filter(x -> {
+			List<Question> listQuestion = getListWithExceptionHandler(() -> {
+				return questionService.getListByExamId(x.getId());
+			});
+
 			return listQuestion.isEmpty();
 		}).collect(Collectors.toList());
 
@@ -125,8 +122,7 @@ public class ExamAdminController extends BaseController {
 
 		if (exam.getStatus() == 0) {
 
-			List<Question> listQuestion = questionService.getListByExamId(exam.getId());
-			if (listQuestion.isEmpty()) {
+			if (questionService.getListByExamId(exam.getId()).isEmpty()) {
 				response.setStatus(HttpStatus.BAD_REQUEST);
 				response.setMessageError(StringErrorValue.EXAM_IS_NOT_LIST_QUESTIONS);
 				return new ResponseEntity<>(response, HttpStatus.OK);
@@ -244,12 +240,10 @@ public class ExamAdminController extends BaseController {
 		fileMetadata.setName(fileName);
 		File uploadFile = googleDrive.files()
 				.create(fileMetadata,
-						new InputStreamContent(file.getContentType(),
-								new ByteArrayInputStream(file.getBytes())))
+						new InputStreamContent(file.getContentType(), new ByteArrayInputStream(file.getBytes())))
 				.setFields("id, size, mimeType, webViewLink, videoMediaMetadata, webContentLink").execute();
 		googleDrive.permissions().create(uploadFile.getId(), this.getPermission()).execute();
 
-		
 		Audio audio = new Audio();
 		audio.setUrl(uploadFile.getId());
 		audio.setExamId(id);

@@ -11,7 +11,9 @@ import org.hibernate.validator.constraints.Length;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
+@Data
 public class OTPRegisterUserRequest {
 	@NotEmpty(message = "userName không được phép để trống")
 	@Length(max = 255, message = "user_name Không được phép lớn hơn 255 kí tự")
@@ -66,92 +68,6 @@ public class OTPRegisterUserRequest {
 	@JsonProperty("full_address")
 	private String fullAddress;
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getFullName() {
-		return fullName;
-	}
-
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public int getGender() {
-		return gender;
-	}
-
-	public void setGender(int gender) {
-		this.gender = gender;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getBirthday() {
-		return birthday;
-	}
-
-	public void setBirthday(String birthday) {
-		this.birthday = birthday;
-	}
-
-	public int getCityId() {
-		return cityId;
-	}
-
-	public void setCityId(int cityId) {
-		this.cityId = cityId;
-	}
-
-	public int getDistrictId() {
-		return districtId;
-	}
-
-	public void setDistrictId(int districtId) {
-		this.districtId = districtId;
-	}
-
-	public int getWardId() {
-		return wardId;
-	}
-
-	public void setWardId(int wardId) {
-		this.wardId = wardId;
-	}
-
-	public String getFullAddress() {
-		return fullAddress;
-	}
-
-	public void setFullAddress(String fullAddress) {
-		this.fullAddress = fullAddress;
-	}
+	
 
 }

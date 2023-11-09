@@ -7,6 +7,9 @@ import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
+@Data
 public class CRUDResultRequest {
 
 	@JsonProperty("exam_id")
@@ -24,36 +27,5 @@ public class CRUDResultRequest {
 	@Min(value = 0, message = "giá trị nhỏ nhất là 0")
 	private int totalQuestionSkip;
 
-	public int getExamId() {
-		return examId;
-	}
-
-	public void setExamId(int examId) {
-		this.examId = examId;
-	}
-
-	public List<AnswerForResultRequest> getListAnswer() {
-		return listAnswer;
-	}
-
-	public void setListAnswer(List<AnswerForResultRequest> listAnswer) {
-		this.listAnswer = listAnswer;
-	}
-
-	public String getTimeComplete() {
-		return timeComplete;
-	}
-
-	public void setTimeComplete(String timeComplete) {
-		this.timeComplete = timeComplete;
-	}
-
-	public int getTotalQuestionSkip() {
-		return totalQuestionSkip;
-	}
-
-	public void setTotalQuestionSkip(int totalQuestionSkip) {
-		this.totalQuestionSkip = totalQuestionSkip;
-	}
-
+	
 }

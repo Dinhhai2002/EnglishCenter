@@ -119,44 +119,23 @@ public class CourseController extends BaseController {
 		List<Chapter> listChapter = chapterService.findByCourseId(id);
 
 		List<ChapterResponse> list = listChapter.stream().map(x -> {
-			List<Lessons> listLessons = new ArrayList<>();
-			try {
-				// danh sách bài học theo chương
-				listLessons = lessonsService.spGListLessons(-1, x.getId(), "", 1, new Pagination(0, 20), 0).getResult();
+			List<Lessons> listLessons = getListWithExceptionHandler(
+					() -> lessonsService.spGListLessons(-1, x.getId(), "", 1, new Pagination(0, 20), 0).getResult());
 
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 			List<LessonsResponse> listLessonsResponses = listLessons.stream().map(lessons -> {
 
-				UserCourseProgress userCourseProgress = null;
-				try {
-					userCourseProgress = userCourseProgressService.findByLessonsAndUser(lessons.getId(), users.getId());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				/*
-				 * Nếu free thì không khóa và kiểm tra nếu completed thì trả về trạng thái đã
-				 * học
-				 * 
-				 * Nếu userCourseProgress => chưa học =>khóa 
-				 * 
-				 */
-				if (lessons.getIsFree() == 1) {
-					return new LessonsResponse(lessons, 0,
-							(userCourseProgress != null && userCourseProgress.getIsCompleted() == 1) ? 1 : 0);
-				}
-				if (userCourseProgress == null) {
-					return new LessonsResponse(lessons, 1, 0);
-				} else if (userCourseProgress.getIsCompleted() == 0) {
-					return new LessonsResponse(lessons, 0, 0);
-				}
-				return new LessonsResponse(lessons, 0, 1);
+				UserCourseProgress userCourseProgress = getOneWithExceptionHandler(
+						() -> userCourseProgressService.findByLessonsAndUser(lessons.getId(), users.getId()));
+				
+				return handleLessonResponse(lessons, userCourseProgress);
 
 			}).collect(Collectors.toList());
 
+			// tổng số bài học
 			countLessons[0] += listLessons.size();
-			return new ChapterResponse(x, listLessonsResponses);
+
+			return new ChapterResponse(x, listLessonsResponses,
+					this.countLessonsIsStudiedInChapter(course.getId(), x.getId(), users.getId()));
 		}).collect(Collectors.toList());
 
 		response.setData(new CourseResponse(course, list, 0, countLessons[0]));
@@ -296,6 +275,26 @@ public class CourseController extends BaseController {
 		response.setData(listData);
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	private LessonsResponse handleLessonResponse(Lessons lessons, UserCourseProgress userCourseProgress) {
+		/*
+		 * Nếu free thì không khóa và kiểm tra nếu completed thì trả về trạng thái đã
+		 * học
+		 * 
+		 * Nếu userCourseProgress null => chưa học =>khóa
+		 * 
+		 */
+		if (lessons.getIsFree() == 1) {
+			return new LessonsResponse(lessons, 0,
+					(userCourseProgress != null && userCourseProgress.getIsCompleted() == 1) ? 1 : 0);
+		}
+		if (userCourseProgress == null) {
+			return new LessonsResponse(lessons, 1, 0);
+		} else if (userCourseProgress.getIsCompleted() == 0) {
+			return new LessonsResponse(lessons, 0, 0);
+		}
+		return new LessonsResponse(lessons, 0, 1);
 	}
 
 }

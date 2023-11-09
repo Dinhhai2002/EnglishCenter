@@ -6,6 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import lombok.Data;
+
+@Data
 @Entity
 public class Statistical {
 
@@ -14,18 +17,7 @@ public class Statistical {
 	
 	@Column(name="total_amount")
 	private BigDecimal totalAmount;
-	public String getDate() {
-		return date;
-	}
-	public void setDate(String date) {
-		this.date = date;
-	}
-	public BigDecimal getTotalAmount() {
-		return totalAmount;
-	}
-	public void setTotalAmount(BigDecimal totalAmount) {
-		this.totalAmount = totalAmount;
-	}
+	
 
 	
 	

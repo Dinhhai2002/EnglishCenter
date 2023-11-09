@@ -50,8 +50,6 @@ public class ExamController extends BaseController {
 	@Value("${upload.path}")
 	private String fileUpload;
 
-	
-
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("")
 	public ResponseEntity<BaseResponse<BaseListDataResponse<ExamResponse>>> getAll(
@@ -68,34 +66,7 @@ public class ExamController extends BaseController {
 		StoreProcedureListResult<Exam> exams = examService.spGListExam(categoryExamId, topicExamId, keySearch, status,
 				pagination, 1);
 
-		List<ExamResponse> listExamResponses = exams.getResult().stream().map(x -> {
-			// số lượng người dùng làm bài
-			int totaluser = 0;
-			try {
-				totaluser = this.countUserExam(x.getId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			// đề thi đã có câu hỏi chưa
-			int isQuestion = 0;
-			try {
-				if (!questionService.getListByExamId(x.getId()).isEmpty()) {
-					isQuestion = 1;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			// số lượng comments
-			int countComments = 0;
-			try {
-				countComments = this.countComment(x.getId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return new ExamResponse(x, totaluser, isQuestion, countComments);
-		}).collect(Collectors.toList());
+		List<ExamResponse> listExamResponses = getExamResponses(exams.getResult());
 
 		BaseListDataResponse<ExamResponse> listData = new BaseListDataResponse<>();
 		listData.setList(listExamResponses);

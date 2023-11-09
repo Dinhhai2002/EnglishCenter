@@ -13,6 +13,9 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "users_register")
 public class UserRegister extends BaseEntity {
@@ -36,52 +39,6 @@ public class UserRegister extends BaseEntity {
 
 	private int status;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public int getOtp() {
-		return otp;
-	}
-
-	public void setOtp(int otp) {
-		this.otp = otp;
-	}
-
-	public Date getOtpCreatedAt() {
-		return otpCreatedAt;
-	}
-
-	public void setOtpCreatedAt(Date otpCreatedAt) {
-		this.otpCreatedAt = otpCreatedAt;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
+	
 
 }

@@ -92,20 +92,10 @@ public class PaymentController extends BaseController {
 				isPagination);
 
 		List<PaymentResponse> listPaymentResponses = listPayment.getResult().stream().map(x -> {
-			Users users = new Users();
-			try {
-				users = userService.findOne(x.getStudentId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			Users users = getOneWithExceptionHandler(() -> userService.findOne(x.getStudentId()));
 
-			Course course = new Course();
+			Course course = getOneWithExceptionHandler(() -> courseService.findOne(x.getCourseId()));
 
-			try {
-				course = courseService.findOne(x.getCourseId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 			return new PaymentResponse(x, course, users);
 		}).collect(Collectors.toList());
 

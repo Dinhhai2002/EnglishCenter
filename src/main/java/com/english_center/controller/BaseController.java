@@ -8,11 +8,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,24 +34,27 @@ import org.springframework.web.context.request.WebRequest;
 import com.english_center.common.enums.VideoTypeEnum;
 import com.english_center.entity.Chapter;
 import com.english_center.entity.Comments;
+import com.english_center.entity.Exam;
 import com.english_center.entity.Lessons;
 import com.english_center.entity.ReplyComments;
 import com.english_center.entity.Result;
+import com.english_center.entity.UserCourseProgress;
 import com.english_center.entity.Users;
 import com.english_center.model.YouTubeVideo;
 import com.english_center.model.YouTubeVideoListResponse;
 import com.english_center.response.BaseResponse;
+import com.english_center.response.ExamResponse;
 import com.english_center.security.JwtTokenUtil;
 import com.english_center.service.ClassStudentService;
 import com.english_center.service.CommentsService;
-import com.english_center.service.CourseService;
 import com.english_center.service.IFirebaseImageService;
 import com.english_center.service.ImageService;
+import com.english_center.service.QuestionService;
 import com.english_center.service.ReplyCommentsService;
 import com.english_center.service.ResultService;
+import com.english_center.service.UserCourseProgressService;
 import com.english_center.service.UserCourseService;
 import com.english_center.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.Permission;
@@ -72,9 +75,6 @@ public class BaseController {
 	UserCourseService userCourseService;
 
 	@Autowired
-	private CourseService courseService;
-
-	@Autowired
 	ImageService imageService;
 
 	@Autowired
@@ -88,6 +88,12 @@ public class BaseController {
 
 	@Autowired
 	ReplyCommentsService replyCommentsService;
+
+	@Autowired
+	public UserCourseProgressService userCourseProgressService;
+
+	@Autowired
+	QuestionService questionService;
 
 	@Autowired
 	Drive googleDrive;
@@ -138,13 +144,11 @@ public class BaseController {
 
 	}
 
-	public int countUserExam(int examId) throws Exception {
-		List<Result> results = resultService.findByExamId(examId);
+	public int countUserExam(int examId) {
+		List<Result> results = getListWithExceptionHandler(() -> resultService.findByExamId(examId));
 
 		List<Integer> listId = new ArrayList<>();
-		results.stream().forEach(x -> {
-			listId.add(x.getUserId());
-		});
+		results.stream().forEach(x -> listId.add(x.getUserId()));
 
 		Set<Integer> uniqueUserIds = new HashSet<>();
 
@@ -153,48 +157,20 @@ public class BaseController {
 		return uniqueUserIds.size();
 	}
 
-	public int countComment(int examId) throws Exception {
+	public int countComment(int examId) {
 
-		List<Comments> comments = commentsService.findByExamId(examId);
+		List<Comments> comments = getListWithExceptionHandler(() -> commentsService.findByExamId(examId));
 		int count = 0;
 
 		for (Comments x : comments) {
-			List<ReplyComments> replyComments = new ArrayList<>();
-			try {
-				replyComments = replyCommentsService.findByCommentId(x.getId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			List<ReplyComments> replyComments = getListWithExceptionHandler(
+					() -> replyCommentsService.findByCommentId(x.getId()));
+
 			count += replyComments.size();
 		}
 
 		count += comments.size();
 		return count;
-	}
-
-	@SuppressWarnings("unused")
-	public Users accessToken(String encodeString) throws Exception {
-
-		byte[] decodedBytes = Base64.getMimeDecoder().decode(encodeString);
-
-		String decodedMime = new String(decodedBytes);
-
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			Users map = mapper.readValue(decodedMime, Users.class);
-
-			Users user = userService.findUsersByUsersName(map.getUserName());
-
-			if (user.getIsLogin() == 0 && user.getAccessToken() == "")
-				throw new Exception("Tài khoản chưa đăng nhập");
-			if (user != null)
-				return user;
-			else
-				throw new Exception("Thất bại");
-		} catch (Exception e) {
-			throw new Exception("Thất bại");
-		}
-
 	}
 
 	public long caculateOtpExpired(Date otpDate) {
@@ -291,6 +267,69 @@ public class BaseController {
 			return 0;
 		}
 		return listChapter.get(listChapter.size() - 1).getSort();
+	}
+
+	public int getLessonsPresentCourse(int courseId, int userId) {
+		List<UserCourseProgress> userCourseProgress = new ArrayList<>();
+		try {
+			userCourseProgress = userCourseProgressService.findByCourseAndUser(courseId, userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (userCourseProgress.isEmpty()) {
+			return 0;
+		}
+		return userCourseProgress.get(userCourseProgress.size() - 1).getLessonsId();
+	}
+
+	public int countLessonsIsStudiedInChapter(int courseId, int chapter, int userId) {
+		List<UserCourseProgress> userCourseProgress = new ArrayList<>();
+		try {
+			userCourseProgress = userCourseProgressService.spGUserCourseProgress(userId, courseId, chapter, -1, 1)
+					.getResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (userCourseProgress.isEmpty()) {
+			return 0;
+		}
+		return userCourseProgress.size();
+	}
+
+	public static <T> List<T> getListWithExceptionHandler(Callable<List<T>> callable) {
+		try {
+			return callable.call();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+	}
+
+	public static <T> T getOneWithExceptionHandler(Callable<T> callable) {
+		try {
+			return callable.call();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return (T) new Object();
+		}
+	}
+
+	public List<ExamResponse> getExamResponses(List<Exam> exams) {
+		return exams.stream().map(x -> {
+			// số lượng người dùng làm bài
+			int totalUser = getOneWithExceptionHandler(() -> this.countUserExam(x.getId()));
+
+			// đề thi đã có câu hỏi chưa
+			int isQuestion = 0;
+			if (!getListWithExceptionHandler(() -> questionService.getListByExamId(x.getId())).isEmpty()) {
+				isQuestion = 1;
+			}
+
+			// số lượng comments
+			int countComments = getOneWithExceptionHandler(() -> this.countComment(x.getId()));
+
+			return new ExamResponse(x, totalUser, isQuestion, countComments);
+		}).collect(Collectors.toList());
 	}
 
 }

@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "exam")
 public class ExamDetail extends BaseEntity {
@@ -28,30 +31,7 @@ public class ExamDetail extends BaseEntity {
 	@Column(name = "total_question")
 	private int totalQuestion;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-
-	public int getTotalQuestion() {
-		return totalQuestion;
-	}
-
-	public void setTotalQuestion(int totalQuestion) {
-		this.totalQuestion = totalQuestion;
-	}
+	
 	
 	
 

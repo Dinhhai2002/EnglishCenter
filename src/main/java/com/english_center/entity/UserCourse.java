@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "user_course")
 public class UserCourse extends BaseEntity {
@@ -30,52 +33,6 @@ public class UserCourse extends BaseEntity {
 	@Column(name = "is_expired")
 	private int isExpired;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(int courseId) {
-		this.courseId = courseId;
-	}
-
-	public int getStudentId() {
-		return studentId;
-	}
-
-	public void setStudentId(int studentId) {
-		this.studentId = studentId;
-	}
-
-	public int getIsJoinClass() {
-		return isJoinClass;
-	}
-
-	public void setIsJoinClass(int isJoinClass) {
-		this.isJoinClass = isJoinClass;
-	}
-
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
-
-	public int getIsExpired() {
-		return isExpired;
-	}
-
-	public void setIsExpired(int isExpired) {
-		this.isExpired = isExpired;
-	}
+	
 
 }

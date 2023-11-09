@@ -87,54 +87,54 @@ public class TopicExamController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@GetMapping("/get-all-exam-by-all-topic")
-	public ResponseEntity<BaseResponse> getAllExamByAllTopic() throws Exception {
-
-		BaseResponse response = new BaseResponse();
-
-		List<Exam> exams = examService.spGListExam(-1, -1, "", -1, new Pagination(0, 20), 0).getResult();
-		List<TopicExam> topicExams = topicExamService.getAll();
-
-		List<TopicExamReponse> topicResponses = topicExams.stream().map(topicExam -> {
-			List<ExamResponse> filteredExams = exams.stream().filter(exam -> exam.getTopicId() == topicExam.getId())
-					.map(x -> {
-
-						// trả về tổng user của đề thi
-						int totaluser = 0;
-						try {
-							totaluser = this.countUserExam(x.getId());
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-
-						// kiểm tra đề thi đó đã có câu hỏi chưa
-						int isQuestion = 0;
-						List<Question> listQuestion = new ArrayList<>();
-						try {
-							listQuestion = questionService.getListByExamId(x.getId());
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						if (!listQuestion.isEmpty()) {
-							isQuestion = 1;
-						}
-
-						// Tổng số lượng comments của đề thi
-						int countComments = 0;
-						try {
-							countComments = this.countComment(x.getId());
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						return new ExamResponse(x, totaluser, isQuestion, countComments);
-					}).collect(Collectors.toList());
-
-			return new TopicExamReponse(topicExam, filteredExams);
-		}).collect(Collectors.toList());
-
-		response.setData(topicResponses);
-
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+//	@GetMapping("/get-all-exam-by-all-topic")
+//	public ResponseEntity<BaseResponse> getAllExamByAllTopic() throws Exception {
+//
+//		BaseResponse response = new BaseResponse();
+//
+//		List<Exam> exams = examService.spGListExam(-1, -1, "", -1, new Pagination(0, 20), 0).getResult();
+//		List<TopicExam> topicExams = topicExamService.getAll();
+//
+//		List<TopicExamReponse> topicResponses = topicExams.stream().map(topicExam -> {
+//			List<ExamResponse> filteredExams = exams.stream().filter(exam -> exam.getTopicId() == topicExam.getId())
+//					.map(x -> {
+//
+//						// trả về tổng user của đề thi
+//						int totaluser = 0;
+//						try {
+//							totaluser = this.countUserExam(x.getId());
+//						} catch (Exception e) {
+//							e.printStackTrace();
+//						}
+//
+//						// kiểm tra đề thi đó đã có câu hỏi chưa
+//						int isQuestion = 0;
+//						List<Question> listQuestion = new ArrayList<>();
+//						try {
+//							listQuestion = questionService.getListByExamId(x.getId());
+//						} catch (Exception e) {
+//							e.printStackTrace();
+//						}
+//						if (!listQuestion.isEmpty()) {
+//							isQuestion = 1;
+//						}
+//
+//						// Tổng số lượng comments của đề thi
+//						int countComments = 0;
+//						try {
+//							countComments = this.countComment(x.getId());
+//						} catch (Exception e) {
+//							e.printStackTrace();
+//						}
+//						return new ExamResponse(x, totaluser, isQuestion, countComments);
+//					}).collect(Collectors.toList());
+//
+//			return new TopicExamReponse(topicExam, filteredExams);
+//		}).collect(Collectors.toList());
+//
+//		response.setData(topicResponses);
+//
+//		return new ResponseEntity<>(response, HttpStatus.OK);
+//	}
 }

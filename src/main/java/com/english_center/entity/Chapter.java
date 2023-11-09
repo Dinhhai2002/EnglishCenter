@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "chapter")
 public class Chapter extends BaseEntity {
@@ -31,52 +34,6 @@ public class Chapter extends BaseEntity {
 
 	private int sort;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(int courseId) {
-		this.courseId = courseId;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
-	public int getIsFree() {
-		return isFree;
-	}
-
-	public void setIsFree(int isFree) {
-		this.isFree = isFree;
-	}
-
-	public int getSort() {
-		return sort;
-	}
-
-	public void setSort(int sort) {
-		this.sort = sort;
-	}
+	
 
 }

@@ -137,28 +137,17 @@ public class CommentsController extends BaseController {
 		 * Map trả về list comment lồng replyComments
 		 */
 		response.setData(comments.stream().map(x -> {
-			UserResponse user = null;
-			try {
-				user = new UserResponse(userService.findOne(x.getUserId()));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			List<ReplyComments> replyComments = null;
-			try {
-				replyComments = replyCommentsService.findByCommentId(x.getId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			List<ReplyCommentsResponse> replyCommentsResponse = replyComments.stream().map(y -> {
+			UserResponse user = new UserResponse(getOneWithExceptionHandler(() -> userService.findOne(x.getUserId())));
 
-				try {
-					return new ReplyCommentsResponse(y,
-							new UserResponse(userService.findOne(y.getUserIdReplyComments())));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return null;
-			}).collect(Collectors.toList());
+			List<ReplyComments> replyComments = getListWithExceptionHandler(
+					() -> replyCommentsService.findByCommentId(x.getId()));
+
+			List<ReplyCommentsResponse> replyCommentsResponse = replyComments.stream().map(y ->
+
+			new ReplyCommentsResponse(y,
+					new UserResponse(
+							getOneWithExceptionHandler(() -> userService.findOne(y.getUserIdReplyComments())))))
+					.collect(Collectors.toList());
 
 			return new CommentsResponse(x, replyCommentsResponse, user);
 		}).collect(Collectors.toList()));

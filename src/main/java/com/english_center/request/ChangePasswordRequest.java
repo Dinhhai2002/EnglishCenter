@@ -6,6 +6,9 @@ import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
+@Data
 public class ChangePasswordRequest {
 
 	@Length(max = 20, min = 8, message = "độ dài mật khẩu tối đa là 20,tối thiểu là 8")
@@ -22,28 +25,5 @@ public class ChangePasswordRequest {
 	@JsonProperty("confirm_password")
 	private String confirmPassword;
 
-	public String getOldPassword() {
-		return oldPassword;
-	}
-
-	public void setOldPassword(String oldPassword) {
-		this.oldPassword = oldPassword;
-	}
-
-	public String getNewPassword() {
-		return newPassword;
-	}
-
-	public void setNewPassword(String newPassword) {
-		this.newPassword = newPassword;
-	}
-
-	public String getConfirmPassword() {
-		return confirmPassword;
-	}
-
-	public void setConfirmPassword(String confirmPassword) {
-		this.confirmPassword = confirmPassword;
-	}
-
+	
 }

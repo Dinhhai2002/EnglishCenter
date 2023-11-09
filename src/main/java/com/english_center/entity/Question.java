@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "question")
 public class Question extends BaseEntity {
@@ -50,103 +53,6 @@ public class Question extends BaseEntity {
 	
 	private int sort;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-
-	public String getParagraph() {
-		return paragraph;
-	}
-
-	public void setParagraph(String paragraph) {
-		this.paragraph = paragraph;
-	}
-	
-	public String getUrlImage() {
-		return urlImage;
-	}
-
-	public void setUrlImage(String urlImage) {
-		this.urlImage = urlImage;
-	}
-
-	public int getExamId() {
-		return examId;
-	}
-
-	public void setExamId(int examId) {
-		this.examId = examId;
-	}
-
-	public String getAnswerA() {
-		return answerA;
-	}
-
-	public void setAnswerA(String answerA) {
-		this.answerA = answerA;
-	}
-
-	public String getAnswerB() {
-		return answerB;
-	}
-
-	public void setAnswerB(String answerB) {
-		this.answerB = answerB;
-	}
-
-	public String getAnswerC() {
-		return answerC;
-	}
-
-	public void setAnswerC(String answerC) {
-		this.answerC = answerC;
-	}
-
-	public String getAnswerD() {
-		return answerD;
-	}
-
-	public void setAnswerD(String answerD) {
-		this.answerD = answerD;
-	}
-
-	public String getResult() {
-		return result;
-	}
-
-	public void setResult(String result) {
-		this.result = result;
-	}
-
-	public int getExamDetailId() {
-		return examDetailId;
-	}
-
-	public void setExamDetailId(int examDetailId) {
-		this.examDetailId = examDetailId;
-	}
-
-	public int getSort() {
-		return sort;
-	}
-
-	public void setSort(int sort) {
-		this.sort = sort;
-	}
-	
 	
 
 }

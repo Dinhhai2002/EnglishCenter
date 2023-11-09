@@ -96,20 +96,8 @@ public class LessonsController extends BaseController {
 		BaseListDataResponse<LessonsResponse> listData = new BaseListDataResponse<>();
 
 		List<LessonsResponse> listLessonsResponse = listLessons.getResult().stream().map(x -> {
-			Course course = new Course();
-			try {
-				course = courseService.findOne(x.getCourseId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			Chapter chapter = new Chapter();
-
-			try {
-				chapter = chapterService.findOne(x.getChapterId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			Course course = getOneWithExceptionHandler(() -> courseService.findOne(x.getCourseId()));
+			Chapter chapter = getOneWithExceptionHandler(() -> chapterService.findOne(x.getChapterId()));
 			return new LessonsResponse(x, course, chapter);
 		}).collect(Collectors.toList());
 
@@ -268,7 +256,6 @@ public class LessonsController extends BaseController {
 	public ResponseEntity<BaseResponse<LessonsResponse>> findOne(@PathVariable("id") int id) throws Exception {
 
 		BaseResponse<LessonsResponse> response = new BaseResponse();
-		Users users = this.getUser();
 
 		Lessons lessons = lessonsService.findOne(id);
 
@@ -277,23 +264,10 @@ public class LessonsController extends BaseController {
 			response.setMessageError(StringErrorValue.LESSONS_NOT_FOUND);
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
-//		LessonsResponse lessonsResponse;
-//		UserCourseProgress userCourseProgress = userCourseProgressService.findByLessonsAndUser(lessons.getId(),
-//				users.getId());
-//		if (lessons.getIsFree() == 1) {
-//			lessonsResponse = new LessonsResponse(lessons, 0,
-//					(userCourseProgress != null && userCourseProgress.getIsCompleted() == 1) ? 1 : 0);
-//		}
-//		if (userCourseProgress == null) {
-//			lessonsResponse = new LessonsResponse(lessons, 1, 0);
-//		} else if (userCourseProgress.getIsCompleted() == 0) {
-//			lessonsResponse = new LessonsResponse(lessons, 0, 0);
-//		}
-//		lessonsResponse = new LessonsResponse(lessons, 0, 1);
+		
 		response.setData(new LessonsResponse(lessons, courseService.findOne(lessons.getCourseId()),
 				chapterService.findOne(lessons.getChapterId())));
 
-//		response.setData(lessonsResponse);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 

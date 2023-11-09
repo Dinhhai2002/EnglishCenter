@@ -1,7 +1,5 @@
 package com.english_center.request;
 
-import java.math.BigDecimal;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
@@ -9,6 +7,9 @@ import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
+@Data
 public class CRUDClassRequest {
 	
 	@NotEmpty(message = "name không được phép để trống")
@@ -32,47 +33,5 @@ public class CRUDClassRequest {
 	@JsonProperty("course_id")
 	private int courseId;
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
-	}
-
-	public String getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
-	}
-
-
-
-//	public int getTeacherId() {
-//		return teacherId;
-//	}
-//
-//	public void setTeacherId(int teacherId) {
-//		this.teacherId = teacherId;
-//	}
-
-	public int getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(int courseId) {
-		this.courseId = courseId;
-	}
-	
 	
 }
