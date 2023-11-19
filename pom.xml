@@ -251,7 +251,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>2.1.0.RELEASE</version>
+				<version>2.2.6.RELEASE</version>
 				
 				<executions>
 					<execution>
@@ -262,7 +262,6 @@
 				</executions>
 				<configuration>
 					<executable>true</executable>
-					<jvmArguments>--add-modules java.xml.bind</jvmArguments>
 					  <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
