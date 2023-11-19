@@ -263,6 +263,12 @@
 				<configuration>
 					<executable>true</executable>
 					<jvmArguments>--add-modules java.xml.bind</jvmArguments>
+					  <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
 				</configuration>
 			</plugin>
 		</plugins>
