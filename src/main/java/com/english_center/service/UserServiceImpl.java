@@ -33,14 +33,10 @@ public class UserServiceImpl implements UserService {
 		return UsersDao.deleteUsers(id);
 	}
 
-	
-
 	@Override
 	public Users findUsersByPhone(String phone) throws Exception {
 		return UsersDao.findUsersByPhone(phone);
 	}
-
-	
 
 	@Override
 	public Users findUsersByUsersName(String UsersName) throws Exception {
@@ -85,6 +81,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void create(Users user) throws Exception {
 		UsersDao.create(user);
+	}
+
+	@Override
+	public Users findUsersByUsersNameAndPassword(String usersName, String password) throws Exception {
+		return UsersDao.findUsersByUsersNameAndPassword(usersName, password);
 	}
 
 }

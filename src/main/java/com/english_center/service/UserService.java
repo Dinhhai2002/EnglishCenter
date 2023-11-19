@@ -28,6 +28,8 @@ public interface UserService {
 
 	Users findUsersByUsersName(String UsersName) throws Exception;
 
+	Users findUsersByUsersNameAndPassword(String usersName, String password) throws Exception;
+
 	Users findUsersByUsersNameAndEmail(String UsersName, String email) throws Exception;
 
 	Users findUsersByEmail(String email, int isGoogle) throws Exception;

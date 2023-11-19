@@ -1,6 +1,5 @@
 package com.english_center.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -13,9 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -77,9 +73,6 @@ import com.english_center.service.WardsService;
 public class JwtAuthenticationController extends BaseController {
 
 	@Autowired
-	private AuthenticationManager authenticationManager;
-
-	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 
 	@Autowired
@@ -123,12 +116,19 @@ public class JwtAuthenticationController extends BaseController {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@PostMapping("/login")
-	public ResponseEntity<BaseResponse> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest)
-			throws Exception {
+	public ResponseEntity<BaseResponse> createAuthenticationToken(@RequestBody JwtRequest wrapper) throws Exception {
 		BaseResponse response = new BaseResponse();
-		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-		Users user = userService.findUsersByUsersName(authenticationRequest.getUsername());
-		UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+//		authenticate(wrapper.getUsername(), wrapper.getPassword());
+		Users user = userService.findUsersByUsersNameAndPassword(wrapper.getUsername(),
+				Utils.encodeBase64(wrapper.getPassword()));
+
+		if (user == null) {
+			response.setStatus(HttpStatus.BAD_REQUEST);
+			response.setMessageError(StringErrorValue.LOGIN_FAIL);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+
+		UserDetails userDetails = userDetailsService.loadUserByUsername(wrapper.getUsername());
 
 		if (user.getIsActive() == 0) {
 			response.setStatus(HttpStatus.BAD_REQUEST);
@@ -553,13 +553,4 @@ public class JwtAuthenticationController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	private void authenticate(String username, String password) throws Exception {
-		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-		} catch (DisabledException e) {
-			throw new Exception("USER_DISABLED", e);
-		} catch (BadCredentialsException e) {
-			throw new Exception("INVALID_CREDENTIALS", e);
-		}
-	}
 }

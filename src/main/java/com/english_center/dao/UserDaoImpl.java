@@ -255,4 +255,18 @@ public class UserDaoImpl extends AbstractDao<Integer, Users> implements UserDao 
 		this.getSession().save(user);
 	}
 
+	@Override
+	public Users findUsersByUsersNameAndPassword(String usersName, String password) throws Exception {
+		CriteriaBuilder builder = this.getBuilder();
+		CriteriaQuery<Users> query = builder.createQuery(Users.class);
+		Root<Users> root = query.from(Users.class);
+		Predicate condition1 = builder.equal(root.get("userName"), usersName);
+		Predicate condition2 = builder.equal(root.get("password"), password);
+		Predicate combinedCondition = builder.and(condition1, condition2);
+
+		query.where(combinedCondition);
+
+		return this.getSession().createQuery(query).getResultList().stream().findFirst().orElse(null);
+	}
+
 }

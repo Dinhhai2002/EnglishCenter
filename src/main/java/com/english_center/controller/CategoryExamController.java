@@ -101,4 +101,18 @@ public class CategoryExamController extends BaseController {
 //		return new ResponseEntity<>(response, HttpStatus.OK);
 //	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@GetMapping("/{id}/get-topic-exam-by-category")
+	public ResponseEntity<BaseResponse<List<TopicExamReponse>>> getAllByCategory(@PathVariable("id") int id)
+			throws Exception {
+
+		BaseResponse<List<TopicExamReponse>> response = new BaseResponse();
+		List<TopicExamReponse> listExamReponses = new TopicExamReponse()
+				.mapToList(topicExamService.findByCategoryExamId(id));
+
+		response.setData(listExamReponses);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
 }

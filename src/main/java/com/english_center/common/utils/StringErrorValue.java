@@ -6,6 +6,7 @@ public class StringErrorValue {
 
 	public static final String USER_NOT_FOUND = "Người dùng không tồn tại!";
 	public static final String USER_IS_EXIST = "Người dùng đã tồn tại!";
+	public static final String LOGIN_FAIL = "Tên tài khoản hoặc mật khẩu không chính xác!";
 	public static final String USER_REGISTER_IS_AUTHENTICATING = "Tên tài khoản và email đang được người dùng khác đăng kí và đang trong quá trình xác thực!";
 	public static final String NAME_USER_IS_EXIST = "Tên người dùng đã tồn tại.Vui lòng nhập tên người dùng khác!";
 	public static final String MAIL_USER_IS_EXIST = "Email đã tồn tại.Vui lòng nhập Email khác!";
@@ -76,7 +77,7 @@ public class StringErrorValue {
 	// UserCourse
 	public static final String USER_COURSE_NOT_FOUND = "sinh viên thuộc khóa học không tồn tại!";
 	public static final String USER_COURSE_IS_EXIST = "sinh viên thuộc khóa học đã tồn tại!";
-	
+
 	// Payment
 	public static final String COURSE_IS_REGISTED = "Bạn đã đăng kí khóa học này rồi!";
 
