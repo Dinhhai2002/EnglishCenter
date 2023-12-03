@@ -16,7 +16,7 @@ import com.english_center.common.enums.RoleEnum;
 import com.english_center.dao.UserDao;
 import com.english_center.entity.Users;
 
-@Service
+@Service("UserDetailsService")
 public class JwtUserDetailsService implements UserDetailsService {
 
 	@Autowired

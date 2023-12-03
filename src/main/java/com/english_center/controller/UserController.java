@@ -1,7 +1,5 @@
 package com.english_center.controller;
 
-import java.util.Base64;
-
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -33,7 +31,7 @@ public class UserController extends BaseController {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("")
-	public ResponseEntity<BaseResponse<BaseListDataResponse<UserResponse>>> GetAllUser(
+	public ResponseEntity<BaseResponse<BaseListDataResponse<UserResponse>>> getAllUser(
 			@RequestParam(name = "key_search", required = false, defaultValue = "") String keySearch,
 			@RequestParam(name = "status", required = false, defaultValue = "-1") int status,
 			@RequestParam(name = "role", required = false, defaultValue = "-1") int role,
@@ -65,16 +63,6 @@ public class UserController extends BaseController {
 
 		Users user = this.getUser();
 
-//		if (!user.getUserName().equals(wrapper.getUserName())) {
-//			Users findUsersByName = userService.findUsersByUsersName(wrapper.getUserName());
-//			if (findUsersByName != null) {
-//				response.setStatus(HttpStatus.BAD_REQUEST);
-//				response.setMessageError(StringErrorValue.NAME_USER_IS_EXIST);
-//
-//				return new ResponseEntity<>(response, HttpStatus.OK);
-//
-//			}
-//		}
 
 		if (!user.getEmail().equals(wrapper.getEmail())) {
 			Users findUsersByEmail = userService.findUsersByEmail(wrapper.getEmail(), 0);
@@ -153,7 +141,9 @@ public class UserController extends BaseController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 
-//		users.setPassword(BCrypt.hashpw(wrapper.getNewPassword(), BCrypt.gensalt(12)));
+		/*
+		 * users.setPassword(BCrypt.hashpw(wrapper.getNewPassword(), BCrypt.gensalt(12)));
+		 */
 		users.setPassword(Utils.encodeBase64(wrapper.getNewPassword()));
 		userService.update(users);
 		response.setData(new UserResponse(users));
@@ -161,14 +151,13 @@ public class UserController extends BaseController {
 
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@PostMapping("/upload-avatar")
 	public ResponseEntity<BaseResponse<ImageResponse>> create(@RequestParam(name = "file") MultipartFile file)
 			throws Exception {
 
 		BaseResponse<ImageResponse> response = new BaseResponse();
 		Users user = this.getUser();
-		String name = iFirebaseImageService.generateFileName(file.getOriginalFilename());
 
 		String fileName = iFirebaseImageService.save(file);
 

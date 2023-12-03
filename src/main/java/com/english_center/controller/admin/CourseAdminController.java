@@ -209,7 +209,7 @@ public class CourseAdminController extends BaseController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 
-		String name = iFirebaseImageService.generateFileName(file.getOriginalFilename());
+//		String name = iFirebaseImageService.generateFileName(file.getOriginalFilename());
 
 		String fileName = iFirebaseImageService.save(file);
 

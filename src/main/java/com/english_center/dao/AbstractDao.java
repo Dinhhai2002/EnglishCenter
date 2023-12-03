@@ -4,27 +4,29 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.english_center.entity.BaseEntity;
 
+public abstract class AbstractDao<PK extends Serializable, T> {
+//	@Autowired(required=true)
+//	@Qualifier("entityManager")
+	@PersistenceContext
+	private EntityManager entityManager;
 
-
-
-public abstract class  AbstractDao<PK extends Serializable, T> {
 	private final Class<T> persistentClass;
 
 	@SuppressWarnings("unchecked")
-	public AbstractDao() {
+	protected AbstractDao() {
 		this.persistentClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass())
 				.getActualTypeArguments()[1];
 	}
-	@Autowired
-    private EntityManager entityManager;
-	
+
 	protected Session getSession() {
 		return entityManager.unwrap(Session.class);
 	}
@@ -53,7 +55,7 @@ public abstract class  AbstractDao<PK extends Serializable, T> {
 	public void update(BaseEntity entity) {
 		this.getSession().update(entity);
 	}
-	
+
 	public void merge(BaseEntity entity) {
 		this.getSession().merge(entity);
 	}
@@ -70,7 +72,4 @@ public abstract class  AbstractDao<PK extends Serializable, T> {
 		this.getSession().flush();
 	}
 
-
-
-	
 }

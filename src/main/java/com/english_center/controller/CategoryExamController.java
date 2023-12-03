@@ -1,8 +1,6 @@
 package com.english_center.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,12 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.english_center.common.utils.StringErrorValue;
 import com.english_center.entity.CategoryExam;
-import com.english_center.entity.Exam;
-import com.english_center.entity.Question;
-import com.english_center.entity.TopicExam;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.CategoryExamResponse;
-import com.english_center.response.ExamResponse;
 import com.english_center.response.TopicExamReponse;
 import com.english_center.service.CategoryExamService;
 import com.english_center.service.ExamService;

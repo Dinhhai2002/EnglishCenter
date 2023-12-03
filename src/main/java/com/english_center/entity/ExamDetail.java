@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "exam")
+@Table(name = "exam_detail")
 public class ExamDetail extends BaseEntity {
 
 	/**
