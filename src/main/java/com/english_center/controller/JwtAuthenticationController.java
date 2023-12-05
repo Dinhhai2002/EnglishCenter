@@ -498,28 +498,28 @@ public class JwtAuthenticationController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-//	@SuppressWarnings({ "rawtypes", "unchecked" })
-//	@GetMapping("/comments/count-by-exam")
-//	public ResponseEntity<BaseResponse> countCommentsExam(@RequestParam(value = "exam_id", required = true) int examId)
-//			throws Exception {
-//
-//		BaseResponse response = new BaseResponse();
-//
-//		response.setData(this.countComment(examId));
-//
-//		return new ResponseEntity<>(response, HttpStatus.OK);
-//	}
-//
-//	@SuppressWarnings({ "rawtypes", "unchecked" })
-//	@GetMapping("/exam/{id}/count-user")
-//	public ResponseEntity<BaseResponse> getResult(@PathVariable("id") int id) throws Exception {
-//
-//		BaseResponse response = new BaseResponse();
-//
-//		response.setData(this.countUserExam(id));
-//
-//		return new ResponseEntity<>(response, HttpStatus.OK);
-//	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@GetMapping("/comments/count-by-exam")
+	public ResponseEntity<BaseResponse> countCommentsExam(@RequestParam(value = "exam_id", required = true) int examId)
+			throws Exception {
+
+		BaseResponse response = new BaseResponse();
+
+		response.setData(this.countComment(examId));
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@GetMapping("/exam/{id}/count-user")
+	public ResponseEntity<BaseResponse> getResult(@PathVariable("id") int id) throws Exception {
+
+		BaseResponse response = new BaseResponse();
+
+		response.setData(this.countUserExam(id));
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/course/{id}")
