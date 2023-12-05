@@ -328,7 +328,7 @@ public class BaseController {
 			// số lượng comments
 			int countComments = getOneWithExceptionHandler(() -> this.countComment(x.getId()));
 
-			return new ExamResponse(x, totalUser, isQuestion, countComments);
+			return new ExamResponse(x, totalUser, isQuestion, countComments, new ArrayList<>());
 		}).collect(Collectors.toList());
 	}
 

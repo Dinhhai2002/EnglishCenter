@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.english_center.common.utils.Pagination;
 import com.english_center.entity.Exam;
+import com.english_center.entity.Question;
+import com.english_center.entity.Users;
 import com.english_center.model.StoreProcedureListResult;
 import com.english_center.response.BaseListDataResponse;
 import com.english_center.response.BaseResponse;
@@ -91,8 +93,11 @@ public class ExamController extends BaseController {
 	@GetMapping("/{id}/detail")
 	public ResponseEntity<BaseResponse> findOne(@PathVariable("id") int id) throws Exception {
 		BaseResponse response = new BaseResponse();
+		int countUser = this.countUserExam(id);
+		int countComments = this.countComment(id);
+		List<Question> questions = questionService.getListByExamId(id);
 
-		response.setData(new ExamResponse(examService.findOne(id)));
+		response.setData(new ExamResponse(examService.findOne(id), countUser, 0, countComments, questions));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

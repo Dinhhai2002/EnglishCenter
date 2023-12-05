@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -118,7 +117,6 @@ public class JwtAuthenticationController extends BaseController {
 	@PostMapping("/login")
 	public ResponseEntity<BaseResponse> createAuthenticationToken(@RequestBody JwtRequest wrapper) throws Exception {
 		BaseResponse response = new BaseResponse();
-//		authenticate(wrapper.getUsername(), wrapper.getPassword());
 		Users user = userService.findUsersByUsersNameAndPassword(wrapper.getUsername(),
 				Utils.encodeBase64(wrapper.getPassword()));
 
@@ -138,7 +136,6 @@ public class JwtAuthenticationController extends BaseController {
 
 		String token = jwtTokenUtil.generateToken(userDetails);
 		user.setAccessToken(token);
-		user.setIsLogin(1);
 		userService.update(user);
 		response.setData(new JwtResponse(token));
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -501,28 +498,28 @@ public class JwtAuthenticationController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@GetMapping("/comments/count-by-exam")
-	public ResponseEntity<BaseResponse> countCommentsExam(@RequestParam(value = "exam_id", required = true) int examId)
-			throws Exception {
-
-		BaseResponse response = new BaseResponse();
-
-		response.setData(this.countComment(examId));
-
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@GetMapping("/exam/{id}/count-user")
-	public ResponseEntity<BaseResponse> getResult(@PathVariable("id") int id) throws Exception {
-
-		BaseResponse response = new BaseResponse();
-
-		response.setData(this.countUserExam(id));
-
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+//	@GetMapping("/comments/count-by-exam")
+//	public ResponseEntity<BaseResponse> countCommentsExam(@RequestParam(value = "exam_id", required = true) int examId)
+//			throws Exception {
+//
+//		BaseResponse response = new BaseResponse();
+//
+//		response.setData(this.countComment(examId));
+//
+//		return new ResponseEntity<>(response, HttpStatus.OK);
+//	}
+//
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+//	@GetMapping("/exam/{id}/count-user")
+//	public ResponseEntity<BaseResponse> getResult(@PathVariable("id") int id) throws Exception {
+//
+//		BaseResponse response = new BaseResponse();
+//
+//		response.setData(this.countUserExam(id));
+//
+//		return new ResponseEntity<>(response, HttpStatus.OK);
+//	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/course/{id}")

@@ -202,7 +202,7 @@ public class ExamResponse {
 		this.status = entity.getStatus();
 	}
 
-	public ExamResponse(Exam entity, int totalUser, int isQuestion, int totalComment) {
+	public ExamResponse(Exam entity, int totalUser, int isQuestion, int totalComment,List<Question> listQuestion) {
 		super();
 		this.id = entity.getId();
 		this.name = entity.getName();
@@ -218,7 +218,10 @@ public class ExamResponse {
 		this.status = entity.getStatus();
 		this.isQuestion = isQuestion;
 		this.totalComments = totalComment;
+		this.questions = new QuestionResponse().mapToList(listQuestion);
 	}
+	
+	
 
 	
 	public ExamResponse(Exam entity, List<Question> listQuestion) {

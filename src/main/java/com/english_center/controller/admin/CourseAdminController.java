@@ -1,6 +1,5 @@
 package com.english_center.controller.admin;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -200,7 +199,6 @@ public class CourseAdminController extends BaseController {
 	public ResponseEntity<BaseResponse> uploadBanner(@RequestParam(name = "file") MultipartFile file,
 			@PathVariable("id") int id) throws Exception {
 		BaseResponse response = new BaseResponse();
-		Users user = this.getUser();
 		Course checkCourse = courseService.findOne(id);
 
 		if (checkCourse == null) {
@@ -209,14 +207,12 @@ public class CourseAdminController extends BaseController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 
-//		String name = iFirebaseImageService.generateFileName(file.getOriginalFilename());
 
 		String fileName = iFirebaseImageService.save(file);
 
 		String imageUrl = iFirebaseImageService.getImageUrl(fileName);
 
 		Image image = new Image();
-//		image.setUserId(user.getId());
 		image.setUrl(imageUrl);
 		image.setCourseId(id);
 

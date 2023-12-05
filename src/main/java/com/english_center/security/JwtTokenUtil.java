@@ -2,7 +2,7 @@ package com.english_center.security;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -55,7 +55,7 @@ public class JwtTokenUtil implements Serializable {
 
 	// tạo ra token cho user
 	public String generateToken(UserDetails userDetails) {
-		Map<String, Object> claims = new HashMap<>();
+		Map<String, Object> claims = new Hashtable<>();
 		return doGenerateToken(claims, userDetails.getUsername());
 	}
 

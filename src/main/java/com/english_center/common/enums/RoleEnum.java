@@ -3,7 +3,7 @@ package com.english_center.common.enums;
 public enum RoleEnum {
 	USER(0), STUDENT(1), TEACHER(2), ADMIN(3);
 
-	private final int value;
+	private int value;
 
 	private RoleEnum(int value) {
 		this.value = value;

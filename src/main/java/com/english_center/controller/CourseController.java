@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.english_center.common.enums.RoleEnum;
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
 import com.english_center.entity.Chapter;
@@ -72,7 +73,7 @@ public class CourseController extends BaseController {
 
 		BaseResponse<CourseResponse> response = new BaseResponse();
 		Course checkCourse = courseService.findOne(id);
-		 System.out.println("123");
+		System.out.println("123");
 		if (checkCourse == null) {
 			response.setStatus(HttpStatus.BAD_REQUEST);
 			response.setMessageError(StringErrorValue.COURSE_NOT_FOUND);
@@ -115,6 +116,12 @@ public class CourseController extends BaseController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 
+		if (course.getStatus() == 0 && users.getRole() != RoleEnum.ADMIN.getValue()) {
+			response.setStatus(HttpStatus.BAD_REQUEST);
+			response.setMessageError(StringErrorValue.COURSE_NOT_FOUND);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+
 		int[] countLessons = { 0 };
 		List<Chapter> listChapter = chapterService.findByCourseId(id);
 
@@ -126,7 +133,7 @@ public class CourseController extends BaseController {
 
 				UserCourseProgress userCourseProgress = getOneWithExceptionHandler(
 						() -> userCourseProgressService.findByLessonsAndUser(lessons.getId(), users.getId()));
-				
+
 				return handleLessonResponse(lessons, userCourseProgress);
 
 			}).collect(Collectors.toList());

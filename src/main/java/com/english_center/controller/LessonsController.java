@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.english_center.common.enums.RoleEnum;
 import com.english_center.common.enums.VideoTypeEnum;
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
@@ -30,6 +31,7 @@ import com.english_center.dao.LessonsDao;
 import com.english_center.entity.Chapter;
 import com.english_center.entity.Course;
 import com.english_center.entity.Lessons;
+import com.english_center.entity.UserCourse;
 import com.english_center.entity.UserCourseProgress;
 import com.english_center.entity.Users;
 import com.english_center.entity.VideoWatchHistory;
@@ -45,6 +47,7 @@ import com.english_center.service.ClassService;
 import com.english_center.service.CourseService;
 import com.english_center.service.LessonsService;
 import com.english_center.service.UserCourseProgressService;
+import com.english_center.service.UserCourseService;
 import com.english_center.service.VideoWatchHistoryService;
 import com.google.api.client.http.InputStreamContent;
 import com.google.api.services.drive.model.File;
@@ -64,6 +67,9 @@ public class LessonsController extends BaseController {
 
 	@Autowired
 	ChapterService chapterService;
+
+	@Autowired
+	UserCourseService userCourseService;
 
 	@Autowired
 	UserCourseProgressService userCourseProgressService;
@@ -256,7 +262,7 @@ public class LessonsController extends BaseController {
 	public ResponseEntity<BaseResponse<LessonsResponse>> findOne(@PathVariable("id") int id) throws Exception {
 
 		BaseResponse<LessonsResponse> response = new BaseResponse();
-
+		Users users = this.getUser();
 		Lessons lessons = lessonsService.findOne(id);
 
 		if (lessons == null) {
@@ -264,7 +270,29 @@ public class LessonsController extends BaseController {
 			response.setMessageError(StringErrorValue.LESSONS_NOT_FOUND);
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
-		
+
+		/*
+		 * Chặn người dùng cố truy cập những bài học đã tắt
+		 */
+		if (lessons.getStatus() == 0 && users.getRole() != RoleEnum.ADMIN.getValue()) {
+			response.setStatus(HttpStatus.BAD_REQUEST);
+			response.setMessageError(StringErrorValue.LESSONS_NOT_FOUND);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+
+		UserCourse userCourse = userCourseService
+				.spGUserCourse(lessons.getCourseId(), -1, users.getId(), 0, 0, new Pagination(0, 20), 0).getResult()
+				.stream().findFirst().orElse(null);
+
+		/*
+		 * Kiểm tra nếu người dùng chưa đăng kí khóa học mà cố truy cập vào bài học đó
+		 */
+//		if (userCourse == null && users.getRole() != RoleEnum.ADMIN.getValue() && lessons.getIsFree() == 0) {
+//			response.setStatus(HttpStatus.BAD_REQUEST);
+//			response.setMessageError(StringErrorValue.LESSONS_NOT_FOUND);
+//			return new ResponseEntity<>(response, HttpStatus.OK);
+//		}
+
 		response.setData(new LessonsResponse(lessons, courseService.findOne(lessons.getCourseId()),
 				chapterService.findOne(lessons.getChapterId())));
 
@@ -291,16 +319,22 @@ public class LessonsController extends BaseController {
 		}
 
 		if (lessons.getStatus() == 0) {
-			// kiểm tra nếu là bài học thuộc video driver mà chưa up video thì không hoạt
-			// động
+			/*
+			 * kiểm tra nếu là bài học thuộc video driver mà chưa up video thì không hoạt
+			 * động
+			 */
+
 			if (lessons.getVideoType() == 1 && lessons.getIdVideo().equals("")) {
 				response.setStatus(HttpStatus.BAD_REQUEST);
 				response.setMessageError(StringErrorValue.LESSONS_IS_NOT_VIDEO);
 				return new ResponseEntity<>(response, HttpStatus.OK);
 			}
 
-			// Kiểm tra nếu bài học có tên thuộc khóa học và chương học trùng lặp hoạt động
-			// thì không cho bật trạng thái
+			/*
+			 * Kiểm tra nếu bài học có tên thuộc khóa học và chương học trùng lặp hoạt động
+			 * thì không cho bật trạng thái
+			 */
+
 			List<Lessons> listLessons = lessonsService.spGListLessons(lessons.getCourseId(), lessons.getChapterId(),
 					lessons.getName(), 1, new Pagination(0, 20), 0).getResult();
 			if (!listLessons.isEmpty()) {
@@ -309,12 +343,16 @@ public class LessonsController extends BaseController {
 				return new ResponseEntity<>(response, HttpStatus.OK);
 			}
 
-			// bật trạng thái thì cộng duration của course hiện tại và video bật lên
+			/*
+			 * bật trạng thái thì cộng duration của course hiện tại và video bật lên
+			 */
 			course.setDuration(course.getDuration() + calculateTimeVideo(lessons.getIdVideo(), lessons.getVideoType()));
 			courseService.update(course);
 
 		} else {
-			// tắt thì trừ time video đi
+			/*
+			 * tắt thì trừ time video đi
+			 */
 			course.setDuration(course.getDuration() - calculateTimeVideo(lessons.getIdVideo(), lessons.getVideoType()));
 			courseService.update(course);
 		}
