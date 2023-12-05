@@ -1,5 +1,6 @@
 package com.english_center.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -95,9 +96,9 @@ public class ExamController extends BaseController {
 		BaseResponse response = new BaseResponse();
 		int countUser = this.countUserExam(id);
 		int countComments = this.countComment(id);
-		List<Question> questions = questionService.getListByExamId(id);
+//		List<Question> questions = questionService.getListByExamId(id);
 
-		response.setData(new ExamResponse(examService.findOne(id), countUser, 0, countComments, questions));
+		response.setData(new ExamResponse(examService.findOne(id), countUser, 0, countComments, new ArrayList<>()));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
