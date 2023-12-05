@@ -17,7 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 public class ConfigVnpay {
 
 	public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-	public static String vnp_ReturnUrl = "http://localhost:3000/payment-success";
+//	https://english-center-fe.vercel.app/
+	public static String vnp_ReturnUrl = "https://english-center-fe.vercel.app/payment-success";
 	public static String vnp_TmnCode = "KKVY83BU";
 	public static String secretKey = "LFXKICVHAZZYSTFEVVDQECBKQPKTUUTO";
 	public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
