@@ -36,7 +36,7 @@ public class ExamResponse {
 
 	@JsonProperty("audio_id")
 	private int audioId;
-	
+
 	@JsonProperty("url_audio")
 	private String urlAudio;
 
@@ -173,8 +173,6 @@ public class ExamResponse {
 	public void setTotalComments(int totalComments) {
 		this.totalComments = totalComments;
 	}
-	
-	
 
 	public String getUrlAudio() {
 		return urlAudio;
@@ -202,7 +200,7 @@ public class ExamResponse {
 		this.status = entity.getStatus();
 	}
 
-	public ExamResponse(Exam entity, int totalUser, int isQuestion, int totalComment,List<Question> listQuestion) {
+	public ExamResponse(Exam entity, int totalUser, int isQuestion, int totalComment, List<Question> listQuestion) {
 		super();
 		this.id = entity.getId();
 		this.name = entity.getName();
@@ -220,10 +218,7 @@ public class ExamResponse {
 		this.totalComments = totalComment;
 		this.questions = new QuestionResponse().mapToList(listQuestion);
 	}
-	
-	
 
-	
 	public ExamResponse(Exam entity, List<Question> listQuestion) {
 		super();
 		this.id = entity.getId();
@@ -236,8 +231,25 @@ public class ExamResponse {
 		this.timeMinutes = entity.getTimeMinutes();
 		this.totalQuestion = entity.getTotalQuestion();
 		this.audioId = entity.getAudioId();
-		this.urlAudio=entity.getUrlAudio();
+		this.urlAudio = entity.getUrlAudio();
 		this.questions = new QuestionResponse().mapToList(listQuestion);
+	}
+
+	public ExamResponse(Exam entity, List<Question> listQuestion, int totalComment) {
+		super();
+		this.id = entity.getId();
+		this.name = entity.getName();
+		this.description = entity.getDescription();
+		this.categoryExamId = entity.getCategoryExamId();
+		this.categoryExamName = entity.getCategoryExamName();
+		this.topicId = entity.getTopicId();
+		this.topicName = entity.getTopicName();
+		this.timeMinutes = entity.getTimeMinutes();
+		this.totalQuestion = entity.getTotalQuestion();
+		this.audioId = entity.getAudioId();
+		this.urlAudio = entity.getUrlAudio();
+		this.questions = new QuestionResponse().mapToList(listQuestion);
+		this.totalComments = totalComment;
 	}
 
 	public List<ExamResponse> mapToList(List<Exam> entities) {

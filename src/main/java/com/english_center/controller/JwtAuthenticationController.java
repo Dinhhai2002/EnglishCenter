@@ -493,7 +493,7 @@ public class JwtAuthenticationController extends BaseController {
 
 		List<Question> questions = questionService.getListByExamId(id);
 
-		response.setData(new ExamResponse(exam, questions));
+		response.setData(new ExamResponse(exam, questions, 12));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
