@@ -14,7 +14,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,6 +38,7 @@ import com.english_center.model.StoreProcedureListResult;
 import com.english_center.request.CRUDExamRequest;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.ExamResponse;
+import com.english_center.security.ApplicationProperties;
 import com.english_center.service.AudioService;
 import com.english_center.service.CategoryExamService;
 import com.english_center.service.ExamService;
@@ -69,11 +69,8 @@ public class ExamAdminController extends BaseController {
 	@Autowired
 	Drive googleDrive;
 
-	@Value("${upload.path}")
-	private String fileUpload;
-
-	@Value("${key.folder.upload}")
-	private String folderUpload;
+	@Autowired
+	ApplicationProperties applicationProperties;
 
 	@GetMapping("/no-audio")
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
@@ -234,7 +231,7 @@ public class ExamAdminController extends BaseController {
 		}
 
 		File fileMetadata = new File();
-		fileMetadata.setParents(Collections.singletonList(folderUpload));
+		fileMetadata.setParents(Collections.singletonList(applicationProperties.getFolderUpload()));
 		String fileName = UUID.randomUUID().toString() + file.getOriginalFilename();
 		fileMetadata.setName(fileName);
 		File uploadFile = googleDrive.files()

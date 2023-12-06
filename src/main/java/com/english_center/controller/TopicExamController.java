@@ -1,8 +1,6 @@
 package com.english_center.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -16,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
 import com.english_center.entity.Exam;
-import com.english_center.entity.Question;
 import com.english_center.entity.TopicExam;
 import com.english_center.request.CRUDTopicExamRequest;
 import com.english_center.response.BaseResponse;

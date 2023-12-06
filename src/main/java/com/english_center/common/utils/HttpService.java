@@ -6,13 +6,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.english_center.security.ApplicationProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class HttpService {
 
-	public static String login(String username, String password) throws Exception {
-		URL url = new URL("http://localhost:9000/api/v1/authentication/login");
+	
+
+	public static String login(String username, String password, String baseUrl) throws Exception {
+		URL url = new URL(baseUrl + "/api/v1/authentication/login");
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
 		con.setRequestMethod("POST");
@@ -38,11 +43,10 @@ public class HttpService {
 			response.append(inputLine);
 		}
 		in.close();
-		
+
 		ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = objectMapper.readTree(response.toString());
-        return jsonNode.get("data").get("token").asText();
-		
+		JsonNode jsonNode = objectMapper.readTree(response.toString());
+		return jsonNode.get("data").get("token").asText();
 
 	}
 

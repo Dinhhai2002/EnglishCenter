@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -53,6 +52,7 @@ import com.english_center.response.JwtResponse;
 import com.english_center.response.LessonsResponse;
 import com.english_center.response.UserResponse;
 import com.english_center.response.WardsResponse;
+import com.english_center.security.ApplicationProperties;
 import com.english_center.security.JwtTokenUtil;
 import com.english_center.service.ChapterService;
 import com.english_center.service.CityService;
@@ -107,11 +107,8 @@ public class JwtAuthenticationController extends BaseController {
 	@Autowired
 	UserRegisterService userRegisterService;
 
-	@Value("${password.account.google}")
-	private String passwordAccountGoogle;
-
-	@Value("${key.driver}")
-	private String keyDriver;
+	@Autowired
+	ApplicationProperties applicationProperties;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@PostMapping("/login")
@@ -369,19 +366,21 @@ public class JwtAuthenticationController extends BaseController {
 			registerUser.setUserName(wrapper.getEmail());
 			registerUser.setAvatarUrl(wrapper.getImageUrl());
 			registerUser.setIsGoogle(1);
-			registerUser.setPassword(Utils.encodeBase64(passwordAccountGoogle));
+			registerUser.setPassword(Utils.encodeBase64(applicationProperties.getPasswordAccountGoogle()));
 			registerUser.setFullName(wrapper.getFullname());
 			registerUser.setIsActive(1);
 			userService.create(registerUser);
 
-			token = HttpService.login(wrapper.getEmail(), passwordAccountGoogle);
+			token = HttpService.login(wrapper.getEmail(), applicationProperties.getPasswordAccountGoogle(),
+					applicationProperties.getBaseUrl());
 			registerUser.setAccessToken(token);
 			registerUser.setIsLogin(1);
 			response.setData(new JwtResponse(token));
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 
-		token = HttpService.login(users.getUserName(), passwordAccountGoogle);
+		token = HttpService.login(users.getUserName(), applicationProperties.getPasswordAccountGoogle(),
+				applicationProperties.getBaseUrl());
 		registerUser.setIsLogin(1);
 		response.setData(new JwtResponse(token));
 
