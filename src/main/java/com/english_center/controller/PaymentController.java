@@ -153,8 +153,8 @@ public class PaymentController extends BaseController {
 		vnp_Params.put("vnp_ReturnUrl", ReturnUrl);
 		vnp_Params.put("vnp_IpAddr", "13.160.92.202");
 
-//		Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-		Calendar cld = Calendar.getInstance();
+		Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+//		Calendar cld = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 		formatter.setTimeZone(TimeZone.getTimeZone("GMT+7"));
 		String vnp_CreateDate = formatter.format(cld.getTime());
