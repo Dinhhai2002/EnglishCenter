@@ -30,6 +30,7 @@ com\english_center\service\CategoryCourseService.class
 com\english_center\dao\CommentsDao.class
 com\english_center\service\ImageService.class
 com\english_center\service\UserRegisterServiceImpl.class
+com\english_center\common\enums\OtpEnum.class
 com\english_center\dao\wardsDaoImpl.class
 com\english_center\request\OTPRegisterUserRequest.class
 com\english_center\response\ResultResponse.class
@@ -157,6 +158,7 @@ com\english_center\service\CommentsService.class
 com\english_center\security\AdditionalConfig.class
 com\english_center\entity\PaymentMethod.class
 com\english_center\service\UserCourseServiceImpl.class
+com\english_center\dao\UserCourseProgressDaoImpl$1.class
 com\english_center\service\CourseServiceImpl.class
 com\english_center\entity\ClassWeekday.class
 com\english_center\dao\ChapterDaoImpl$1.class
@@ -246,6 +248,7 @@ com\english_center\dao\UserDao.class
 com\english_center\security\Base64PasswordEncoder.class
 com\english_center\service\QuestionService.class
 com\english_center\dao\WardsDao.class
+com\english_center\security\ApplicationProperties.class
 com\english_center\service\LevelService.class
 com\english_center\controller\CategoryExamController.class
 com\english_center\dao\TargetDao.class
