@@ -123,16 +123,16 @@ public class CourseAdminController extends BaseController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 
-//		List<Class> listClass = classService.getAllByCourseId(id);
-//
-//		listClass = listClass.stream().filter(x -> (x.getStatus() == 1)).collect(Collectors.toList());
-//
-//		if (!listClass.isEmpty()) {
-//			response.setData(new ClassResponse().mapToList(listClass));
-//			response.setStatus(HttpStatus.BAD_REQUEST);
-//			response.setMessageError(StringErrorValue.COURSE_IS_CLASS_ACTIVE);
-//			return new ResponseEntity<>(response, HttpStatus.OK);
-//		}
+		if (course.getStatus() == 1) {
+			List<UserCourse> userCourses = userCourseService.spGUserCourse(id, -1, -1, 0, 0, new Pagination(0, 20), 0)
+					.getResult();
+
+			if (!userCourses.isEmpty()) {
+				response.setStatus(HttpStatus.BAD_REQUEST);
+				response.setMessageError(StringErrorValue.COURSE_IS_USER_REGISTED);
+				return new ResponseEntity<>(response, HttpStatus.OK);
+			}
+		}
 
 		course.setStatus(course.getStatus() == 1 ? 0 : 1);
 
@@ -207,7 +207,6 @@ public class CourseAdminController extends BaseController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 
-
 		String fileName = iFirebaseImageService.save(file);
 
 		String imageUrl = iFirebaseImageService.getImageUrl(fileName);
@@ -227,7 +226,7 @@ public class CourseAdminController extends BaseController {
 	}
 
 	private List<UserCourse> getUserCourses(int courseId, int userId) {
-		return	getListWithExceptionHandler(() -> userCourseService
+		return getListWithExceptionHandler(() -> userCourseService
 				.spGUserCourse(courseId, 1, userId, -1, 0, new Pagination(0, 1000), 0).getResult());
 	}
 

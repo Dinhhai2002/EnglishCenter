@@ -56,7 +56,7 @@ public class StringErrorValue {
 	public static final String COURSE_IS_EXIST = "Khóa học đã tồn tại!";
 	public static final String NAME_COURSE_IS_EXIST = "Tên khóa học đã tồn tại!";
 	public static final String COURSE_IS_CLASS_ACTIVE = "Khóa học đang có lớp học tồn tại.Vui lòng tắt trạng thái của lớp học thuộc khóa học trước khi tắt trạng thái khóa học!";
-
+	public static final String COURSE_IS_USER_REGISTED = "Khóa học đang có người dùng đăng kí sử dụng.Không thể tắt khóa học này!";
 	// Chapter
 	public static final String CHAPTER_NOT_FOUND = "Chương học không tồn tại!";
 	public static final String CHAPTER_IS_EXIST = "Chương học đã tồn tại!";

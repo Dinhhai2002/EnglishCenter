@@ -45,6 +45,7 @@ import com.english_center.request.PaymentRequest;
 import com.english_center.response.BaseListDataResponse;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.PaymentResponse;
+import com.english_center.security.ApplicationProperties;
 import com.english_center.service.CourseService;
 import com.english_center.service.PaymentService;
 import com.english_center.service.UserCourseProgressService;
@@ -78,6 +79,11 @@ public class PaymentController extends BaseController {
 
 	@Autowired
 	VideoWatchHistoryService videoWatchHistoryService;
+
+	@Autowired
+	ApplicationProperties applicationProperties;
+
+	
 
 	@GetMapping("")
 	public ResponseEntity<BaseResponse<BaseListDataResponse<PaymentResponse>>> getAll(
@@ -131,7 +137,9 @@ public class PaymentController extends BaseController {
 
 		String vnp_TxnRef = ConfigVnpay.getRandomNumber(8);
 		String vnp_TmnCode = ConfigVnpay.vnp_TmnCode;
-
+		
+		String ReturnUrl = applicationProperties.getBaseUrlFe() + "/payment-success";
+		
 		Map<String, String> vnp_Params = new Hashtable<>();
 
 		vnp_Params.put("vnp_Version", ConfigVnpay.vnp_Version);
@@ -144,7 +152,7 @@ public class PaymentController extends BaseController {
 		vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
 		vnp_Params.put("vnp_OrderType", "other");
 		vnp_Params.put("vnp_Locale", "vn");
-		vnp_Params.put("vnp_ReturnUrl", ConfigVnpay.vnp_ReturnUrl);
+		vnp_Params.put("vnp_ReturnUrl", ReturnUrl);
 		vnp_Params.put("vnp_IpAddr", "13.160.92.202");
 
 		Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));

@@ -14,8 +14,14 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 
-public class ConfigVnpay {
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.english_center.security.ApplicationProperties;
+
+public class ConfigVnpay {
+	
+	
+	
 	public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 //	https://english-center-fe.vercel.app/
 	public static String vnp_ReturnUrl = "https://english-center-fe.vercel.app/payment-success";
