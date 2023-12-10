@@ -14,6 +14,9 @@ public class ApplicationProperties {
 
 	@Value("${base.url}")
 	private String baseUrl;
+	
+	@Value("${base.url.frontend}")
+	private String baseUrlFe;
 
 	@Value("${key.driver}")
 	private String keyDriver;
