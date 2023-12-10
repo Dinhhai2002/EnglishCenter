@@ -83,8 +83,6 @@ public class PaymentController extends BaseController {
 	@Autowired
 	ApplicationProperties applicationProperties;
 
-	
-
 	@GetMapping("")
 	public ResponseEntity<BaseResponse<BaseListDataResponse<PaymentResponse>>> getAll(
 			@RequestParam(name = "course_id", required = false, defaultValue = "-1") int courseId,
@@ -137,9 +135,9 @@ public class PaymentController extends BaseController {
 
 		String vnp_TxnRef = ConfigVnpay.getRandomNumber(8);
 		String vnp_TmnCode = ConfigVnpay.vnp_TmnCode;
-		
+
 		String ReturnUrl = applicationProperties.getBaseUrlFe() + "/payment-success";
-		
+
 		Map<String, String> vnp_Params = new Hashtable<>();
 
 		vnp_Params.put("vnp_Version", ConfigVnpay.vnp_Version);
@@ -155,7 +153,8 @@ public class PaymentController extends BaseController {
 		vnp_Params.put("vnp_ReturnUrl", ReturnUrl);
 		vnp_Params.put("vnp_IpAddr", "13.160.92.202");
 
-		Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+//		Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+		Calendar cld = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 		String vnp_CreateDate = formatter.format(cld.getTime());
 		vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
