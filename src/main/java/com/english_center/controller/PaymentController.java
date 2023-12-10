@@ -134,7 +134,7 @@ public class PaymentController extends BaseController {
 		}
 
 		String vnp_TxnRef = ConfigVnpay.getRandomNumber(8);
-		String vnp_TmnCode = ConfigVnpay.vnp_TmnCode;
+		String vnp_TmnCode = applicationProperties.getVnpTmnCode();
 
 		String ReturnUrl = applicationProperties.getBaseUrlFe() + "/payment-success";
 
@@ -188,9 +188,9 @@ public class PaymentController extends BaseController {
 			}
 		}
 		String queryUrl = query.toString();
-		String vnp_SecureHash = ConfigVnpay.hmacSHA512(ConfigVnpay.secretKey, hashData.toString());
+		String vnp_SecureHash = ConfigVnpay.hmacSHA512(applicationProperties.getSecretKey(), hashData.toString());
 		queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-		String paymentUrl = ConfigVnpay.vnp_PayUrl + "?" + queryUrl;
+		String paymentUrl = applicationProperties.getVnpPayUrl() + "?" + queryUrl;
 
 		response.setData(paymentUrl);
 

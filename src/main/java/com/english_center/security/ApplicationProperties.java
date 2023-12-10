@@ -14,7 +14,7 @@ public class ApplicationProperties {
 
 	@Value("${base.url}")
 	private String baseUrl;
-	
+
 	@Value("${base.url.frontend}")
 	private String baseUrlFe;
 
@@ -26,5 +26,17 @@ public class ApplicationProperties {
 
 	@Value("${key.folder.upload}")
 	private String folderUpload;
+
+	@Value("${vnpay.secretKey}")
+	private String secretKey;
+
+	@Value("${vnpay.vnp_TmnCode}")
+	private String vnpTmnCode;
+
+	@Value("${vnpay.vnp_PayUrl}")
+	private String vnpPayUrl;
+
+	@Value("${vnpay.vnp_ApiUrl}")
+	private String vnpApiUrl;
 
 }

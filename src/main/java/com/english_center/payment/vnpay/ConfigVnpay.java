@@ -10,24 +10,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.english_center.security.ApplicationProperties;
-
 public class ConfigVnpay {
-	
-	
-	
-	public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-//	https://english-center-fe.vercel.app/
-	public static String vnp_ReturnUrl = "https://english-center-fe.vercel.app/payment-success";
-	public static String vnp_TmnCode = "KKVY83BU";
-	public static String secretKey = "LFXKICVHAZZYSTFEVVDQECBKQPKTUUTO";
-	public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+
+
+
+//	public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+////	https://english-center-fe.vercel.app/
+//	public static String vnp_ReturnUrl = "https://english-center-fe.vercel.app/payment-success";
+//	public static String vnp_TmnCode = "KKVY83BU";
+//	public static String secretKey = "LFXKICVHAZZYSTFEVVDQECBKQPKTUUTO";
+//	public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
 	public static String vnp_Version = "2.1.0";
 	public static String vnp_Command = "pay";
 //    String orderType = "other";
@@ -67,7 +64,7 @@ public class ConfigVnpay {
 	}
 
 	// Util for VNPAY
-	public static String hashAllFields(Map fields) {
+	public static String hashAllFields(Map fields, String secretKey) {
 		List fieldNames = new ArrayList(fields.keySet());
 		Collections.sort(fieldNames);
 		StringBuilder sb = new StringBuilder();
