@@ -11,8 +11,8 @@ import com.english_center.entity.Comments;
 
 @Service("CommentsService")
 @Transactional(rollbackFor = Error.class)
-public class CommentsServiceImpl implements CommentsService{
-	
+public class CommentsServiceImpl implements CommentsService {
+
 	@Autowired
 	CommentsDao commentsDao;
 
@@ -33,7 +33,7 @@ public class CommentsServiceImpl implements CommentsService{
 
 	@Override
 	public List<Comments> findByExamId(int examId) throws Exception {
-		
+
 		return commentsDao.findByExamId(examId);
 	}
 
@@ -41,5 +41,10 @@ public class CommentsServiceImpl implements CommentsService{
 	public void delete(Comments comments) throws Exception {
 		commentsDao.delete(comments);
 	}
-	
+
+	@Override
+	public int countComments(int examId) throws Exception {
+		return commentsDao.countComments(examId);
+	}
+
 }

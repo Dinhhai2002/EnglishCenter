@@ -209,6 +209,24 @@ public class CourseResponse {
 		this.countChapter = listChapter.size();
 		this.countLessons = countLessons;
 	}
+	
+	public CourseResponse(Course entity, int typeUserUsing, int countLessons,
+			int lessonsPresent) {
+		this.id = entity.getId();
+		this.name = entity.getName();
+		this.lessons = entity.getLessons();
+		this.description = entity.getDescription();
+		this.price = entity.getPrice();
+		this.banner = entity.getBanner();
+		this.status = entity.getStatus();
+		this.isFree = entity.getIsFree();
+		this.discountPercent = entity.getDiscountPercent();
+		this.duration = entity.getDuration();
+		this.durationFormat = Utils.formatMillisecondsToTime(entity.getDuration());
+		this.typeUserUsing = typeUserUsing;
+		this.countLessons = countLessons;
+		this.lessonsPresent = lessonsPresent;
+	}
 
 	public CourseResponse(Course entity, List<ChapterResponse> listChapter, int typeUserUsing, int countLessons,
 			int lessonsPresent) {

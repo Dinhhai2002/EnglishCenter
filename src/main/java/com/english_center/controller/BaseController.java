@@ -33,10 +33,8 @@ import org.springframework.web.context.request.WebRequest;
 
 import com.english_center.common.enums.VideoTypeEnum;
 import com.english_center.entity.Chapter;
-import com.english_center.entity.Comments;
 import com.english_center.entity.Exam;
 import com.english_center.entity.Lessons;
-import com.english_center.entity.ReplyComments;
 import com.english_center.entity.Result;
 import com.english_center.entity.UserCourseProgress;
 import com.english_center.entity.Users;
@@ -157,20 +155,9 @@ public class BaseController {
 		return uniqueUserIds.size();
 	}
 
-	public int countComment(int examId) {
+	public int countComment(int examId) throws Exception {
 
-		List<Comments> comments = getListWithExceptionHandler(() -> commentsService.findByExamId(examId));
-		int count = 0;
-
-		for (Comments x : comments) {
-			List<ReplyComments> replyComments = getListWithExceptionHandler(
-					() -> replyCommentsService.findByCommentId(x.getId()));
-
-			count += replyComments.size();
-		}
-
-		count += comments.size();
-		return count;
+		return commentsService.countComments(examId);
 	}
 
 	public long caculateOtpExpired(Date otpDate) {
@@ -305,6 +292,7 @@ public class BaseController {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T> T getOneWithExceptionHandler(Callable<T> callable) {
 		try {
 			return callable.call();
@@ -325,8 +313,12 @@ public class BaseController {
 				isQuestion = 1;
 			}
 
-			// số lượng comments
-			int countComments = getOneWithExceptionHandler(() -> this.countComment(x.getId()));
+			int countComments = 0;
+			try {
+				countComments = commentsService.countComments(x.getId());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			return new ExamResponse(x, totalUser, isQuestion, countComments, new ArrayList<>());
 		}).collect(Collectors.toList());

@@ -95,7 +95,7 @@ public class ExamController extends BaseController {
 	public ResponseEntity<BaseResponse> findOne(@PathVariable("id") int id) throws Exception {
 		BaseResponse response = new BaseResponse();
 		int countUser = this.countUserExam(id);
-		int countComments = this.countComment(id);
+		int countComments = commentsService.countComments(id);
 
 		response.setData(new ExamResponse(examService.findOne(id), countUser, 0, countComments, new ArrayList<>()));
 

@@ -14,4 +14,6 @@ public interface CommentsService {
 	List<Comments> findByExamId(int examId) throws Exception;
 	
 	void delete(Comments comments) throws Exception;
+	
+	int countComments(int examId) throws Exception;
 }

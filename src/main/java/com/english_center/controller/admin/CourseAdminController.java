@@ -97,9 +97,9 @@ public class CourseAdminController extends BaseController {
 			typeUserUsing[0] = determineUserCourseStatus(listCourses).getValue();
 
 			// xử lí map danh sách chương và bài học trong khóa học
-			List<ChapterResponse> listChapterResponse = getChapterResponses(x, currentUser);
+//			List<ChapterResponse> listChapterResponse = getChapterResponses(x, currentUser);
 
-			return new CourseResponse(x, listChapterResponse, typeUserUsing[0], 0,
+			return new CourseResponse(x, typeUserUsing[0], 0,
 					this.getLessonsPresentCourse(x.getId(), currentUser.getId()));
 		}).collect(Collectors.toList());
 

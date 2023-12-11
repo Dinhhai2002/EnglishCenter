@@ -10,9 +10,10 @@ public interface CommentsDao {
 	Comments findOne(int id) throws Exception;
 
 	void update(Comments comments) throws Exception;
-	
+
 	List<Comments> findByExamId(int examId) throws Exception;
-	
+
 	void delete(Comments comments) throws Exception;
 
+	int countComments(int examId) throws Exception;
 }
