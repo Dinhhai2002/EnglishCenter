@@ -309,9 +309,9 @@ public class BaseController {
 
 			// đề thi đã có câu hỏi chưa
 			int isQuestion = 0;
-			if (!getListWithExceptionHandler(() -> questionService.getListByExamId(x.getId())).isEmpty()) {
-				isQuestion = 1;
-			}
+//			if (!getListWithExceptionHandler(() -> questionService.getListByExamId(x.getId())).isEmpty()) {
+//				isQuestion = 1;
+//			}
 
 			int countComments = 0;
 			try {
