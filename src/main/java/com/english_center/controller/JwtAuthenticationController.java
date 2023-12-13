@@ -1,5 +1,6 @@
 package com.english_center.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.english_center.common.enums.OtpEnum;
-import com.english_center.common.enums.RoleEnum;
 import com.english_center.common.utils.HttpService;
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
@@ -33,7 +33,6 @@ import com.english_center.entity.Comments;
 import com.english_center.entity.Course;
 import com.english_center.entity.Exam;
 import com.english_center.entity.Lessons;
-import com.english_center.entity.Question;
 import com.english_center.entity.ReplyComments;
 import com.english_center.entity.TopicExam;
 import com.english_center.entity.UserRegister;
@@ -525,17 +524,10 @@ public class JwtAuthenticationController extends BaseController {
 
 		BaseResponse<ExamResponse> response = new BaseResponse();
 
-		Exam exam = examService.findOne(id);
+		int countUser = this.countUserExam(id);
+		int countComments = commentsService.countComments(id);
 
-		if (exam == null) {
-			response.setStatus(HttpStatus.BAD_REQUEST);
-			response.setMessageError(StringErrorValue.EXAM_NOT_FOUND);
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		}
-
-		List<Question> questions = questionService.getListByExamId(id);
-
-		response.setData(new ExamResponse(exam, questions));
+		response.setData(new ExamResponse(examService.findOne(id), countUser, 0, countComments, new ArrayList<>()));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
