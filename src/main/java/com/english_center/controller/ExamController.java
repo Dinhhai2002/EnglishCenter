@@ -96,8 +96,8 @@ public class ExamController extends BaseController {
 		BaseResponse response = new BaseResponse();
 		int countUser = this.countUserExam(id);
 		int countComments = commentsService.countComments(id);
-
-		response.setData(new ExamResponse(examService.findOne(id), countUser, 0, countComments, new ArrayList<>()));
+		List<Question> listQuestions = questionService.getListByExamId(id);
+		response.setData(new ExamResponse(examService.findOne(id), countUser, 0, countComments, listQuestions));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

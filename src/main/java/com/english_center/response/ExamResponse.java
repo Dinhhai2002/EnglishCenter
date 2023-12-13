@@ -36,7 +36,7 @@ public class ExamResponse {
 
 	@JsonProperty("audio_id")
 	private int audioId;
-	
+
 	@JsonProperty("url_audio")
 	private String urlAudio;
 
@@ -173,8 +173,6 @@ public class ExamResponse {
 	public void setTotalComments(int totalComments) {
 		this.totalComments = totalComments;
 	}
-	
-	
 
 	public String getUrlAudio() {
 		return urlAudio;
@@ -199,10 +197,11 @@ public class ExamResponse {
 		this.timeMinutes = entity.getTimeMinutes();
 		this.totalQuestion = entity.getTotalQuestion();
 		this.audioId = entity.getAudioId();
+		this.urlAudio = entity.getUrlAudio();
 		this.status = entity.getStatus();
 	}
 
-	public ExamResponse(Exam entity, int totalUser, int isQuestion, int totalComment,List<Question> listQuestion) {
+	public ExamResponse(Exam entity, int totalUser, int isQuestion, int totalComment, List<Question> listQuestion) {
 		super();
 		this.id = entity.getId();
 		this.name = entity.getName();
@@ -214,16 +213,14 @@ public class ExamResponse {
 		this.timeMinutes = entity.getTimeMinutes();
 		this.totalQuestion = entity.getTotalQuestion();
 		this.audioId = entity.getAudioId();
+		this.urlAudio = entity.getUrlAudio();
 		this.totalUser = totalUser;
 		this.status = entity.getStatus();
 		this.isQuestion = isQuestion;
 		this.totalComments = totalComment;
 		this.questions = new QuestionResponse().mapToList(listQuestion);
 	}
-	
-	
 
-	
 	public ExamResponse(Exam entity, List<Question> listQuestion) {
 		super();
 		this.id = entity.getId();
@@ -236,7 +233,7 @@ public class ExamResponse {
 		this.timeMinutes = entity.getTimeMinutes();
 		this.totalQuestion = entity.getTotalQuestion();
 		this.audioId = entity.getAudioId();
-		this.urlAudio=entity.getUrlAudio();
+		this.urlAudio = entity.getUrlAudio();
 		this.questions = new QuestionResponse().mapToList(listQuestion);
 	}
 
