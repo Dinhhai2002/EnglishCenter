@@ -280,9 +280,9 @@ public class LessonsController extends BaseController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 
-		UserCourse userCourse = userCourseService
-				.spGUserCourse(lessons.getCourseId(), -1, users.getId(), 0, 0, new Pagination(0, 20), 0).getResult()
-				.stream().findFirst().orElse(null);
+//		UserCourse userCourse = userCourseService
+//				.spGUserCourse(lessons.getCourseId(), -1, users.getId(), 0, 0, new Pagination(0, 20), 0).getResult()
+//				.stream().findFirst().orElse(null);
 
 		/*
 		 * Kiểm tra nếu người dùng chưa đăng kí khóa học mà cố truy cập vào bài học đó

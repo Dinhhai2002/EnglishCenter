@@ -21,16 +21,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.english_center.common.enums.OtpEnum;
+import com.english_center.common.enums.RoleEnum;
 import com.english_center.common.utils.HttpService;
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
 import com.english_center.common.utils.Utils;
+import com.english_center.entity.CategoryExam;
 import com.english_center.entity.Chapter;
 import com.english_center.entity.Cities;
+import com.english_center.entity.Comments;
 import com.english_center.entity.Course;
 import com.english_center.entity.Exam;
 import com.english_center.entity.Lessons;
 import com.english_center.entity.Question;
+import com.english_center.entity.ReplyComments;
+import com.english_center.entity.TopicExam;
 import com.english_center.entity.UserRegister;
 import com.english_center.entity.Users;
 import com.english_center.model.StoreProcedureListResult;
@@ -43,17 +48,22 @@ import com.english_center.request.OTPRequest;
 import com.english_center.request.ResetPasswordRequest;
 import com.english_center.response.BaseListDataResponse;
 import com.english_center.response.BaseResponse;
+import com.english_center.response.CategoryExamResponse;
 import com.english_center.response.ChapterResponse;
 import com.english_center.response.CityResponse;
+import com.english_center.response.CommentsResponse;
 import com.english_center.response.CourseResponse;
 import com.english_center.response.DistrictResponse;
 import com.english_center.response.ExamResponse;
 import com.english_center.response.JwtResponse;
 import com.english_center.response.LessonsResponse;
+import com.english_center.response.ReplyCommentsResponse;
+import com.english_center.response.TopicExamReponse;
 import com.english_center.response.UserResponse;
 import com.english_center.response.WardsResponse;
 import com.english_center.security.ApplicationProperties;
 import com.english_center.security.JwtTokenUtil;
+import com.english_center.service.CategoryExamService;
 import com.english_center.service.ChapterService;
 import com.english_center.service.CityService;
 import com.english_center.service.CourseService;
@@ -63,6 +73,7 @@ import com.english_center.service.JwtUserDetailsService;
 import com.english_center.service.LessonsService;
 import com.english_center.service.QuestionService;
 import com.english_center.service.SendEmail;
+import com.english_center.service.TopicExamService;
 import com.english_center.service.UserRegisterService;
 import com.english_center.service.WardsService;
 
@@ -106,6 +117,12 @@ public class JwtAuthenticationController extends BaseController {
 
 	@Autowired
 	UserRegisterService userRegisterService;
+
+	@Autowired
+	TopicExamService topicExamService;
+
+	@Autowired
+	CategoryExamService categoryExamService;
 
 	@Autowired
 	ApplicationProperties applicationProperties;
@@ -477,6 +494,32 @@ public class JwtAuthenticationController extends BaseController {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@GetMapping("list-topic")
+	public ResponseEntity<BaseResponse<List<TopicExamReponse>>> getAll() throws Exception {
+
+		BaseResponse<List<TopicExamReponse>> response = new BaseResponse();
+
+		List<TopicExam> topicExams = topicExamService.getAll();
+
+		response.setData(new TopicExamReponse().mapToList(topicExams));
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@GetMapping("list-category-exam")
+	public ResponseEntity<BaseResponse<List<CategoryExamResponse>>> getAllCategoryExam() throws Exception {
+		StoreProcedureListResult<CategoryExam> listCategoryExam = categoryExamService.spGListCategoryExam("", 1,
+				new Pagination(0, 100));
+		BaseResponse<List<CategoryExamResponse>> response = new BaseResponse();
+
+//		List<CategoryExam> categoryExams = categoryExamService.getAll();
+
+		response.setData(new CategoryExamResponse().mapToList(listCategoryExam.getResult()));
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/exam/{id}/detail")
 	public ResponseEntity<BaseResponse<ExamResponse>> findOne(@PathVariable("id") int id) throws Exception {
 
@@ -493,6 +536,37 @@ public class JwtAuthenticationController extends BaseController {
 		List<Question> questions = questionService.getListByExamId(id);
 
 		response.setData(new ExamResponse(exam, questions));
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@GetMapping("/comments/get-by-exam")
+	public ResponseEntity<BaseResponse> findByExam(@RequestParam(value = "exam_id", required = true) int examId)
+			throws Exception {
+
+		BaseResponse response = new BaseResponse();
+
+		List<Comments> comments = commentsService.findByExamId(examId);
+
+		/*
+		 * Map trả về list comment lồng replyComments
+		 */
+		response.setData(comments.stream().map(x -> {
+			UserResponse user = new UserResponse(getOneWithExceptionHandler(() -> userService.findOne(x.getUserId())));
+
+			List<ReplyComments> replyComments = getListWithExceptionHandler(
+					() -> replyCommentsService.findByCommentId(x.getId()));
+
+			List<ReplyCommentsResponse> replyCommentsResponse = replyComments.stream().map(y ->
+
+			new ReplyCommentsResponse(y,
+					new UserResponse(
+							getOneWithExceptionHandler(() -> userService.findOne(y.getUserIdReplyComments())))))
+					.collect(Collectors.toList());
+
+			return new CommentsResponse(x, replyCommentsResponse, user);
+		}).collect(Collectors.toList()));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
@@ -545,6 +619,25 @@ public class JwtAuthenticationController extends BaseController {
 		}).collect(Collectors.toList());
 
 		response.setData(new CourseResponse(course, list, 0, countLessons[0]));
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@GetMapping("/lessons/{id}/detail")
+	public ResponseEntity<BaseResponse<LessonsResponse>> findOneLessons(@PathVariable("id") int id) throws Exception {
+
+		BaseResponse<LessonsResponse> response = new BaseResponse();
+		Lessons lessons = lessonsService.findOne(id);
+
+		if (lessons == null) {
+			response.setStatus(HttpStatus.BAD_REQUEST);
+			response.setMessageError(StringErrorValue.LESSONS_NOT_FOUND);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+
+		response.setData(new LessonsResponse(lessons, courseService.findOne(lessons.getCourseId()),
+				chapterService.findOne(lessons.getChapterId())));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
