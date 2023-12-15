@@ -1,8 +1,6 @@
 package com.english_center.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.english_center.common.utils.Pagination;
 import com.english_center.entity.Exam;
 import com.english_center.entity.Question;
-import com.english_center.entity.Users;
 import com.english_center.model.StoreProcedureListResult;
 import com.english_center.response.BaseListDataResponse;
 import com.english_center.response.BaseResponse;

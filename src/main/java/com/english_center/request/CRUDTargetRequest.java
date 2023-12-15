@@ -1,5 +1,6 @@
 package com.english_center.request;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
@@ -15,7 +16,7 @@ public class CRUDTargetRequest {
 
 	@JsonProperty("point_target")
 	@Min(value = 0, message = "giá trị nhỏ nhất là 0")
+	@Max(value = 990, message = "giá trị lớn nhất là 990")
 	private int pointTarget;
 
-	
 }
