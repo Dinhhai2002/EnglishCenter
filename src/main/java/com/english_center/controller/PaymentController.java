@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.english_center.common.enums.RoleEnum;
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
 import com.english_center.dao.ChapterDao;
@@ -127,7 +128,7 @@ public class PaymentController extends BaseController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 
-		if (users.getRole() == 2 || users.getRole() == 3) {
+		if (users.getRole() == RoleEnum.TEACHER.getValue() || users.getRole() == RoleEnum.ADMIN.getValue()) {
 			response.setStatus(HttpStatus.BAD_REQUEST);
 			response.setMessageError(StringErrorValue.USER_IS_NOT_ALLOW_REGISTER_COURSE);
 			return new ResponseEntity<>(response, HttpStatus.OK);

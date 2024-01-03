@@ -51,7 +51,6 @@ public class TargetController extends BaseController {
 	@PostMapping("/{id}/update")
 	public ResponseEntity<BaseResponse> update(@PathVariable("id") int id,
 			@Valid @RequestBody CRUDTargetRequest wrapper) throws Exception {
-		Users user = this.getUser();
 		BaseResponse response = new BaseResponse();
 
 		Target target = targetService.findOne(id);

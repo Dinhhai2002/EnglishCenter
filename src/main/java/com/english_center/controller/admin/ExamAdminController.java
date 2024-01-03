@@ -190,7 +190,7 @@ public class ExamAdminController extends BaseController {
 	public ResponseEntity<BaseResponse<ExamResponse>> update(@PathVariable("id") int id,
 			@Valid @RequestBody CRUDExamRequest wrapper) throws Exception {
 
-		BaseResponse<ExamResponse> response = new BaseResponse();
+		BaseResponse<ExamResponse> response = new BaseResponse<>();
 		Exam exam = examService.findOne(id);
 
 		if (exam == null) {

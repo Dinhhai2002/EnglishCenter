@@ -73,7 +73,6 @@ public class CourseController extends BaseController {
 
 		BaseResponse<CourseResponse> response = new BaseResponse();
 		Course checkCourse = courseService.findOne(id);
-		System.out.println("123");
 		if (checkCourse == null) {
 			response.setStatus(HttpStatus.BAD_REQUEST);
 			response.setMessageError(StringErrorValue.COURSE_NOT_FOUND);

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.english_center.common.enums.RoleEnum;
+import com.english_center.common.enums.StatusEnum;
 import com.english_center.common.enums.VideoTypeEnum;
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
@@ -318,13 +319,13 @@ public class LessonsController extends BaseController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 
-		if (lessons.getStatus() == 0) {
+		if (lessons.getStatus() == StatusEnum.NOT_ACTIVE.getValue()) {
 			/*
 			 * kiểm tra nếu là bài học thuộc video driver mà chưa up video thì không hoạt
 			 * động
 			 */
 
-			if (lessons.getVideoType() == 1 && lessons.getIdVideo().equals("")) {
+			if (lessons.getVideoType() == VideoTypeEnum.DRIVER.getValue() && lessons.getIdVideo().equals("")) {
 				response.setStatus(HttpStatus.BAD_REQUEST);
 				response.setMessageError(StringErrorValue.LESSONS_IS_NOT_VIDEO);
 				return new ResponseEntity<>(response, HttpStatus.OK);

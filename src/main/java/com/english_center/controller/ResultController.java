@@ -29,28 +29,19 @@ import com.english_center.response.BaseListDataResponse;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.ResultResponse;
 import com.english_center.service.ExamService;
-import com.english_center.service.QuestionService;
-import com.english_center.service.ResultService;
 
 @RestController
 @RequestMapping("/api/v1/result")
 public class ResultController extends BaseController {
 
 	@Autowired
-	ResultService resultService;
-
-	@Autowired
-	QuestionService questionService;
-
-	@Autowired
 	ExamService examService;
 
-	@SuppressWarnings("rawtypes")
 	@PostMapping("/create")
 	public ResponseEntity<BaseResponse<ResultResponse>> create(@Valid @RequestBody CRUDResultRequest wrapper)
 			throws Exception {
 
-		BaseResponse<ResultResponse> response = new BaseResponse();
+		BaseResponse<ResultResponse> response = new BaseResponse<>();
 		Users user = this.getUser();
 		Exam exam = examService.findOne(wrapper.getExamId());
 
@@ -83,11 +74,10 @@ public class ResultController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/{id}")
 	public ResponseEntity<BaseResponse<ResultResponse>> findOne(@PathVariable("id") int id) throws Exception {
 
-		BaseResponse<ResultResponse> response = new BaseResponse();
+		BaseResponse<ResultResponse> response = new BaseResponse<>();
 		Result result = resultService.findOne(id);
 
 		if (result == null) {
@@ -101,11 +91,10 @@ public class ResultController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/get-by-user")
 	public ResponseEntity<BaseResponse<List<ResultResponse>>> findByUserId() throws Exception {
 
-		BaseResponse<List<ResultResponse>> response = new BaseResponse();
+		BaseResponse<List<ResultResponse>> response = new BaseResponse<>();
 		Users user = this.getUser();
 
 		List<Result> listResult = resultService.findByUserId(user.getId());
@@ -115,7 +104,6 @@ public class ResultController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("")
 	public ResponseEntity<BaseResponse<BaseListDataResponse<ResultResponse>>> findByUserId(
 			@RequestParam(name = "exam_id", required = false, defaultValue = "-1") int examId,
@@ -123,7 +111,7 @@ public class ResultController extends BaseController {
 			@RequestParam(name = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(name = "limit", required = false, defaultValue = "10") int limit) throws Exception {
 
-		BaseResponse<BaseListDataResponse<ResultResponse>> response = new BaseResponse();
+		BaseResponse<BaseListDataResponse<ResultResponse>> response = new BaseResponse<>();
 		Users user = this.getUser();
 		Pagination pagination = new Pagination(page, limit);
 		StoreProcedureListResult<Result> data = resultService.spGResult(user.getId(), examId, keySearch, pagination);
