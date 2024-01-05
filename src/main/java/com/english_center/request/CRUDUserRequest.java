@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class CRUDUserRequest extends BaseRequest {
+public class CRUDUserRequest {
 
 	@NotEmpty(message = "userName không được phép để trống")
 	@Length(max = 255, message = "user_name Không được phép lớn hơn 255 kí tự")
@@ -68,8 +68,5 @@ public class CRUDUserRequest extends BaseRequest {
 	@Length(max = 255, message = "Không được phép lớn hơn 255 kí tự")
 	@JsonProperty("full_address")
 	private String fullAddress;
-
-	
-	
 
 }

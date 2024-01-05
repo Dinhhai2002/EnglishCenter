@@ -37,41 +37,26 @@ import com.english_center.response.ClassResponse;
 import com.english_center.response.CourseResponse;
 import com.english_center.response.LessonsResponse;
 import com.english_center.response.UserCourseResponse;
-import com.english_center.service.ChapterService;
 import com.english_center.service.ClassService;
 import com.english_center.service.ClassWeekdayService;
-import com.english_center.service.CourseService;
-import com.english_center.service.LessonsService;
-import com.english_center.service.UserCourseProgressService;
 
 @RestController
 @RequestMapping("/api/v1/course")
 public class CourseController extends BaseController {
-	@Autowired
-	CourseService courseService;
-
+	
 	@Autowired
 	ClassService classService;
 
 	@Autowired
 	ClassWeekdayService classWeekdayService;
 
-	@Autowired
-	ChapterService chapterService;
 
-	@Autowired
-	LessonsService lessonsService;
-
-	@Autowired
-	UserCourseProgressService userCourseProgressService;
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@PostMapping("/{id}/update")
 	public ResponseEntity<BaseResponse<CourseResponse>> update(@Valid @RequestBody CRUDCourseRequest wrapper,
 			@PathVariable("id") int id) throws Exception {
 
-		BaseResponse<CourseResponse> response = new BaseResponse();
+		BaseResponse<CourseResponse> response = new BaseResponse<>();
 		Course checkCourse = courseService.findOne(id);
 		if (checkCourse == null) {
 			response.setStatus(HttpStatus.BAD_REQUEST);
@@ -86,11 +71,10 @@ public class CourseController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("")
 	public ResponseEntity<BaseResponse<List<CourseResponse>>> findAll() throws Exception {
 
-		BaseResponse<List<CourseResponse>> response = new BaseResponse();
+		BaseResponse<List<CourseResponse>> response = new BaseResponse<>();
 
 		List<Course> listCourse = courseService.findAll();
 
@@ -99,11 +83,10 @@ public class CourseController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/{id}/detail")
 	public ResponseEntity<BaseResponse<CourseResponse>> findOne(@PathVariable("id") int id) throws Exception {
 
-		BaseResponse<CourseResponse> response = new BaseResponse();
+		BaseResponse<CourseResponse> response = new BaseResponse<>();
 
 		Users users = this.getUser();
 
@@ -148,11 +131,10 @@ public class CourseController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/no-banner")
 	public ResponseEntity<BaseResponse<List<CourseResponse>>> findAllNoBanner() throws Exception {
 
-		BaseResponse<List<CourseResponse>> response = new BaseResponse();
+		BaseResponse<List<CourseResponse>> response = new BaseResponse<>();
 
 		List<Course> list = courseService.findAll();
 
@@ -213,12 +195,11 @@ public class CourseController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/{id}/list-class-add-hour")
 	public ResponseEntity<BaseResponse<List<ClassResponse>>> getClassByIdAddHour(@PathVariable("id") int id)
 			throws Exception {
 
-		BaseResponse<List<ClassResponse>> response = new BaseResponse();
+		BaseResponse<List<ClassResponse>> response = new BaseResponse<>();
 		Course checkCourse = courseService.findOne(id);
 
 		if (checkCourse == null) {
@@ -250,12 +231,11 @@ public class CourseController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/{id}/list-student")
 	public ResponseEntity<BaseResponse<List<UserCourseResponse>>> getListStudent(@PathVariable("id") int id)
 			throws Exception {
 
-		BaseResponse<List<UserCourseResponse>> response = new BaseResponse();
+		BaseResponse<List<UserCourseResponse>> response = new BaseResponse<>();
 		Pagination pagination = new Pagination(0, 20);
 		Course checkCourse = courseService.findOne(id);
 

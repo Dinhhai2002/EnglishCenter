@@ -8,7 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
 @Table(name = "reply_comments")
@@ -29,7 +31,5 @@ public class ReplyComments extends BaseEntity {
 
 	@Column(name = "comments_id")
 	private int commentsId;
-
-	
 
 }

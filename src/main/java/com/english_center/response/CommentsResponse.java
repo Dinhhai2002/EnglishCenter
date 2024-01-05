@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 import com.english_center.entity.Comments;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
+@Data
 public class CommentsResponse {
 
 	private int id;
@@ -18,46 +21,6 @@ public class CommentsResponse {
 	private int examId;
 
 	private List<ReplyCommentsResponse> replies;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public UserResponse getUser() {
-		return user;
-	}
-
-	public void setUser(UserResponse user) {
-		this.user = user;
-	}
-
-	public int getExamId() {
-		return examId;
-	}
-
-	public void setExamId(int examId) {
-		this.examId = examId;
-	}
-
-	public List<ReplyCommentsResponse> getReplies() {
-		return replies;
-	}
-
-	public void setReplies(List<ReplyCommentsResponse> replies) {
-		this.replies = replies;
-	}
 
 	public CommentsResponse() {
 	}

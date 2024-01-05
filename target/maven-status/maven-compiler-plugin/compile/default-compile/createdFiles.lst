@@ -11,6 +11,7 @@ com\english_center\controller\CommentsController.class
 com\english_center\request\ResetPasswordRequest.class
 com\english_center\request\CRUDExamRequest.class
 com\english_center\service\LessonsService.class
+com\english_center\dao\CommentsDaoImpl$1.class
 com\english_center\service\ExamService.class
 com\english_center\dao\ResultDaoImpl.class
 com\english_center\service\HourService.class

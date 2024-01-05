@@ -14,7 +14,9 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
 @Table(name = "users_register")
@@ -38,7 +40,5 @@ public class UserRegister extends BaseEntity {
 	private Date otpCreatedAt;
 
 	private int status;
-
-	
 
 }

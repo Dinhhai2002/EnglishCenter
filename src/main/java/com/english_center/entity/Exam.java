@@ -8,7 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
 @Table(name = "exam")
@@ -29,13 +31,13 @@ public class Exam extends BaseEntity {
 
 	@Column(name = "category_exam_id")
 	private int categoryExamId;
-	
+
 	@Column(name = "category_exam_name")
 	private String categoryExamName;
 
 	@Column(name = "topic_id")
 	private int topicId;
-	
+
 	@Column(name = "topic_name")
 	private String topicName;
 
@@ -44,15 +46,13 @@ public class Exam extends BaseEntity {
 
 	@Column(name = "total_question")
 	private int totalQuestion;
-	
+
 	@Column(name = "audio_id")
 	private int audioId;
-	
+
 	@Column(name = "url_audio")
 	private String urlAudio;
-	
+
 	private int status;
 
-	
-	
 }

@@ -1,12 +1,14 @@
 package com.english_center.response;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.english_center.entity.ExamDetail;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
+@Data
 public class ExamDetailResponse {
 	private int id;
 
@@ -14,30 +16,6 @@ public class ExamDetailResponse {
 
 	@JsonProperty("total_question ")
 	private int totalQuestion;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getTotalQuestion() {
-		return totalQuestion;
-	}
-
-	public void setTotalQuestion(int totalQuestion) {
-		this.totalQuestion = totalQuestion;
-	}
 
 	public ExamDetailResponse() {
 	}

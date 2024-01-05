@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,21 +20,11 @@ import com.english_center.request.CRUDTopicExamRequest;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.ExamResponse;
 import com.english_center.response.TopicExamReponse;
-import com.english_center.service.ExamService;
-import com.english_center.service.QuestionService;
-import com.english_center.service.TopicExamService;
 
 @RestController
 @RequestMapping("/api/v1/topic-exam")
 public class TopicExamController extends BaseController {
-	@Autowired
-	TopicExamService topicExamService;
-
-	@Autowired
-	ExamService examService;
-
-	@Autowired
-	QuestionService questionService;
+	
 
 	@SuppressWarnings("rawtypes")
 	@PostMapping("/create")

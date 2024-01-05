@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -21,14 +19,11 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.Drive;
 
+@SuppressWarnings("deprecation")
 @Configuration
 public class GoogleDriver {
-	@SuppressWarnings("deprecation")
 	@Autowired
 	private GoogleCredential googleCredential;
-
-	@Autowired
-	private ResourceLoader resourceLoader;
 
 	@Value("${key.driver}")
 	private String keyDriver;
@@ -39,7 +34,6 @@ public class GoogleDriver {
 		return new Drive.Builder(HTTP_TRANSPORT, JacksonFactory.getDefaultInstance(), googleCredential).build();
 	}
 
-	@SuppressWarnings("deprecation")
 	@Bean
 	public GoogleCredential googleCredential() throws GeneralSecurityException, IOException {
 

@@ -8,10 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
-@Table(name="class_weekday")
+@Table(name = "class_weekday")
 public class ClassWeekday extends BaseEntity {
 	/**
 	 * 
@@ -21,21 +23,17 @@ public class ClassWeekday extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	@Column(name="class_id")
-	private int  classId;
-	
-	@Column(name="hour_id")
-	private int  hourId;
-	
-	@Column(name="from_hour")
+
+	@Column(name = "class_id")
+	private int classId;
+
+	@Column(name = "hour_id")
+	private int hourId;
+
+	@Column(name = "from_hour")
 	private String fromHour;
-	
-	@Column(name="to_hour")
+
+	@Column(name = "to_hour")
 	private String toHour;
 
-	
-	
-	
-	
 }

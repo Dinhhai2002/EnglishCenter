@@ -8,10 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
-@Table(name="districts")
+@Table(name = "districts")
 public class Districts extends BaseEntity {
 	/**
 	 * 
@@ -22,15 +24,13 @@ public class Districts extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name="city_id")
+	@Column(name = "city_id")
 	private int cityId;
-	
+
 	private String name;
-	
+
 	private String code;
-	
+
 	private int status;
 
-	
-	
 }

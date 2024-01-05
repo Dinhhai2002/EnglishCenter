@@ -3,7 +3,6 @@ package com.english_center.request;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 

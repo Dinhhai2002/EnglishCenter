@@ -8,6 +8,9 @@ import com.english_center.entity.Course;
 import com.english_center.entity.Lessons;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
+@Data
 public class LessonsResponse {
 	private int id;
 
@@ -50,134 +53,6 @@ public class LessonsResponse {
 	private int isDone;
 
 	private int status;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public int getSort() {
-		return sort;
-	}
-
-	public void setSort(int sort) {
-		this.sort = sort;
-	}
-
-	public int getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(int courseId) {
-		this.courseId = courseId;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
-	public String getCourseName() {
-		return courseName;
-	}
-
-	public void setCourseName(String courseName) {
-		this.courseName = courseName;
-	}
-
-	public int getChapterId() {
-		return chapterId;
-	}
-
-	public void setChapterId(int chapterId) {
-		this.chapterId = chapterId;
-	}
-
-	public String getChapterName() {
-		return chapterName;
-	}
-
-	public void setChapterName(String chapterName) {
-		this.chapterName = chapterName;
-	}
-
-	public String getIdVideo() {
-		return idVideo;
-	}
-
-	public void setIdVideo(String idVideo) {
-		this.idVideo = idVideo;
-	}
-
-	public int getVideoType() {
-		return videoType;
-	}
-
-	public void setVideoType(int videoType) {
-		this.videoType = videoType;
-	}
-
-	public int getIsUploadVideo() {
-		return isUploadVideo;
-	}
-
-	public void setIsUploadVideo(int isUploadVideo) {
-		this.isUploadVideo = isUploadVideo;
-	}
-
-	public int getIsFree() {
-		return isFree;
-	}
-
-	public void setIsFree(int isFree) {
-		this.isFree = isFree;
-	}
-
-	public int getIsLock() {
-		return isLock;
-	}
-
-	public void setIsLock(int isLock) {
-		this.isLock = isLock;
-	}
-
-	public int getIsDone() {
-		return isDone;
-	}
-
-	public void setIsDone(int isDone) {
-		this.isDone = isDone;
-	}
 
 	public LessonsResponse() {
 	}

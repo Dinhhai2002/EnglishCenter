@@ -5,36 +5,15 @@ import java.util.stream.Collectors;
 
 import com.english_center.entity.TopicExam;
 
+import lombok.Data;
+
+@Data
 public class TopicExamReponse {
 	private int id;
 
 	private String name;
 
 	private List<ExamResponse> listExam;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public List<ExamResponse> getExamResponses() {
-		return listExam;
-	}
-
-	public void setExamResponses(List<ExamResponse> listExam) {
-		this.listExam = listExam;
-	}
 
 	public TopicExamReponse() {
 	}

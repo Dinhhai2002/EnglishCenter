@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.english_center.common.enums.RoleEnum;
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
-import com.english_center.dao.ChapterDao;
-import com.english_center.dao.LessonsDao;
 import com.english_center.entity.Chapter;
 import com.english_center.entity.Course;
 import com.english_center.entity.Lessons;
@@ -46,43 +43,10 @@ import com.english_center.request.PaymentRequest;
 import com.english_center.response.BaseListDataResponse;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.PaymentResponse;
-import com.english_center.security.ApplicationProperties;
-import com.english_center.service.CourseService;
-import com.english_center.service.PaymentService;
-import com.english_center.service.UserCourseProgressService;
-import com.english_center.service.UserCourseService;
-import com.english_center.service.UserService;
-import com.english_center.service.VideoWatchHistoryService;
 
 @RestController()
 @RequestMapping("/api/v1/payment")
 public class PaymentController extends BaseController {
-	@Autowired
-	CourseService courseService;
-
-	@Autowired
-	PaymentService paymentService;
-
-	@Autowired
-	UserCourseService userCourseService;
-
-	@Autowired
-	UserService userService;
-
-	@Autowired
-	LessonsDao lessonsDao;
-
-	@Autowired
-	ChapterDao chapterDao;
-
-	@Autowired
-	UserCourseProgressService userCourseProgressService;
-
-	@Autowired
-	VideoWatchHistoryService videoWatchHistoryService;
-
-	@Autowired
-	ApplicationProperties applicationProperties;
 
 	@GetMapping("")
 	public ResponseEntity<BaseResponse<BaseListDataResponse<PaymentResponse>>> getAll(
@@ -155,7 +119,6 @@ public class PaymentController extends BaseController {
 		vnp_Params.put("vnp_IpAddr", "13.160.92.202");
 
 		Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-//		Calendar cld = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 		formatter.setTimeZone(TimeZone.getTimeZone("GMT+7"));
 		String vnp_CreateDate = formatter.format(cld.getTime());
@@ -189,7 +152,7 @@ public class PaymentController extends BaseController {
 			}
 		}
 		String queryUrl = query.toString();
-		String vnp_SecureHash = ConfigVnpay.hmacSHA512(applicationProperties.getSecretKey(), hashData.toString());
+		String vnp_SecureHash = ConfigVnpay.hmacSHA512(applicationProperties.getVnpaySecretKey(), hashData.toString());
 		queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
 		String paymentUrl = applicationProperties.getVnpPayUrl() + "?" + queryUrl;
 

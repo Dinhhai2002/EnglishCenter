@@ -11,7 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
 @Table(name = "payment")
@@ -41,6 +43,5 @@ public class Payment extends BaseEntity {
 
 	@Column(name = "course_id")
 	private int courseId;
-
 
 }

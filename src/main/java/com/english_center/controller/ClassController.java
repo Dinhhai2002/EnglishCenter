@@ -158,7 +158,6 @@ public class ClassController extends BaseController {
 			@Valid @RequestBody AddStudentJoinClassRequest wrapper) throws Exception {
 
 		BaseResponse response = new BaseResponse();
-		Users users = this.getUser();
 
 		Class checkClass = classService.findOne(id);
 
@@ -172,7 +171,7 @@ public class ClassController extends BaseController {
 			response.setMessageError(StringErrorValue.LIST_STUDENT_CLASS_IS_LIMITED);
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
-		
+
 		if (checkClass.getTotalStudent() + wrapper.getUserCourseId().size() > 100) {
 			response.setStatus(HttpStatus.BAD_REQUEST);
 			response.setMessageError(String.format(

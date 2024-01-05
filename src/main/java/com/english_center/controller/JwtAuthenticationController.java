@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -60,76 +59,16 @@ import com.english_center.response.ReplyCommentsResponse;
 import com.english_center.response.TopicExamReponse;
 import com.english_center.response.UserResponse;
 import com.english_center.response.WardsResponse;
-import com.english_center.security.ApplicationProperties;
-import com.english_center.security.JwtTokenUtil;
-import com.english_center.service.CategoryExamService;
-import com.english_center.service.ChapterService;
-import com.english_center.service.CityService;
-import com.english_center.service.CourseService;
-import com.english_center.service.DistrictService;
-import com.english_center.service.ExamService;
-import com.english_center.service.JwtUserDetailsService;
-import com.english_center.service.LessonsService;
-import com.english_center.service.QuestionService;
-import com.english_center.service.SendEmail;
-import com.english_center.service.TopicExamService;
-import com.english_center.service.UserRegisterService;
-import com.english_center.service.WardsService;
 
 @RestController
 @RequestMapping("/api/v1/authentication")
 @CrossOrigin
 public class JwtAuthenticationController extends BaseController {
 
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
-
-	@Autowired
-	private JwtUserDetailsService userDetailsService;
-
-	@Autowired
-	private SendEmail sendEmail;
-
-	@Autowired
-	CityService cityService;
-
-	@Autowired
-	DistrictService districtService;
-
-	@Autowired
-	WardsService wardsService;
-
-	@Autowired
-	CourseService courseService;
-
-	@Autowired
-	QuestionService questionService;
-
-	@Autowired
-	ExamService examService;
-
-	@Autowired
-	ChapterService chapterService;
-
-	@Autowired
-	LessonsService lessonsService;
-
-	@Autowired
-	UserRegisterService userRegisterService;
-
-	@Autowired
-	TopicExamService topicExamService;
-
-	@Autowired
-	CategoryExamService categoryExamService;
-
-	@Autowired
-	ApplicationProperties applicationProperties;
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@PostMapping("/login")
-	public ResponseEntity<BaseResponse> createAuthenticationToken(@RequestBody JwtRequest wrapper) throws Exception {
-		BaseResponse response = new BaseResponse();
+	public ResponseEntity<BaseResponse<JwtResponse>> createAuthenticationToken(@RequestBody JwtRequest wrapper)
+			throws Exception {
+		BaseResponse<JwtResponse> response = new BaseResponse<>();
 		Users user = userService.findUsersByUsersNameAndPassword(wrapper.getUsername(),
 				Utils.encodeBase64(wrapper.getPassword()));
 
@@ -367,11 +306,11 @@ public class JwtAuthenticationController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@PostMapping("/login-google")
-	public ResponseEntity<BaseResponse> loginGoogle(@Valid @RequestBody GoogleAccountRequest wrapper) throws Exception {
+	public ResponseEntity<BaseResponse<JwtResponse>> loginGoogle(@Valid @RequestBody GoogleAccountRequest wrapper)
+			throws Exception {
 
-		BaseResponse response = new BaseResponse();
+		BaseResponse<JwtResponse> response = new BaseResponse<>();
 		Users registerUser = new Users();
 		String token;
 		Users users = userService.findUsersByEmail(wrapper.getEmail(), 1);
@@ -403,11 +342,10 @@ public class JwtAuthenticationController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/get-all-city")
 	public ResponseEntity<BaseResponse<List<CityResponse>>> findAllCity() throws Exception {
 
-		BaseResponse<List<CityResponse>> response = new BaseResponse();
+		BaseResponse<List<CityResponse>> response = new BaseResponse<>();
 
 		List<Cities> cities = cityService.getAll();
 
@@ -416,22 +354,22 @@ public class JwtAuthenticationController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/{id}/get-district-by-city")
-	public ResponseEntity<BaseResponse> findDistrictByCityId(@PathVariable("id") int id) throws Exception {
+	public ResponseEntity<BaseResponse<List<DistrictResponse>>> findDistrictByCityId(@PathVariable("id") int id)
+			throws Exception {
 
-		BaseResponse response = new BaseResponse();
+		BaseResponse<List<DistrictResponse>> response = new BaseResponse<>();
 
 		response.setData(new DistrictResponse().mapToList(districtService.findByCityId(id)));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/{id}/get-ward-by-district")
-	public ResponseEntity<BaseResponse> findWardByDistrictId(@PathVariable("id") int id) throws Exception {
+	public ResponseEntity<BaseResponse<List<WardsResponse>>> findWardByDistrictId(@PathVariable("id") int id)
+			throws Exception {
 
-		BaseResponse response = new BaseResponse();
+		BaseResponse<List<WardsResponse>> response = new BaseResponse<>();
 
 		response.setData(new WardsResponse().mapToList(wardsService.findByDistrictId(id)));
 
@@ -465,7 +403,6 @@ public class JwtAuthenticationController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/list-exam")
 	public ResponseEntity<BaseResponse<BaseListDataResponse<ExamResponse>>> getAll(
 			@RequestParam(name = "category_exam_id", required = false, defaultValue = "-1") int categoryExamId,
@@ -475,7 +412,7 @@ public class JwtAuthenticationController extends BaseController {
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
 			@RequestParam(name = "limit", required = false, defaultValue = "20") int limit) throws Exception {
 
-		BaseResponse<BaseListDataResponse<ExamResponse>> response = new BaseResponse();
+		BaseResponse<BaseListDataResponse<ExamResponse>> response = new BaseResponse<>();
 		Pagination pagination = new Pagination(page, limit);
 
 		StoreProcedureListResult<Exam> exams = examService.spGListExam(categoryExamId, topicExamId, keySearch, status,
@@ -492,11 +429,10 @@ public class JwtAuthenticationController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("list-topic")
 	public ResponseEntity<BaseResponse<List<TopicExamReponse>>> getAll() throws Exception {
 
-		BaseResponse<List<TopicExamReponse>> response = new BaseResponse();
+		BaseResponse<List<TopicExamReponse>> response = new BaseResponse<>();
 
 		List<TopicExam> topicExams = topicExamService.getAll();
 
@@ -504,25 +440,21 @@ public class JwtAuthenticationController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("list-category-exam")
 	public ResponseEntity<BaseResponse<List<CategoryExamResponse>>> getAllCategoryExam() throws Exception {
 		StoreProcedureListResult<CategoryExam> listCategoryExam = categoryExamService.spGListCategoryExam("", 1,
 				new Pagination(0, 100));
-		BaseResponse<List<CategoryExamResponse>> response = new BaseResponse();
-
-//		List<CategoryExam> categoryExams = categoryExamService.getAll();
+		BaseResponse<List<CategoryExamResponse>> response = new BaseResponse<>();
 
 		response.setData(new CategoryExamResponse().mapToList(listCategoryExam.getResult()));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/exam/{id}/detail")
 	public ResponseEntity<BaseResponse<ExamResponse>> findOne(@PathVariable("id") int id) throws Exception {
 
-		BaseResponse<ExamResponse> response = new BaseResponse();
+		BaseResponse<ExamResponse> response = new BaseResponse<>();
 
 		int countUser = this.countUserExam(id);
 		int countComments = commentsService.countComments(id);
@@ -586,11 +518,10 @@ public class JwtAuthenticationController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/course/{id}")
 	public ResponseEntity<BaseResponse<CourseResponse>> findOneCourse(@PathVariable("id") int id) throws Exception {
 
-		BaseResponse<CourseResponse> response = new BaseResponse();
+		BaseResponse<CourseResponse> response = new BaseResponse<>();
 		Course course = courseService.findOne(id);
 
 		if (course == null) {
@@ -615,11 +546,10 @@ public class JwtAuthenticationController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/lessons/{id}/detail")
 	public ResponseEntity<BaseResponse<LessonsResponse>> findOneLessons(@PathVariable("id") int id) throws Exception {
 
-		BaseResponse<LessonsResponse> response = new BaseResponse();
+		BaseResponse<LessonsResponse> response = new BaseResponse<>();
 		Lessons lessons = lessonsService.findOne(id);
 
 		if (lessons == null) {

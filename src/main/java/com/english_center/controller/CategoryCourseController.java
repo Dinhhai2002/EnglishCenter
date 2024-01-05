@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,16 +18,11 @@ import com.english_center.entity.CategoryCourse;
 import com.english_center.request.CRUDCategoryCourseRequest;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.CategoryCourseResponse;
-import com.english_center.service.CategoryCourseService;
 
 @RestController
 @RequestMapping("/api/v1/category-course")
 public class CategoryCourseController extends BaseController {
 
-	@Autowired
-	CategoryCourseService categoryCourseService;
-
-	
 	@SuppressWarnings("rawtypes")
 	@PostMapping("/create")
 	public ResponseEntity<BaseResponse> create(@Valid @RequestBody CRUDCategoryCourseRequest wrapper) throws Exception {
@@ -78,11 +72,10 @@ public class CategoryCourseController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/{id}")
 	public ResponseEntity<BaseResponse<CategoryCourseResponse>> findOne(@PathVariable("id") int id) throws Exception {
 
-		BaseResponse<CategoryCourseResponse> response = new BaseResponse();
+		BaseResponse<CategoryCourseResponse> response = new BaseResponse<>();
 
 		CategoryCourse categoryCourse = categoryCourseService.findOne(id);
 
@@ -96,11 +89,10 @@ public class CategoryCourseController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("")
 	public ResponseEntity<BaseResponse<List<CategoryCourseResponse>>> findAll() throws Exception {
 
-		BaseResponse<List<CategoryCourseResponse>> response = new BaseResponse();
+		BaseResponse<List<CategoryCourseResponse>> response = new BaseResponse<>();
 
 		List<CategoryCourse> categoryCourses = categoryCourseService.findAll();
 

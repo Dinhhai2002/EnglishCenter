@@ -7,7 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
 @Table(name = "weekday")
@@ -23,7 +25,5 @@ public class Weekday extends BaseEntity {
 	private int id;
 
 	private String name;
-
-	
 
 }

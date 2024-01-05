@@ -27,12 +27,9 @@ import com.english_center.common.enums.VideoTypeEnum;
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
 import com.english_center.common.utils.Utils;
-import com.english_center.dao.ChapterDao;
-import com.english_center.dao.LessonsDao;
 import com.english_center.entity.Chapter;
 import com.english_center.entity.Course;
 import com.english_center.entity.Lessons;
-import com.english_center.entity.UserCourse;
 import com.english_center.entity.UserCourseProgress;
 import com.english_center.entity.Users;
 import com.english_center.entity.VideoWatchHistory;
@@ -43,13 +40,7 @@ import com.english_center.response.BaseListDataResponse;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.LessonsResponse;
 import com.english_center.response.VideoWatchHistoryResponse;
-import com.english_center.service.ChapterService;
 import com.english_center.service.ClassService;
-import com.english_center.service.CourseService;
-import com.english_center.service.LessonsService;
-import com.english_center.service.UserCourseProgressService;
-import com.english_center.service.UserCourseService;
-import com.english_center.service.VideoWatchHistoryService;
 import com.google.api.client.http.InputStreamContent;
 import com.google.api.services.drive.model.File;
 
@@ -58,33 +49,9 @@ import com.google.api.services.drive.model.File;
 public class LessonsController extends BaseController {
 
 	@Autowired
-	LessonsService lessonsService;
-
-	@Autowired
 	ClassService classService;
 
-	@Autowired
-	CourseService courseService;
-
-	@Autowired
-	ChapterService chapterService;
-
-	@Autowired
-	UserCourseService userCourseService;
-
-	@Autowired
-	UserCourseProgressService userCourseProgressService;
-
-	@Autowired
-	VideoWatchHistoryService videoWatchHistoryService;
-
-	@Autowired
-	LessonsDao lessonsDao;
-
-	@Autowired
-	ChapterDao chapterDao;
-
-	public static final String FOLDER_TO_UPLOAD = "1ZcI0cLXncMYOhylO4jZBgWj2yVsj5WdB";
+//	public static final String FOLDER_TO_UPLOAD = "1ZcI0cLXncMYOhylO4jZBgWj2yVsj5WdB";
 
 	@GetMapping("")
 	public ResponseEntity<BaseResponse<BaseListDataResponse<LessonsResponse>>> getAll(
@@ -388,7 +355,7 @@ public class LessonsController extends BaseController {
 		}
 
 		File fileMetadata = new File();
-		fileMetadata.setParents(Collections.singletonList(FOLDER_TO_UPLOAD));
+		fileMetadata.setParents(Collections.singletonList(applicationProperties.getFolderUpload()));
 		String fileName = UUID.randomUUID().toString() + file.getOriginalFilename();
 		fileMetadata.setName(fileName);
 		File uploadFile = googleDrive.files()

@@ -22,53 +22,25 @@ import com.english_center.common.enums.UserCourseUsingStatusEnum;
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
 import com.english_center.controller.BaseController;
-import com.english_center.entity.Chapter;
 import com.english_center.entity.Course;
 import com.english_center.entity.Image;
-import com.english_center.entity.Lessons;
 import com.english_center.entity.UserCourse;
 import com.english_center.entity.Users;
 import com.english_center.model.StoreProcedureListResult;
 import com.english_center.request.CRUDCourseRequest;
 import com.english_center.response.BaseListDataResponse;
 import com.english_center.response.BaseResponse;
-import com.english_center.response.ChapterResponse;
 import com.english_center.response.ClassResponse;
 import com.english_center.response.CourseResponse;
 import com.english_center.response.ImageResponse;
-import com.english_center.response.LessonsResponse;
-import com.english_center.service.ChapterService;
 import com.english_center.service.ClassService;
-import com.english_center.service.CourseService;
-import com.english_center.service.IFirebaseImageService;
-import com.english_center.service.ImageService;
-import com.english_center.service.LessonsService;
-import com.english_center.service.UserCourseService;
 
 @RestController
 @RequestMapping("/api/v1/admin/course")
 public class CourseAdminController extends BaseController {
 
 	@Autowired
-	CourseService courseService;
-
-	@Autowired
 	ClassService classService;
-
-	@Autowired
-	ImageService imageService;
-
-	@Autowired
-	IFirebaseImageService iFirebaseImageService;
-
-	@Autowired
-	UserCourseService userCourseService;
-
-	@Autowired
-	ChapterService chapterService;
-
-	@Autowired
-	LessonsService lessonsService;
 
 	@GetMapping("")
 //	@PreAuthorize("hasAnyAuthority('ADMIN')")
@@ -95,9 +67,6 @@ public class CourseAdminController extends BaseController {
 			List<UserCourse> listCourses = getUserCourses(x.getId(), currentUser.getId());
 
 			typeUserUsing[0] = determineUserCourseStatus(listCourses).getValue();
-
-			// xử lí map danh sách chương và bài học trong khóa học
-//			List<ChapterResponse> listChapterResponse = getChapterResponses(x, currentUser);
 
 			return new CourseResponse(x, typeUserUsing[0], 0,
 					this.getLessonsPresentCourse(x.getId(), currentUser.getId()));
@@ -242,19 +211,4 @@ public class CourseAdminController extends BaseController {
 		return UserCourseUsingStatusEnum.EXPIRED;
 	}
 
-	private List<ChapterResponse> getChapterResponses(Course course, Users currentUser) {
-		List<Chapter> listChapter = getListWithExceptionHandler(() -> chapterService.findByCourseId(course.getId()));
-
-		return listChapter.stream().map(chapter -> {
-			List<Lessons> listLessons = getLessonsForChapter(chapter);
-			return new ChapterResponse(chapter, new LessonsResponse().mapToList(listLessons),
-					countLessonsIsStudiedInChapter(course.getId(), chapter.getId(), currentUser.getId()));
-		}).collect(Collectors.toList());
-	}
-
-	private List<Lessons> getLessonsForChapter(Chapter chapter) {
-		return getListWithExceptionHandler(() -> lessonsService
-				.spGListLessons(-1, chapter.getId(), "", 1, new Pagination(0, 1000), 0).getResult());
-
-	}
 }

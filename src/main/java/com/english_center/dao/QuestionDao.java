@@ -9,7 +9,9 @@ public interface QuestionDao {
 
 	Question findOne(int id) throws Exception;
 
+	Question findOneBySortAndExamId(int sort, int examId) throws Exception;
+
 	void update(Question question) throws Exception;
-	
+
 	List<Question> getListByExamId(int examId) throws Exception;
 }

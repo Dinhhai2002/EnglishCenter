@@ -9,6 +9,9 @@ import com.english_center.entity.Payment;
 import com.english_center.entity.Users;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
+@Data
 public class PaymentResponse {
 	private int id;
 
@@ -33,78 +36,6 @@ public class PaymentResponse {
 
 	@JsonProperty("course_name")
 	private String courseName;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getPaymentDate() {
-		return paymentDate;
-	}
-
-	public void setPaymentDate(String paymentDate) {
-		this.paymentDate = paymentDate;
-	}
-
-	public BigDecimal getAmount() {
-		return amount;
-	}
-
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
-
-	public int getPaymentMethodId() {
-		return paymentMethodId;
-	}
-
-	public void setPaymentMethodId(int paymentMethodId) {
-		this.paymentMethodId = paymentMethodId;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
-	public int getStudentId() {
-		return studentId;
-	}
-
-	public void setStudentId(int studentId) {
-		this.studentId = studentId;
-	}
-
-	public String getStudentName() {
-		return studentName;
-	}
-
-	public void setStudentName(String studentName) {
-		this.studentName = studentName;
-	}
-
-	public int getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(int courseId) {
-		this.courseId = courseId;
-	}
-
-	public String getCourseName() {
-		return courseName;
-	}
-
-	public void setCourseName(String courseName) {
-		this.courseName = courseName;
-	}
 
 	public PaymentResponse() {
 	}

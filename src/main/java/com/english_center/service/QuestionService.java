@@ -12,4 +12,6 @@ public interface QuestionService {
 	void update(Question question) throws Exception;
 	
 	List<Question> getListByExamId(int examId) throws Exception;
+	
+	Question findOneBySortAndExamId(int sort, int examId) throws Exception;
 }

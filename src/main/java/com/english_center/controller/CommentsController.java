@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,14 +25,10 @@ import com.english_center.response.BaseResponse;
 import com.english_center.response.CommentsResponse;
 import com.english_center.response.ReplyCommentsResponse;
 import com.english_center.response.UserResponse;
-import com.english_center.service.ExamService;
 
 @RestController
 @RequestMapping("/api/v1/comments")
 public class CommentsController extends BaseController {
-
-	@Autowired
-	ExamService examService;
 
 	@SuppressWarnings("rawtypes")
 	@PostMapping("/create")
@@ -105,11 +100,10 @@ public class CommentsController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/{id}")
 	public ResponseEntity<BaseResponse<CommentsResponse>> findOne(@PathVariable("id") int id) throws Exception {
 
-		BaseResponse<CommentsResponse> response = new BaseResponse();
+		BaseResponse<CommentsResponse> response = new BaseResponse<>();
 
 		Comments comments = commentsService.findOne(id);
 

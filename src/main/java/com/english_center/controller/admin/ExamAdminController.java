@@ -13,7 +13,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,46 +37,22 @@ import com.english_center.model.StoreProcedureListResult;
 import com.english_center.request.CRUDExamRequest;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.ExamResponse;
-import com.english_center.security.ApplicationProperties;
-import com.english_center.service.AudioService;
-import com.english_center.service.CategoryExamService;
-import com.english_center.service.ExamService;
-import com.english_center.service.QuestionService;
-import com.english_center.service.TopicExamService;
 import com.google.api.client.http.InputStreamContent;
-import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 
 @RestController
 @RequestMapping("/api/v1/admin/exam")
 public class ExamAdminController extends BaseController {
-	@Autowired
-	ExamService examService;
-
-	@Autowired
-	CategoryExamService categoryExamService;
-
-	@Autowired
-	TopicExamService topicExamService;
-
-	@Autowired
-	AudioService audioService;
-
-	@Autowired
-	QuestionService questionService;
-
-	@Autowired
-	Drive googleDrive;
-
-	@Autowired
-	ApplicationProperties applicationProperties;
 
 	@GetMapping("/no-audio")
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	public ResponseEntity<BaseResponse<List<ExamResponse>>> getAllNoAudio() throws Exception {
 		BaseResponse<List<ExamResponse>> response = new BaseResponse<>();
-		Pagination pagination = new Pagination(0, 20);
-		StoreProcedureListResult<Exam> exams = examService.spGListExam(-1, -1, "", -1, pagination, 0);
+
+		/*
+		 * Lấy tất cả đề thi không phân trang
+		 */
+		StoreProcedureListResult<Exam> exams = examService.spGListExam(-1, -1, "", -1, new Pagination(0, 20), 0);
 		List<Exam> listexamResult = exams.getResult().stream().filter(x -> (x.getAudioId() == 0))
 				.collect(Collectors.toList());
 		response.setData(new ExamResponse().mapToList(listexamResult));
@@ -89,6 +64,9 @@ public class ExamAdminController extends BaseController {
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	public ResponseEntity<BaseResponse<List<ExamResponse>>> getAllNoQuestion() throws Exception {
 		BaseResponse<List<ExamResponse>> response = new BaseResponse<>();
+		/*
+		 * Lấy tất cả đề thi không phân trang
+		 */
 		List<Exam> exams = examService.spGListExam(-1, -1, "", -1, new Pagination(0, 20), 0).getResult();
 
 		List<Exam> listexamResult = exams.stream().filter(x -> {
@@ -184,7 +162,6 @@ public class ExamAdminController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@PostMapping("/{id}/update")
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	public ResponseEntity<BaseResponse<ExamResponse>> update(@PathVariable("id") int id,
@@ -281,7 +258,6 @@ public class ExamAdminController extends BaseController {
 			String result = "";
 			int examDetailId = 0;
 			int sort = 0;
-			int examId = 0;
 
 			if (row.getCell(0) != null && row.getCell(0).getCellType() == CellType.STRING) {
 				content = row.getCell(0).getStringCellValue();
@@ -314,10 +290,6 @@ public class ExamAdminController extends BaseController {
 				sort = (int) row.getCell(9).getNumericCellValue();
 			}
 
-			if (row.getCell(10) != null && row.getCell(10).getCellType() == CellType.NUMERIC) {
-				examId = (int) row.getCell(10).getNumericCellValue();
-			}
-
 			Question question = new Question();
 			question.setContent(content);
 			question.setParagraph(paragraph);
@@ -336,14 +308,6 @@ public class ExamAdminController extends BaseController {
 		}
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
-
-	private String getFileExtension(String fileName) {
-		int dotIndex = fileName.lastIndexOf('.');
-		if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
-			return fileName.substring(dotIndex + 1);
-		}
-		return "";
 	}
 
 }

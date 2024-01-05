@@ -2,7 +2,6 @@ package com.english_center.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,26 +14,10 @@ import com.english_center.entity.CategoryExam;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.CategoryExamResponse;
 import com.english_center.response.TopicExamReponse;
-import com.english_center.service.CategoryExamService;
-import com.english_center.service.ExamService;
-import com.english_center.service.QuestionService;
-import com.english_center.service.TopicExamService;
 
 @RestController
 @RequestMapping("/api/v1/category-exam")
 public class CategoryExamController extends BaseController {
-
-	@Autowired
-	CategoryExamService categoryExamService;
-
-	@Autowired
-	TopicExamService topicExamService;
-
-	@Autowired
-	ExamService examService;
-
-	@Autowired
-	QuestionService questionService;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("")
@@ -49,11 +32,10 @@ public class CategoryExamController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/{id}")
 	public ResponseEntity<BaseResponse<CategoryExamResponse>> findOne(@PathVariable("id") int id) throws Exception {
 
-		BaseResponse<CategoryExamResponse> response = new BaseResponse();
+		BaseResponse<CategoryExamResponse> response = new BaseResponse<>();
 
 		CategoryExam categoryExam = categoryExamService.findOne(id);
 
@@ -68,39 +50,11 @@ public class CategoryExamController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-//	@SuppressWarnings({ "rawtypes", "unchecked" })
-//	@GetMapping("/{id}/get-exams-by-category")
-//	public ResponseEntity<BaseResponse<List<ExamResponse>>> getAllByCategory(@PathVariable("id") int id)
-//			throws Exception {
-//
-//		BaseResponse<List<ExamResponse>> response = new BaseResponse();
-//		List<Exam> exams = examService.findByCategory(id);
-//		List<ExamResponse> listExamResponses = exams.stream().map(x -> {
-//			// trả về tổng user của đề thi
-//			int totaluser = 0;
-//			totaluser = this.countUserExam(x.getId());
-//
-//			// kiểm tra đề thi đó đã có câu hỏi chưa
-//			int isQuestion = 0;
-//			List<Question> listQuestion = getListWithExceptionHandler(() -> questionService.getListByExamId(x.getId()));
-//
-//			if (!listQuestion.isEmpty()) {
-//				isQuestion = 1;
-//			}
-//
-//			return new ExamResponse(x, totaluser, isQuestion, this.countComment(x.getId()));
-//		}).collect(Collectors.toList());
-//
-//		response.setData(listExamResponses);
-//		return new ResponseEntity<>(response, HttpStatus.OK);
-//	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/{id}/get-topic-exam-by-category")
 	public ResponseEntity<BaseResponse<List<TopicExamReponse>>> getAllByCategory(@PathVariable("id") int id)
 			throws Exception {
 
-		BaseResponse<List<TopicExamReponse>> response = new BaseResponse();
+		BaseResponse<List<TopicExamReponse>> response = new BaseResponse<>();
 		List<TopicExamReponse> listExamReponses = new TopicExamReponse()
 				.mapToList(topicExamService.findByCategoryExamId(id));
 

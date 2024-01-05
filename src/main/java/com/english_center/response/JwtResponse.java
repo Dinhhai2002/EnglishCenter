@@ -1,17 +1,20 @@
 package com.english_center.response;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class JwtResponse implements Serializable {
+import lombok.Data;
 
-	private static final long serialVersionUID = -8091879091924046844L;
-	private final String jwttoken;
+@Data
+public class JwtResponse {
+
+	@JsonProperty("token")
+	private String jwttoken;
+
+	public JwtResponse() {
+	}
 
 	public JwtResponse(String jwttoken) {
 		this.jwttoken = jwttoken;
 	}
 
-	public String getToken() {
-		return this.jwttoken;
-	}
 }

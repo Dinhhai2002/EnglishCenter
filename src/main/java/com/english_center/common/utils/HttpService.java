@@ -6,9 +6,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.english_center.security.ApplicationProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -33,7 +30,7 @@ public class HttpService {
 		wr.close();
 
 		// Lấy phản hồi từ máy chủ
-		int responseCode = con.getResponseCode();
+//		int responseCode = con.getResponseCode();
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		String inputLine;

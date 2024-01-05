@@ -14,7 +14,9 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
 @Table(name = "users")
@@ -85,7 +87,5 @@ public class Users extends BaseEntity {
 
 	@Column(name = "is_google")
 	private int isGoogle;
-
-	
 
 }

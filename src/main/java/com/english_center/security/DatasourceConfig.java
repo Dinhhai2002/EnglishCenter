@@ -11,7 +11,6 @@ import javax.sql.DataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -34,18 +33,9 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableJpaRepositories({ "com.english_center.dao" })
 public class DatasourceConfig {
 
-	@Value("${spring.datasource.driver.classname}")
-	private String driver;
+	@Autowired
+	ApplicationProperties applicationProperties;
 
-	@Value("${spring.datasource.url}")
-	private String url;
-
-	@Value("${spring.datasource.username}")
-	private String username;
-
-	@Value("${spring.datasource.password}")
-	private String password;
-	
 	@Autowired
 	private Environment environment;
 
@@ -83,7 +73,8 @@ public class DatasourceConfig {
 		Properties properties = new Properties();
 		properties.put(org.hibernate.cfg.Environment.DIALECT, environment.getRequiredProperty("hibernate.dialect"));
 		properties.put(org.hibernate.cfg.Environment.SHOW_SQL, environment.getRequiredProperty("hibernate.show_sql"));
-		properties.put(org.hibernate.cfg.Environment.FORMAT_SQL, environment.getRequiredProperty("hibernate.format_sql"));
+		properties.put(org.hibernate.cfg.Environment.FORMAT_SQL,
+				environment.getRequiredProperty("hibernate.format_sql"));
 		return properties;
 	}
 
@@ -97,11 +88,11 @@ public class DatasourceConfig {
 
 	private HikariConfig initHikariPoolingConfig(String poolName) {
 		HikariConfig hikariConfig = new HikariConfig();
-		hikariConfig.setDriverClassName(driver);
+		hikariConfig.setDriverClassName(applicationProperties.getDatabaseDriver());
 
-		hikariConfig.setJdbcUrl(url);
-		hikariConfig.setUsername(username);
-		hikariConfig.setPassword(password);
+		hikariConfig.setJdbcUrl(applicationProperties.getDatabaseUrl());
+		hikariConfig.setUsername(applicationProperties.getDatabaseUsername());
+		hikariConfig.setPassword(applicationProperties.getDatabasePassword());
 
 		hikariConfig.setPoolName(poolName);
 		return hikariConfig;

@@ -7,6 +7,9 @@ import com.english_center.common.utils.Utils;
 import com.english_center.entity.Class;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
+@Data
 public class ClassResponse {
 	private int id;
 
@@ -34,62 +37,6 @@ public class ClassResponse {
 	private int totalStudent;
 
 	private int status;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
-	}
-
-	public String getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
-	}
-
-	public int getTeacherId() {
-		return teacherId;
-	}
-
-	public void setTeacherId(int teacherId) {
-		this.teacherId = teacherId;
-	}
-
-	public int getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(int courseId) {
-		this.courseId = courseId;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
 
 	public ClassResponse() {
 	}

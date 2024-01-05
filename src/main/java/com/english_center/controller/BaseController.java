@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +31,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 import com.english_center.common.enums.VideoTypeEnum;
+import com.english_center.dao.ChapterDao;
+import com.english_center.dao.LessonsDao;
 import com.english_center.entity.Chapter;
 import com.english_center.entity.Exam;
 import com.english_center.entity.Lessons;
@@ -42,65 +43,144 @@ import com.english_center.model.YouTubeVideo;
 import com.english_center.model.YouTubeVideoListResponse;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.ExamResponse;
+import com.english_center.security.ApplicationProperties;
 import com.english_center.security.JwtTokenUtil;
+import com.english_center.service.AudioService;
+import com.english_center.service.CategoryCourseService;
+import com.english_center.service.CategoryExamService;
+import com.english_center.service.ChapterService;
+import com.english_center.service.CityService;
 import com.english_center.service.ClassStudentService;
 import com.english_center.service.CommentsService;
+import com.english_center.service.CourseService;
+import com.english_center.service.DistrictService;
+import com.english_center.service.ExamService;
 import com.english_center.service.IFirebaseImageService;
 import com.english_center.service.ImageService;
+import com.english_center.service.LessonsService;
+import com.english_center.service.PaymentService;
 import com.english_center.service.QuestionService;
 import com.english_center.service.ReplyCommentsService;
+import com.english_center.service.ResultDetailService;
 import com.english_center.service.ResultService;
+import com.english_center.service.StatisticalService;
+import com.english_center.service.TopicExamService;
 import com.english_center.service.UserCourseProgressService;
 import com.english_center.service.UserCourseService;
+import com.english_center.service.UserRegisterService;
 import com.english_center.service.UserService;
+import com.english_center.service.VideoWatchHistoryService;
+import com.english_center.service.WardsService;
+import com.english_center.service.impl.JwtUserDetailsService;
+import com.english_center.service.impl.SendEmail;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.Permission;
 
 @RestController
 public class BaseController {
+	@Autowired
+	public JwtTokenUtil jwtTokenUtil;
 
 	@Autowired
-	UserService userService;
+	public JwtUserDetailsService userDetailsService;
 
 	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+	public SendEmail sendEmail;
 
 	@Autowired
-	ClassStudentService classStudentService;
+	public CityService cityService;
 
 	@Autowired
-	UserCourseService userCourseService;
+	public DistrictService districtService;
 
 	@Autowired
-	ImageService imageService;
+	public WardsService wardsService;
 
 	@Autowired
-	ResultService resultService;
+	public UserRegisterService userRegisterService;
 
 	@Autowired
-	IFirebaseImageService iFirebaseImageService;
+	public StatisticalService statisticalService;
 
 	@Autowired
-	CommentsService commentsService;
+	public TopicExamService topicExamService;
 
 	@Autowired
-	ReplyCommentsService replyCommentsService;
+	public AudioService audioService;
+
+	@Autowired
+	public CategoryExamService categoryExamService;
+
+	@Autowired
+	public ChapterService chapterService;
+
+	@Autowired
+	public LessonsService lessonsService;
+
+	@Autowired
+	public CategoryCourseService categoryCourseService;
+
+	@Autowired
+	public VideoWatchHistoryService videoWatchHistoryService;
+
+	@Autowired
+	public CourseService courseService;
+
+	@Autowired
+	public PaymentService paymentService;
+
+	@Autowired
+	LessonsDao lessonsDao;
+
+	@Autowired
+	ChapterDao chapterDao;
+
+	@Autowired
+	public UserService userService;
+
+	@Autowired
+	public ClassStudentService classStudentService;
+
+	@Autowired
+	public UserCourseService userCourseService;
+
+	@Autowired
+	public ImageService imageService;
+
+	@Autowired
+	public ResultService resultService;
+
+	@Autowired
+	public IFirebaseImageService iFirebaseImageService;
+
+	@Autowired
+	public CommentsService commentsService;
+
+	@Autowired
+	public ReplyCommentsService replyCommentsService;
 
 	@Autowired
 	public UserCourseProgressService userCourseProgressService;
 
 	@Autowired
-	QuestionService questionService;
+	public QuestionService questionService;
 
 	@Autowired
-	Drive googleDrive;
+	public ExamService examService;
 
+	@Autowired
+	public ResultDetailService resultDetailService;
+
+	@Autowired
+	public Drive googleDrive;
+
+	// call api google
 	@Autowired
 	RestTemplate restTemplate;
 
-	@Value("${key.youtube}")
-	private String keyYoutube;
+	@Autowired
+	public ApplicationProperties applicationProperties;
 
 	// time 3 phút
 	public static final long TIME_OTP_EXPIRED = 1000 * 60 * 3;
@@ -214,7 +294,7 @@ public class BaseController {
 
 		YouTubeVideoListResponse youtube = restTemplate.getForObject(
 				String.format("https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=%s&key=%s", idVideo,
-						keyYoutube),
+						applicationProperties.getKeyYoutube()),
 				YouTubeVideoListResponse.class);
 		String time = youtube.getItems().stream().findFirst().orElse(new YouTubeVideo()).getContentDetails()
 				.getDuration();

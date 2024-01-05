@@ -29,7 +29,6 @@ import com.english_center.response.UserResponse;
 @RequestMapping("/api/v1/users")
 public class UserController extends BaseController {
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("")
 	public ResponseEntity<BaseResponse<BaseListDataResponse<UserResponse>>> getAllUser(
 			@RequestParam(name = "key_search", required = false, defaultValue = "") String keySearch,
@@ -38,7 +37,7 @@ public class UserController extends BaseController {
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
 			@RequestParam(name = "limit", required = false, defaultValue = "20") int limit) throws Exception {
 
-		BaseResponse<BaseListDataResponse<UserResponse>> response = new BaseResponse();
+		BaseResponse<BaseListDataResponse<UserResponse>> response = new BaseResponse<>();
 
 		Pagination pagination = new Pagination(page, limit);
 		StoreProcedureListResult<Users> listUser = userService.spGUsers(keySearch, status, role, pagination);
@@ -55,11 +54,10 @@ public class UserController extends BaseController {
 
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@PostMapping("/update")
 	public ResponseEntity<BaseResponse<UserResponse>> update(@RequestBody CRUDUserRequest wrapper) throws Exception {
 
-		BaseResponse<UserResponse> response = new BaseResponse();
+		BaseResponse<UserResponse> response = new BaseResponse<>();
 
 		Users user = this.getUser();
 
@@ -107,11 +105,10 @@ public class UserController extends BaseController {
 
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/detail")
 	public ResponseEntity<BaseResponse<UserResponse>> findOne() throws Exception {
 
-		BaseResponse<UserResponse> response = new BaseResponse();
+		BaseResponse<UserResponse> response = new BaseResponse<>();
 		Users user = this.getUser();
 
 		response.setData(new UserResponse(user));
@@ -119,12 +116,11 @@ public class UserController extends BaseController {
 
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@PostMapping("/change-password")
 	public ResponseEntity<BaseResponse<UserResponse>> chagePassword(@Valid @RequestBody ChangePasswordRequest wrapper)
 			throws Exception {
 
-		BaseResponse<UserResponse> response = new BaseResponse();
+		BaseResponse<UserResponse> response = new BaseResponse<>();
 
 		Users users = this.getUser();
 		String password = Utils.decodeBase64(users.getPassword());
@@ -151,12 +147,11 @@ public class UserController extends BaseController {
 
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@PostMapping("/upload-avatar")
 	public ResponseEntity<BaseResponse<ImageResponse>> create(@RequestParam(name = "file") MultipartFile file)
 			throws Exception {
 
-		BaseResponse<ImageResponse> response = new BaseResponse();
+		BaseResponse<ImageResponse> response = new BaseResponse<>();
 		Users user = this.getUser();
 
 		String fileName = iFirebaseImageService.save(file);

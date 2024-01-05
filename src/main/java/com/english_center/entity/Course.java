@@ -1,7 +1,6 @@
 package com.english_center.entity;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
 @Table(name = "course")
@@ -45,7 +46,5 @@ public class Course extends BaseEntity {
 
 	@Column(name = "discount_percent")
 	private int discountPercent;
-
-	
 
 }

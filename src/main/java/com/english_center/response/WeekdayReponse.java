@@ -5,26 +5,13 @@ import java.util.stream.Collectors;
 
 import com.english_center.entity.Weekday;
 
+import lombok.Data;
+
+@Data
 public class WeekdayReponse {
 	private int id;
 
 	private String name;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public WeekdayReponse() {
 	}

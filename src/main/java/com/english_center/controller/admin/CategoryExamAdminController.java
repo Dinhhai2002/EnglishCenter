@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,18 +27,10 @@ import com.english_center.response.BaseListDataResponse;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.CategoryExamResponse;
 import com.english_center.response.ExamResponse;
-import com.english_center.service.CategoryExamService;
-import com.english_center.service.ExamService;
 
 @RestController
 @RequestMapping("/api/v1/admin/category-exam")
 public class CategoryExamAdminController extends BaseController {
-
-	@Autowired
-	CategoryExamService categoryExamService;
-
-	@Autowired
-	ExamService examService;
 
 	@GetMapping("")
 //	@PreAuthorize("hasAnyAuthority('ADMIN')")

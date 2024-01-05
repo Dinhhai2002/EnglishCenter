@@ -8,7 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
 @Table(name = "user_course_progress")
@@ -33,7 +35,5 @@ public class UserCourseProgress extends BaseEntity {
 
 	@Column(name = "is_completed")
 	private int isCompleted;
-
-	
 
 }

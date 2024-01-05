@@ -8,7 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
 @Table(name = "video_watch_history")
@@ -31,5 +33,4 @@ public class VideoWatchHistory extends BaseEntity {
 	@Column(name = "is_done")
 	private int isDone;
 
-	
 }

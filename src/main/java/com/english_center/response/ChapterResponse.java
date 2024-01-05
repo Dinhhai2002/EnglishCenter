@@ -31,70 +31,6 @@ public class ChapterResponse {
 	@JsonProperty("count_lessons_studied")
 	private int countLessonsStudied;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(int courseId) {
-		this.courseId = courseId;
-	}
-
-	public List<LessonsResponse> getLessonsResponses() {
-		return lessonsResponses;
-	}
-
-	public void setLessonsResponses(List<LessonsResponse> lessonsResponses) {
-		this.lessonsResponses = lessonsResponses;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
-	public String getCourseName() {
-		return courseName;
-	}
-
-	public void setCourseName(String courseName) {
-		this.courseName = courseName;
-	}
-
-	public int getIsFree() {
-		return isFree;
-	}
-
-	public void setIsFree(int isFree) {
-		this.isFree = isFree;
-	}
-
-	public int getCountLessonsStudied() {
-		return countLessonsStudied;
-	}
-
-	public void setCountLessonsStudied(int countLessonsStudied) {
-		this.countLessonsStudied = countLessonsStudied;
-	}
-
 	public ChapterResponse() {
 	}
 
@@ -114,7 +50,7 @@ public class ChapterResponse {
 		this.isFree = entity.getIsFree();
 		this.status = entity.getStatus();
 	}
-	
+
 	public ChapterResponse(Chapter entity, List<LessonsResponse> lessonsResponses) {
 		this.id = entity.getId();
 		this.name = entity.getName();

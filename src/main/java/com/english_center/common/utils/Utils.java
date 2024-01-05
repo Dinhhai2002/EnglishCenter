@@ -1,9 +1,14 @@
 package com.english_center.common.utils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Utils {
 	public static Date convertStringToDate(String dateString) throws ParseException {
@@ -80,6 +85,19 @@ public class Utils {
 		}
 
 		return false;
+	}
+	
+	public static String convertListObjectToJsonArray(List<?> objects) {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			final ByteArrayOutputStream out = new ByteArrayOutputStream();
+			mapper.writeValue(out, objects);
+			final byte[] data = out.toByteArray();
+			return new String(data);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

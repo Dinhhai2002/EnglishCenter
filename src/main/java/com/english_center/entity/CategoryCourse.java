@@ -7,12 +7,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name="category_course")
+@Table(name = "category_course")
 @Data
-public class CategoryCourse  extends BaseEntity {
-	
+public class CategoryCourse extends BaseEntity {
+
 	/**
 	 * 
 	 */
@@ -23,9 +25,5 @@ public class CategoryCourse  extends BaseEntity {
 	private int id;
 
 	private String name;
-	
-	
-
-	
 
 }

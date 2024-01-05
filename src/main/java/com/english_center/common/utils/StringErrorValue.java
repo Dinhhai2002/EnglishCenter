@@ -104,6 +104,9 @@ public class StringErrorValue {
 	// results
 	public static final String RESULTS_NOT_FOUND = "Bảng kết quả không tìm thấy!";
 
+	// resultDetail
+	public static final String RESULTS_DETAIL_NOT_FOUND = "Bảng kết quả chi tiết không tìm thấy!";
+
 	// target
 	public static final String TARGET_NOT_FOUND = "Mục tiêu không tìm thấy!";
 	public static final String TIME_GREATER_CURRENT_DATE = "Thời gian phải lớn hơn ngày hiện tại!";

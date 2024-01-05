@@ -8,7 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
 @Table(name = "question")
@@ -24,22 +26,21 @@ public class Question extends BaseEntity {
 	private int id;
 
 	private String content;
-	
+
 	private String paragraph;
-	
+
 	@Column(name = "url_image")
 	private String urlImage;
 
-
 	@Column(name = "answer_a")
 	private String answerA;
-	
+
 	@Column(name = "answer_b")
 	private String answerB;
-	
+
 	@Column(name = "answer_c")
 	private String answerC;
-	
+
 	@Column(name = "answer_d")
 	private String answerD;
 
@@ -47,12 +48,10 @@ public class Question extends BaseEntity {
 
 	@Column(name = "exam_detail_id")
 	private int examDetailId;
-	
+
 	@Column(name = "exam_id")
 	private int examId;
-	
-	private int sort;
 
-	
+	private int sort;
 
 }

@@ -8,7 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
 @Table(name = "lessons")
@@ -49,7 +51,5 @@ public class Lessons extends BaseEntity {
 	private int status;
 
 	private long duration;
-
-
 
 }
