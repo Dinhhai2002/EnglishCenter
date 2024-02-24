@@ -7,5 +7,3 @@
 - Build a system of video lessons for students
 - Display details and results after taking the exam
 - Build an admin system to manage users, exam questions, courses, and revenue statistics
-
-# LinkWebsite: https://english-center-fe.vercel.app/
