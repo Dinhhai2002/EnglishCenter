@@ -16,19 +16,12 @@ public class AdditionalConfig {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
-		config.addAllowedOrigin("*"); // Cấu hình origins cho phù hợp với yêu cầu của bạn
-		config.addAllowedHeader("*"); // Chấp nhận tất cả các header
-		config.addAllowedMethod("*"); // Chấp nhận tất cả các phương thức HTTP
+		config.addAllowedOrigin("*"); 
+		config.addAllowedHeader("*"); 
+		config.addAllowedMethod("*"); 
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
 	}
 
-//	@Override
-//	public void addCorsMappings(CorsRegistry registry) {
-//		registry.addMapping("/api/**") // Đường dẫn API của bạn
-//				.allowedOrigins("http://localhost:3000") // Địa chỉ ứng dụng React của bạn
-//				.allowedMethods("GET", "POST", "PUT", "DELETE").allowedHeaders("*").allowCredentials(true)
-//				.exposedHeaders("Authorization");
-//	}
 
 }

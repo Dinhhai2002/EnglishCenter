@@ -41,4 +41,9 @@ public class ReplyCommentsServiceImpl implements ReplyCommentsService {
 		replyCommentsDao.delete(replyComments);
 	}
 
+	@Override
+	public List<ReplyComments> getAll() throws Exception {
+		return replyCommentsDao.getAll();
+	}
+
 }

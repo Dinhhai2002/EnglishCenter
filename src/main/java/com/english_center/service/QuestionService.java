@@ -14,4 +14,6 @@ public interface QuestionService {
 	List<Question> getListByExamId(int examId) throws Exception;
 	
 	Question findOneBySortAndExamId(int sort, int examId) throws Exception;
+	
+	List<Question> getAll() throws Exception;
 }

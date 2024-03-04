@@ -67,6 +67,9 @@ public class StringErrorValue {
 	public static final String LESSONS_IS_EXIST = "Bài học đã tồn tại!";
 	public static final String LESSONS_IS_NOT_VIDEO = "Bài học này hiện tại chưa có video nên không thể hoạt động được.Vui lòng cập nhật video trước khi đổi trạng thái hoạt động của bài học!";
 
+	// note
+	public static final String NOTE_NOT_FOUND = "Ghi chú không tồn tại!";
+
 	// videoWatchHistory
 	public static final String VIDEO_WATCH_HISTORY_NOT_FOUND = "Thời gian xem video người dùng không tồn tại!";
 

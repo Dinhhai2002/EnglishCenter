@@ -2,7 +2,9 @@ package com.english_center.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -333,7 +335,6 @@ public class JwtAuthenticationController extends BaseController {
 			response.setData(new JwtResponse(token));
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
-
 		token = HttpService.login(users.getUserName(), applicationProperties.getPasswordAccountGoogle(),
 				applicationProperties.getBaseUrl());
 		registerUser.setIsLogin(1);
@@ -473,23 +474,34 @@ public class JwtAuthenticationController extends BaseController {
 
 		List<Comments> comments = commentsService.findByExamId(examId);
 
+		List<Users> listUsers = userService.getAll();
+		Map<Integer, Users> userMap = new HashMap<>();
+		for (Users user : listUsers) {
+			userMap.put(user.getId(), user);
+		}
+
+		List<ReplyComments> listReplyComments = replyCommentsService.getAll();
+
 		/*
 		 * Map trả về list comment lồng replyComments
 		 */
 		response.setData(comments.stream().map(x -> {
-			UserResponse user = new UserResponse(getOneWithExceptionHandler(() -> userService.findOne(x.getUserId())));
 
-			List<ReplyComments> replyComments = getListWithExceptionHandler(
-					() -> replyCommentsService.findByCommentId(x.getId()));
+			Users usersComments = userMap.get(x.getUserId());
 
-			List<ReplyCommentsResponse> replyCommentsResponse = replyComments.stream().map(y ->
-
-			new ReplyCommentsResponse(y,
-					new UserResponse(
-							getOneWithExceptionHandler(() -> userService.findOne(y.getUserIdReplyComments())))))
+			List<ReplyComments> replyComments = listReplyComments.stream()
+					.filter(itemReplyComment -> itemReplyComment.getCommentsId() == x.getId())
 					.collect(Collectors.toList());
 
-			return new CommentsResponse(x, replyCommentsResponse, user);
+			List<ReplyCommentsResponse> replyCommentsResponse = replyComments.stream().map(y -> {
+
+				Users usersReplyComments = userMap.get(y.getUserIdReplyComments());
+				return new ReplyCommentsResponse(y, new UserResponse(usersReplyComments));
+			}
+
+			).collect(Collectors.toList());
+
+			return new CommentsResponse(x, replyCommentsResponse, new UserResponse(usersComments));
 		}).collect(Collectors.toList()));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -532,13 +544,14 @@ public class JwtAuthenticationController extends BaseController {
 
 		int[] countLessons = { 0 };
 		List<Chapter> listChapter = chapterService.findByCourseId(id);
+		List<Lessons> listLessons = lessonsService.spGListLessons(-1, -1, "", 1, new Pagination(0, 20), 0).getResult();
 
 		List<ChapterResponse> list = listChapter.stream().map(x -> {
-			List<Lessons> listLessons = getListWithExceptionHandler(
-					() -> lessonsService.spGListLessons(-1, x.getId(), "", 1, new Pagination(0, 20), 0).getResult());
+			List<Lessons> listLessonsMap = listLessons.stream().filter(lesson -> lesson.getChapterId() == x.getId())
+					.collect(Collectors.toList());
 
 			countLessons[0] += listLessons.size();
-			return new ChapterResponse(x, new LessonsResponse().mapToList(listLessons));
+			return new ChapterResponse(x, new LessonsResponse().mapToList(listLessonsMap));
 		}).collect(Collectors.toList());
 
 		response.setData(new CourseResponse(course, list, 0, countLessons[0]));

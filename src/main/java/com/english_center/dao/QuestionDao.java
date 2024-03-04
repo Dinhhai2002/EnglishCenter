@@ -14,4 +14,6 @@ public interface QuestionDao {
 	void update(Question question) throws Exception;
 
 	List<Question> getListByExamId(int examId) throws Exception;
+	
+	List<Question> getAll() throws Exception;
 }

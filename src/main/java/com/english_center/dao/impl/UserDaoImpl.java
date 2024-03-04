@@ -247,7 +247,7 @@ public class UserDaoImpl extends AbstractDao<Integer, Users> implements UserDao 
 	public List<Users> getAll() throws Exception {
 		CriteriaBuilder builder = this.getBuilder();
 		CriteriaQuery<Users> query = builder.createQuery(Users.class);
-//		Root<Users> root = query.from(Users.class);
+		Root<Users> root = query.from(Users.class);
 
 		return this.getSession().createQuery(query).getResultList();
 	}

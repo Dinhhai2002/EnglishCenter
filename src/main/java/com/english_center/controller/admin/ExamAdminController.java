@@ -68,11 +68,11 @@ public class ExamAdminController extends BaseController {
 		 * Lấy tất cả đề thi không phân trang
 		 */
 		List<Exam> exams = examService.spGListExam(-1, -1, "", -1, new Pagination(0, 20), 0).getResult();
+		List<Question> listQuestionAll = questionService.getAll();
 
 		List<Exam> listexamResult = exams.stream().filter(x -> {
-			List<Question> listQuestion = getListWithExceptionHandler(() -> {
-				return questionService.getListByExamId(x.getId());
-			});
+			List<Question> listQuestion = listQuestionAll.stream().filter(question -> question.getExamId() == x.getId())
+					.collect(Collectors.toList());
 
 			return listQuestion.isEmpty();
 		}).collect(Collectors.toList());

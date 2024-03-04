@@ -1,6 +1,8 @@
 package com.english_center.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -127,23 +129,34 @@ public class CommentsController extends BaseController {
 
 		List<Comments> comments = commentsService.findByExamId(examId);
 
+		List<Users> listUsers = userService.getAll();
+		Map<Integer, Users> userMap = new HashMap<>();
+		for (Users user : listUsers) {
+			userMap.put(user.getId(), user);
+		}
+
+		List<ReplyComments> listReplyComments = replyCommentsService.getAll();
+
 		/*
 		 * Map trả về list comment lồng replyComments
 		 */
 		response.setData(comments.stream().map(x -> {
-			UserResponse user = new UserResponse(getOneWithExceptionHandler(() -> userService.findOne(x.getUserId())));
 
-			List<ReplyComments> replyComments = getListWithExceptionHandler(
-					() -> replyCommentsService.findByCommentId(x.getId()));
+			Users usersComments = userMap.get(x.getUserId());
 
-			List<ReplyCommentsResponse> replyCommentsResponse = replyComments.stream().map(y ->
-
-			new ReplyCommentsResponse(y,
-					new UserResponse(
-							getOneWithExceptionHandler(() -> userService.findOne(y.getUserIdReplyComments())))))
+			List<ReplyComments> replyComments = listReplyComments.stream()
+					.filter(itemReplyComment -> itemReplyComment.getCommentsId() == x.getId())
 					.collect(Collectors.toList());
 
-			return new CommentsResponse(x, replyCommentsResponse, user);
+			List<ReplyCommentsResponse> replyCommentsResponse = replyComments.stream().map(y -> {
+
+				Users usersReplyComments = userMap.get(y.getUserIdReplyComments());
+				return new ReplyCommentsResponse(y, new UserResponse(usersReplyComments));
+			}
+
+			).collect(Collectors.toList());
+
+			return new CommentsResponse(x, replyCommentsResponse, new UserResponse(usersComments));
 		}).collect(Collectors.toList()));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);

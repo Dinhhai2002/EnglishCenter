@@ -44,4 +44,9 @@ public class QuestionServiceImpl implements QuestionService {
 		return questionDao.findOneBySortAndExamId(sort, examId);
 	}
 
+	@Override
+	public List<Question> getAll() throws Exception {
+		return questionDao.getAll();
+	}
+
 }

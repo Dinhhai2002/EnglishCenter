@@ -25,5 +25,4 @@ public class JwtRequest implements Serializable {
 //	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$", message = "password phải vừa có kí tự viết hoa viết thường,có số và kí tự đặc biệt!")
 	private String password;
 
-	
 }

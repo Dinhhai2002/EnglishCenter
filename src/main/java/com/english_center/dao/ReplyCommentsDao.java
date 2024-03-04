@@ -10,8 +10,10 @@ public interface ReplyCommentsDao {
 	ReplyComments findOne(int id) throws Exception;
 
 	void update(ReplyComments replyComments) throws Exception;
-	
+
 	List<ReplyComments> findByCommentId(int commentsId) throws Exception;
-	
+
 	void delete(ReplyComments replyComments) throws Exception;
+
+	List<ReplyComments> getAll() throws Exception;
 }

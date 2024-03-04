@@ -57,4 +57,13 @@ public class QuestionDaoImpl extends AbstractDao<Integer, Question> implements Q
 		return this.getSession().createQuery(query).getResultList().stream().findFirst().orElse(null);
 	}
 
+	@Override
+	public List<Question> getAll() throws Exception {
+		CriteriaBuilder builder = this.getBuilder();
+		CriteriaQuery<Question> query = builder.createQuery(Question.class);
+		Root<Question> root = query.from(Question.class);
+
+		return this.getSession().createQuery(query).getResultList();
+	}
+
 }

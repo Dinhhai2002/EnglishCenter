@@ -2,7 +2,9 @@ package com.english_center.controller;
 
 import java.io.ByteArrayInputStream;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -51,8 +53,6 @@ public class LessonsController extends BaseController {
 	@Autowired
 	ClassService classService;
 
-//	public static final String FOLDER_TO_UPLOAD = "1ZcI0cLXncMYOhylO4jZBgWj2yVsj5WdB";
-
 	@GetMapping("")
 	public ResponseEntity<BaseResponse<BaseListDataResponse<LessonsResponse>>> getAll(
 			@RequestParam(name = "course_id", required = false, defaultValue = "-1") int courseId,
@@ -68,10 +68,22 @@ public class LessonsController extends BaseController {
 				status, pagination, isPagination);
 
 		BaseListDataResponse<LessonsResponse> listData = new BaseListDataResponse<>();
+		List<Course> listCourse = courseService.findAll();
+		List<Chapter> listChapter = chapterService.spGListChapter(-1, "", -1, new Pagination(0, 20), 0).getResult();
+
+		Map<Integer, Course> courseMap = new HashMap<>();
+		for (Course course : listCourse) {
+			courseMap.put(course.getId(), course);
+		}
+
+		Map<Integer, Chapter> chapterMap = new HashMap<>();
+		for (Chapter chapter : listChapter) {
+			chapterMap.put(chapter.getId(), chapter);
+		}
 
 		List<LessonsResponse> listLessonsResponse = listLessons.getResult().stream().map(x -> {
-			Course course = getOneWithExceptionHandler(() -> courseService.findOne(x.getCourseId()));
-			Chapter chapter = getOneWithExceptionHandler(() -> chapterService.findOne(x.getChapterId()));
+			Course course = courseMap.get(x.getCourseId());
+			Chapter chapter = chapterMap.get(x.getChapterId());
 			return new LessonsResponse(x, course, chapter);
 		}).collect(Collectors.toList());
 

@@ -24,14 +24,14 @@ public class ReplyCommentsDaoImpl extends AbstractDao<Integer, ReplyComments> im
 
 	@Override
 	public ReplyComments findOne(int id) throws Exception {
-		return this.getSession().find(ReplyComments.class,id);
+		return this.getSession().find(ReplyComments.class, id);
 	}
 
 	@Override
 	public void update(ReplyComments replyComments) throws Exception {
 		this.getSession().update(replyComments);
 	}
-	
+
 	@Override
 	public void delete(ReplyComments replyComments) {
 		this.getSession().delete(replyComments);
@@ -43,6 +43,15 @@ public class ReplyCommentsDaoImpl extends AbstractDao<Integer, ReplyComments> im
 		CriteriaQuery<ReplyComments> query = builder.createQuery(ReplyComments.class);
 		Root<ReplyComments> root = query.from(ReplyComments.class);
 		query.where(builder.equal(root.get("commentsId"), commentsId));
+
+		return this.getSession().createQuery(query).getResultList();
+	}
+
+	@Override
+	public List<ReplyComments> getAll() throws Exception {
+		CriteriaBuilder builder = this.getBuilder();
+		CriteriaQuery<ReplyComments> query = builder.createQuery(ReplyComments.class);
+		Root<ReplyComments> root = query.from(ReplyComments.class);
 
 		return this.getSession().createQuery(query).getResultList();
 	}

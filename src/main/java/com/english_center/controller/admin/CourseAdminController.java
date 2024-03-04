@@ -56,6 +56,9 @@ public class CourseAdminController extends BaseController {
 		BaseListDataResponse<CourseResponse> listData = new BaseListDataResponse<>();
 		Users currentUser = this.getUser();
 
+		List<UserCourse> listUserCourses = userCourseService
+				.spGUserCourse(-1, 1, currentUser.getId(), -1, 0, new Pagination(0, 1000), 0).getResult();
+
 		/**
 		 * typeUserUsing 0 : chưa đăng kí 1 : đã đăng kí 2 : đã hết hạn
 		 */
@@ -64,7 +67,8 @@ public class CourseAdminController extends BaseController {
 //		xử lí trả về danh sách khóa học kèm theo user đó có đăng kí hay chưa
 		List<CourseResponse> listCourseResponses = listCourse.getResult().stream().map(x -> {
 
-			List<UserCourse> listCourses = getUserCourses(x.getId(), currentUser.getId());
+			List<UserCourse> listCourses = listUserCourses.stream()
+					.filter(userCourseItem -> userCourseItem.getCourseId() == x.getId()).collect(Collectors.toList());
 
 			typeUserUsing[0] = determineUserCourseStatus(listCourses).getValue();
 
@@ -192,11 +196,6 @@ public class CourseAdminController extends BaseController {
 		response.setData(new ImageResponse(image));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
-
-	private List<UserCourse> getUserCourses(int courseId, int userId) {
-		return getListWithExceptionHandler(() -> userCourseService
-				.spGUserCourse(courseId, 1, userId, -1, 0, new Pagination(0, 1000), 0).getResult());
 	}
 
 	private UserCourseUsingStatusEnum determineUserCourseStatus(List<UserCourse> userCourses) {

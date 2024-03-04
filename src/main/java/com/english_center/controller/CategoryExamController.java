@@ -55,10 +55,8 @@ public class CategoryExamController extends BaseController {
 			throws Exception {
 
 		BaseResponse<List<TopicExamReponse>> response = new BaseResponse<>();
-		List<TopicExamReponse> listExamReponses = new TopicExamReponse()
-				.mapToList(topicExamService.findByCategoryExamId(id));
 
-		response.setData(listExamReponses);
+		response.setData(new TopicExamReponse().mapToList(topicExamService.findByCategoryExamId(id)));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

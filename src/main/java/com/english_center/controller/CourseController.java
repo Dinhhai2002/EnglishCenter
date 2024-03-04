@@ -1,8 +1,9 @@
 package com.english_center.controller;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -23,33 +24,28 @@ import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
 import com.english_center.entity.Chapter;
 import com.english_center.entity.Class;
-import com.english_center.entity.ClassWeekday;
 import com.english_center.entity.Course;
 import com.english_center.entity.Lessons;
-import com.english_center.entity.UserCourse;
 import com.english_center.entity.UserCourseProgress;
 import com.english_center.entity.Users;
-import com.english_center.model.StoreProcedureListResult;
 import com.english_center.request.CRUDCourseRequest;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.ChapterResponse;
 import com.english_center.response.ClassResponse;
 import com.english_center.response.CourseResponse;
 import com.english_center.response.LessonsResponse;
-import com.english_center.response.UserCourseResponse;
 import com.english_center.service.ClassService;
 import com.english_center.service.ClassWeekdayService;
 
 @RestController
 @RequestMapping("/api/v1/course")
 public class CourseController extends BaseController {
-	
+
 	@Autowired
 	ClassService classService;
 
 	@Autowired
 	ClassWeekdayService classWeekdayService;
-
 
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@PostMapping("/{id}/update")
@@ -107,16 +103,35 @@ public class CourseController extends BaseController {
 		int[] countLessons = { 0 };
 		List<Chapter> listChapter = chapterService.findByCourseId(id);
 
-		List<ChapterResponse> list = listChapter.stream().map(x -> {
-			List<Lessons> listLessons = getListWithExceptionHandler(
-					() -> lessonsService.spGListLessons(-1, x.getId(), "", 1, new Pagination(0, 20), 0).getResult());
+		List<Lessons> listLessons = lessonsService.spGListLessons(-1, -1, "", 1, new Pagination(0, 20), 0).getResult();
 
-			List<LessonsResponse> listLessonsResponses = listLessons.stream().map(lessons -> {
+		List<UserCourseProgress> listUserCourseProgress = userCourseProgressService
+				.spGUserCourseProgress(users.getId(), id, -1, -1, -1).getResult();
 
-				UserCourseProgress userCourseProgress = getOneWithExceptionHandler(
-						() -> userCourseProgressService.findByLessonsAndUser(lessons.getId(), users.getId()));
+		Map<Integer, UserCourseProgress> userCourseProgressMap = new HashMap<>();
+		for (UserCourseProgress userCourseProgress : listUserCourseProgress) {
+			userCourseProgressMap.put(userCourseProgress.getLessonsId(), userCourseProgress);
+		}
 
-				return handleLessonResponse(lessons, userCourseProgress);
+		List<ChapterResponse> list = this.handleResponseChapter(listChapter, listLessons, userCourseProgressMap,
+				countLessons, course, users);
+
+		response.setData(new CourseResponse(course, list, 0, countLessons[0]));
+		return new ResponseEntity<>(response, HttpStatus.OK);
+
+	}
+
+	public List<ChapterResponse> handleResponseChapter(List<Chapter> listChapter, List<Lessons> listLessons,
+			Map<Integer, UserCourseProgress> userCourseProgressMap, int[] countLessons, Course course, Users users) {
+		return listChapter.stream().map(x -> {
+
+			List<Lessons> listLessonsMap = listLessons.stream().filter(lesson -> lesson.getChapterId() == x.getId())
+					.collect(Collectors.toList());
+
+			List<LessonsResponse> listLessonsResponses = listLessonsMap.stream().map(lesson -> {
+
+				UserCourseProgress userCourseProgress = userCourseProgressMap.get(lesson.getId());
+				return handleLessonResponse(lesson, userCourseProgress);
 
 			}).collect(Collectors.toList());
 
@@ -126,9 +141,6 @@ public class CourseController extends BaseController {
 			return new ChapterResponse(x, listLessonsResponses,
 					this.countLessonsIsStudiedInChapter(course.getId(), x.getId(), users.getId()));
 		}).collect(Collectors.toList());
-
-		response.setData(new CourseResponse(course, list, 0, countLessons[0]));
-		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@GetMapping("/no-banner")
@@ -179,15 +191,17 @@ public class CourseController extends BaseController {
 		}
 
 		List<Chapter> listChapter = chapterService.findByCourseId(id);
+		List<Course> courses = courseService.findAll();
 
-		List<ChapterResponse> listChapterResponse = listChapter.stream().map(x -> {
-			Course course = new Course();
-			try {
-				course = courseService.findOne(x.getCourseId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return new ChapterResponse(x, course);
+		Map<Integer, Course> courseMap = new HashMap<>();
+		for (Course course : courses) {
+			courseMap.put(course.getId(), course);
+		}
+
+		List<ChapterResponse> listChapterResponse = listChapter.stream().map(chapter -> {
+			Course course = courseMap.get(chapter.getCourseId());
+
+			return new ChapterResponse(chapter, course);
 		}).collect(Collectors.toList());
 
 		response.setData(listChapterResponse);
@@ -195,73 +209,73 @@ public class CourseController extends BaseController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@GetMapping("/{id}/list-class-add-hour")
-	public ResponseEntity<BaseResponse<List<ClassResponse>>> getClassByIdAddHour(@PathVariable("id") int id)
-			throws Exception {
+//	@GetMapping("/{id}/list-class-add-hour")
+//	public ResponseEntity<BaseResponse<List<ClassResponse>>> getClassByIdAddHour(@PathVariable("id") int id)
+//			throws Exception {
+//
+//		BaseResponse<List<ClassResponse>> response = new BaseResponse<>();
+//		Course checkCourse = courseService.findOne(id);
+//
+//		if (checkCourse == null) {
+//			response.setStatus(HttpStatus.BAD_REQUEST);
+//			response.setMessageError(StringErrorValue.COURSE_NOT_FOUND);
+//			return new ResponseEntity<>(response, HttpStatus.OK);
+//		}
+//
+//		List<Class> listClass = classService.getAllByCourseId(id);
+//		List<Class> listClassCheck = new ArrayList<>();
+//
+//		listClass.stream().map(x -> {
+//			List<ClassWeekday> listClassWeekdays = new ArrayList<>();
+//			try {
+//				listClassWeekdays = classWeekdayService.getAllByClassId(x.getId());
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//
+//			if (listClassWeekdays.isEmpty()) {
+//				listClassCheck.add(x);
+//			}
+//
+//			return 0;
+//		}).collect(Collectors.toList());
+//
+//		response.setData(new ClassResponse().mapToList(listClassCheck));
+//
+//		return new ResponseEntity<>(response, HttpStatus.OK);
+//	}
 
-		BaseResponse<List<ClassResponse>> response = new BaseResponse<>();
-		Course checkCourse = courseService.findOne(id);
-
-		if (checkCourse == null) {
-			response.setStatus(HttpStatus.BAD_REQUEST);
-			response.setMessageError(StringErrorValue.COURSE_NOT_FOUND);
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		}
-
-		List<Class> listClass = classService.getAllByCourseId(id);
-		List<Class> listClassCheck = new ArrayList<>();
-
-		listClass.stream().map(x -> {
-			List<ClassWeekday> listClassWeekdays = new ArrayList<>();
-			try {
-				listClassWeekdays = classWeekdayService.getAllByClassId(x.getId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			if (listClassWeekdays.isEmpty()) {
-				listClassCheck.add(x);
-			}
-
-			return 0;
-		}).collect(Collectors.toList());
-
-		response.setData(new ClassResponse().mapToList(listClassCheck));
-
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
-
-	@GetMapping("/{id}/list-student")
-	public ResponseEntity<BaseResponse<List<UserCourseResponse>>> getListStudent(@PathVariable("id") int id)
-			throws Exception {
-
-		BaseResponse<List<UserCourseResponse>> response = new BaseResponse<>();
-		Pagination pagination = new Pagination(0, 20);
-		Course checkCourse = courseService.findOne(id);
-
-		if (checkCourse == null) {
-			response.setStatus(HttpStatus.BAD_REQUEST);
-			response.setMessageError(StringErrorValue.COURSE_NOT_FOUND);
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		}
-
-		StoreProcedureListResult<UserCourse> listUserCourses = userCourseService.spGUserCourse(id, 0, -1, -1, -1,
-				pagination, 0);
-
-		List<UserCourseResponse> listData = listUserCourses.getResult().stream().map(x -> {
-			Users user = new Users();
-			try {
-				user = userService.findOne(x.getStudentId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return new UserCourseResponse(x, user);
-		}).collect(Collectors.toList());
-
-		response.setData(listData);
-
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
+//	@GetMapping("/{id}/list-student")
+//	public ResponseEntity<BaseResponse<List<UserCourseResponse>>> getListStudent(@PathVariable("id") int id)
+//			throws Exception {
+//
+//		BaseResponse<List<UserCourseResponse>> response = new BaseResponse<>();
+//		Pagination pagination = new Pagination(0, 20);
+//		Course checkCourse = courseService.findOne(id);
+//
+//		if (checkCourse == null) {
+//			response.setStatus(HttpStatus.BAD_REQUEST);
+//			response.setMessageError(StringErrorValue.COURSE_NOT_FOUND);
+//			return new ResponseEntity<>(response, HttpStatus.OK);
+//		}
+//
+//		StoreProcedureListResult<UserCourse> listUserCourses = userCourseService.spGUserCourse(id, 0, -1, -1, -1,
+//				pagination, 0);
+//
+//		List<UserCourseResponse> listData = listUserCourses.getResult().stream().map(x -> {
+//			Users user = new Users();
+//			try {
+//				user = userService.findOne(x.getStudentId());
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//			return new UserCourseResponse(x, user);
+//		}).collect(Collectors.toList());
+//
+//		response.setData(listData);
+//
+//		return new ResponseEntity<>(response, HttpStatus.OK);
+//	}
 
 	private LessonsResponse handleLessonResponse(Lessons lessons, UserCourseProgress userCourseProgress) {
 		/*

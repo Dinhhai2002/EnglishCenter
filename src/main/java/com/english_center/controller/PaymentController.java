@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -60,11 +61,22 @@ public class PaymentController extends BaseController {
 		StoreProcedureListResult<Payment> listPayment = paymentService.spGPayment(courseId, userId, pagination,
 				isPagination);
 
+		List<Course> listCourse = courseService.findAll();
+		List<Users> listUsers = userService.getAll();
+
+		Map<Integer, Course> courseMap = new HashMap<>();
+		for (Course course : listCourse) {
+			courseMap.put(course.getId(), course);
+		}
+
+		Map<Integer, Users> userMap = new HashMap<>();
+		for (Users user : listUsers) {
+			userMap.put(user.getId(), user);
+		}
+
 		List<PaymentResponse> listPaymentResponses = listPayment.getResult().stream().map(x -> {
-			Users users = getOneWithExceptionHandler(() -> userService.findOne(x.getStudentId()));
-
-			Course course = getOneWithExceptionHandler(() -> courseService.findOne(x.getCourseId()));
-
+			Course course = courseMap.get(x.getCourseId());
+			Users users = userMap.get(x.getStudentId());
 			return new PaymentResponse(x, course, users);
 		}).collect(Collectors.toList());
 

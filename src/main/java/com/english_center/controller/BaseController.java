@@ -58,6 +58,7 @@ import com.english_center.service.ExamService;
 import com.english_center.service.IFirebaseImageService;
 import com.english_center.service.ImageService;
 import com.english_center.service.LessonsService;
+import com.english_center.service.NoteService;
 import com.english_center.service.PaymentService;
 import com.english_center.service.QuestionService;
 import com.english_center.service.ReplyCommentsService;
@@ -79,6 +80,9 @@ import com.google.api.services.drive.model.Permission;
 
 @RestController
 public class BaseController {
+	@Autowired
+	public NoteService noteService;
+
 	@Autowired
 	public JwtTokenUtil jwtTokenUtil;
 

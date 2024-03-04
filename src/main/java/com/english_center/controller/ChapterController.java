@@ -1,11 +1,12 @@
 package com.english_center.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,21 +29,10 @@ import com.english_center.response.BaseListDataResponse;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.ChapterResponse;
 import com.english_center.response.LessonsResponse;
-import com.english_center.service.ChapterService;
-import com.english_center.service.CourseService;
-import com.english_center.service.LessonsService;
 
 @RestController
 @RequestMapping("/api/v1/chapter")
 public class ChapterController extends BaseController {
-	@Autowired
-	CourseService courseService;
-
-	@Autowired
-	ChapterService chapterService;
-
-	@Autowired
-	LessonsService lessonsService;
 
 	@SuppressWarnings("rawtypes")
 	@PostMapping("/create")
@@ -61,7 +51,6 @@ public class ChapterController extends BaseController {
 
 		if (chapterService.findByNameAndCourse(wrapper.getName(), wrapper.getCourseId()) != null) {
 			response.setStatus(HttpStatus.BAD_REQUEST);
-
 			response.setMessageError(StringErrorValue.nameChapterIsExist(wrapper.getName(), checkCourse.getName()));
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
@@ -133,11 +122,17 @@ public class ChapterController extends BaseController {
 				pagination, isPagination);
 
 		BaseListDataResponse<ChapterResponse> listData = new BaseListDataResponse<>();
+		List<Course> courses = courseService.findAll();
 
-		List<ChapterResponse> listChapterResponse = listChapter.getResult().stream().map(x -> {
-			Course course = getOneWithExceptionHandler(() -> courseService.findOne(x.getCourseId()));
+		Map<Integer, Course> courseMap = new HashMap<>();
+		for (Course course : courses) {
+			courseMap.put(course.getId(), course);
+		}
 
-			return new ChapterResponse(x, course);
+		List<ChapterResponse> listChapterResponse = listChapter.getResult().stream().map(chapter -> {
+			Course course = courseMap.get(chapter.getCourseId());
+
+			return new ChapterResponse(chapter, course);
 		}).collect(Collectors.toList());
 
 		listData.setList(listChapterResponse);
