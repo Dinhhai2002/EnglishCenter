@@ -1,5 +1,5 @@
-# link website: https://english-center-fe.vercel.app/
-# skill:
+# Link website: https://english-center-fe.vercel.app/
+# Skill:
 - BackEnd : Java (SpringBoots)
 - FrontEnd : Reactjs
 - Database : MYSQL
