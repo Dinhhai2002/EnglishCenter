@@ -121,6 +121,13 @@ public class StringErrorValue {
 	// Audio
 	public static final String AUDIO_IS_NOT_SUPPORT_TYPE = "Chỉ hỗ trợ file mp3 và mp4!";
 
+	// Post
+	public static final String POST_NOT_FOUND = "Bài viết không tìm thấy!";
+
+	// Category Blog
+	public static final String CATEGORY_BLOG_NOT_FOUND = "Danh mục Blog không tồn tại!";
+	public static final String CATEGORY_BLOG_IS_EXIST = "Danh mục Blog đã tồn tại!";
+
 	// image
 //	public static final String COMMENTS_NOT_FOUND = "Bình luận không tìm thấy!";
 
