@@ -82,7 +82,7 @@ public class CourseResponse {
 		this.durationFormat = Utils.formatMillisecondsToTime(entity.getDuration());
 		this.typeUserUsing = typeUserUsing;
 		this.countChapter = listChapter.size();
-		this.countLessons = countLessons;
+		this.countLessons = entity.getLessons();
 	}
 
 	public CourseResponse(Course entity, int typeUserUsing, int countLessons, int lessonsPresent) {

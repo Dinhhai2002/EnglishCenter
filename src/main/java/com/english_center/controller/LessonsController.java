@@ -334,6 +334,7 @@ public class LessonsController extends BaseController {
 			 * tắt thì trừ time video đi
 			 */
 			course.setDuration(course.getDuration() - calculateTimeVideo(lessons.getIdVideo(), lessons.getVideoType()));
+			course.setLessons(course.getLessons() - 1);
 			courseService.update(course);
 		}
 
