@@ -17,6 +17,7 @@ import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
 import com.english_center.entity.CategoryBlog;
 import com.english_center.entity.Posts;
+import com.english_center.entity.Rating;
 import com.english_center.entity.Users;
 import com.english_center.model.PostModel;
 import com.english_center.model.StoreProcedureListResult;
@@ -25,12 +26,16 @@ import com.english_center.response.BaseListDataResponse;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.PostResponse;
 import com.english_center.service.PostService;
+import com.english_center.service.RatingService;
 
 @RestController
 @RequestMapping("/api/v1/post")
 public class PostController extends BaseController {
 	@Autowired
 	PostService postService;
+
+	@Autowired
+	RatingService ratingService;
 
 	@GetMapping("")
 	public ResponseEntity<BaseResponse<BaseListDataResponse<PostResponse>>> getAll(
@@ -71,7 +76,9 @@ public class PostController extends BaseController {
 		Users users = userService.findOne(post.getAuthorId());
 		CategoryBlog categoryBlog = categoryBlogService.findOne(post.getCategoryBlogId());
 
-		response.setData(new PostResponse(post, users, categoryBlog));
+		Rating rating = ratingService.findOneByUserAndPost(this.getUser().getId(), post.getId());
+
+		response.setData(new PostResponse(post, users, categoryBlog, rating));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

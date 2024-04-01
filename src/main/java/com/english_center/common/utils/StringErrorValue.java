@@ -124,6 +124,9 @@ public class StringErrorValue {
 	// Post
 	public static final String POST_NOT_FOUND = "Bài viết không tìm thấy!";
 
+	// Rating
+	public static final String RATING_NOT_FOUND = "Đánh giá không tìm thấy!";
+
 	// Category Blog
 	public static final String CATEGORY_BLOG_NOT_FOUND = "Danh mục Blog không tồn tại!";
 	public static final String CATEGORY_BLOG_IS_EXIST = "Danh mục Blog đã tồn tại!";

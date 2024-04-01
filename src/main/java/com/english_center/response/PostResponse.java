@@ -1,10 +1,12 @@
 package com.english_center.response;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.english_center.entity.CategoryBlog;
 import com.english_center.entity.Posts;
+import com.english_center.entity.Rating;
 import com.english_center.entity.Users;
 import com.english_center.model.PostModel;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -40,6 +42,17 @@ public class PostResponse {
 
 	private int status;
 
+	@JsonProperty("is_rating")
+	private int isRating;
+
+	private Rating rating;
+
+	@JsonProperty("point_avg")
+	private BigDecimal pointAvg;
+
+	@JsonProperty("count_rating")
+	private long countRating;
+
 	@JsonProperty("created_at")
 	private String createdAt;
 
@@ -72,7 +85,7 @@ public class PostResponse {
 		this.status = entity.getStatus();
 	}
 
-	public PostResponse(Posts entity, Users users, CategoryBlog categoryBlog) {
+	public PostResponse(Posts entity, Users users, CategoryBlog categoryBlog, Rating rating) {
 		this.id = entity.getId();
 		this.title = entity.getTitle();
 		this.description = entity.getDescription();
@@ -85,6 +98,10 @@ public class PostResponse {
 		this.banner = entity.getBanner();
 		this.createdAt = entity.getDateFormatVN(entity.getCreatedAt());
 		this.status = entity.getStatus();
+		this.isRating = rating == null ? 0 : 1;
+		this.rating = rating;
+		this.pointAvg = entity.getPoint();
+		this.countRating = entity.getCountRating();
 	}
 
 	public List<PostResponse> mapToList(List<Posts> entities) {

@@ -17,7 +17,6 @@ import com.english_center.common.exception.TechresHttpException;
 import com.english_center.common.utils.Pagination;
 import com.english_center.dao.AbstractDao;
 import com.english_center.dao.PostDao;
-import com.english_center.entity.Chapter;
 import com.english_center.entity.Posts;
 import com.english_center.model.PostModel;
 import com.english_center.model.StoreProcedureListResult;

@@ -15,32 +15,23 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
-@Table(name = "posts")
-public class Posts extends BaseEntity {
+@Table(name = "promotions")
+public class Promotion extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	private String title;
+	private int point;
+
+	@Column(name = "promotion_type")
+	private int promotionType;
+
+	@Column(name = "promotion_value")
+	private BigDecimal promotionValue;
 
 	private String description;
-
-	private String content;
-
-	@Column(name = "author_id")
-	private int authorId;
-
-	@Column(name = "category_blog_id")
-	private int categoryBlogId;
-
-	private String banner;
-
-	private BigDecimal point;
-
-	@Column(name = "count_rating")
-	private long countRating;
 
 	private int status;
 }
