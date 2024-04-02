@@ -1,5 +1,7 @@
 package com.english_center.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,5 +31,10 @@ public class PromotionServiceImpl implements PromotionService {
 	public void update(Promotion promotion) throws Exception {
 		promotionDao.update(promotion);
 
+	}
+
+	@Override
+	public List<Promotion> findAll() throws Exception {
+		return promotionDao.findAll();
 	}
 }

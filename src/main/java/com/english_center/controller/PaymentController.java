@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,12 +29,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.english_center.common.enums.RoleEnum;
+import com.english_center.common.enums.StatusEnum;
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
 import com.english_center.entity.Chapter;
 import com.english_center.entity.Course;
 import com.english_center.entity.Lessons;
 import com.english_center.entity.Payment;
+import com.english_center.entity.Point;
+import com.english_center.entity.Promotion;
 import com.english_center.entity.UserCourse;
 import com.english_center.entity.UserCourseProgress;
 import com.english_center.entity.Users;
@@ -44,10 +48,18 @@ import com.english_center.request.PaymentRequest;
 import com.english_center.response.BaseListDataResponse;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.PaymentResponse;
+import com.english_center.service.PointService;
+import com.english_center.service.PromotionService;
 
 @RestController()
 @RequestMapping("/api/v1/payment")
 public class PaymentController extends BaseController {
+
+	@Autowired
+	PointService pointService;
+
+	@Autowired
+	PromotionService promotionService;
 
 	@GetMapping("")
 	public ResponseEntity<BaseResponse<BaseListDataResponse<PaymentResponse>>> getAll(
@@ -197,13 +209,27 @@ public class PaymentController extends BaseController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 
+		Promotion promotion = promotionService.findOne(wrapper.getPromotionId());
+
+		if (promotion != null) {
+			Point point = pointService.findOneByUserId(users.getId());
+			if (point.getPoint() < promotion.getPoint()) {
+				response.setStatus(HttpStatus.BAD_REQUEST);
+				response.setMessageError(StringErrorValue.POINT_USER_NOT_PERMIT);
+				return new ResponseEntity<>(response, HttpStatus.OK);
+			}
+			point.setPoint(point.getPoint() - promotion.getPoint());
+			pointService.update(point);
+
+		}
+
 		Payment payment = new Payment();
 		payment.setAmount(wrapper.getAmount());
 		payment.setPaymentDate(new Date());
 		payment.setCourseId(id);
 		payment.setStudentId(users.getId());
 		payment.setPaymentMethodId(0);
-		payment.setStatus(1);
+		payment.setStatus(StatusEnum.ACTIVE.getValue());
 
 		paymentService.create(payment);
 

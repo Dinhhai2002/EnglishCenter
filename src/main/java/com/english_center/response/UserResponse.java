@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.english_center.common.utils.Utils;
+import com.english_center.entity.Point;
 import com.english_center.entity.Users;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -58,6 +59,9 @@ public class UserResponse {
 	@JsonProperty("is_google")
 	private int isGoogle;
 
+	@JsonProperty("point_promotion")
+	private long point;
+
 	public UserResponse() {
 
 	}
@@ -81,6 +85,28 @@ public class UserResponse {
 		this.isActive = entity.getIsActive();
 		this.role = entity.getRole();
 		this.isGoogle = entity.getIsGoogle();
+	}
+
+	public UserResponse(Users entity, Point point) {
+		this.id = entity.getId();
+		this.userName = entity.getUserName();
+		this.fullName = entity.getFullName();
+		this.gender = entity.getGender();
+		this.birthday = entity.getBirthday() != null ? Utils.getDateStringSupplier(entity.getBirthday()) : "";
+		this.email = entity.getEmail();
+		this.avatarId = entity.getAvatarId();
+		this.avatarUrl = entity.getAvatarUrl();
+		this.wardId = entity.getWardId();
+		this.cityId = entity.getCityId();
+		this.districtId = entity.getDistrictId();
+		this.phone = entity.getPhone();
+		this.fullAddress = entity.getFullAddress();
+		this.accessToken = entity.getAccessToken();
+		this.isLogin = entity.getIsLogin();
+		this.isActive = entity.getIsActive();
+		this.role = entity.getRole();
+		this.isGoogle = entity.getIsGoogle();
+		this.point = point == null ? 0 : point.getPoint();
 	}
 
 	public List<UserResponse> mapToList(List<Users> entities) {

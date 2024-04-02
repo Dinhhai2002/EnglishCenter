@@ -2,6 +2,7 @@ package com.english_center.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
 import com.english_center.common.utils.Utils;
 import com.english_center.entity.Image;
+import com.english_center.entity.Point;
 import com.english_center.entity.Users;
 import com.english_center.model.StoreProcedureListResult;
 import com.english_center.request.CRUDUserRequest;
@@ -24,10 +26,13 @@ import com.english_center.response.BaseListDataResponse;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.ImageResponse;
 import com.english_center.response.UserResponse;
+import com.english_center.service.PointService;
 
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController extends BaseController {
+	@Autowired
+	PointService pointService;
 
 	@GetMapping("")
 	public ResponseEntity<BaseResponse<BaseListDataResponse<UserResponse>>> getAllUser(
@@ -60,7 +65,6 @@ public class UserController extends BaseController {
 		BaseResponse<UserResponse> response = new BaseResponse<>();
 
 		Users user = this.getUser();
-
 
 		if (!user.getEmail().equals(wrapper.getEmail())) {
 			Users findUsersByEmail = userService.findUsersByEmail(wrapper.getEmail(), 0);
@@ -111,9 +115,10 @@ public class UserController extends BaseController {
 		BaseResponse<UserResponse> response = new BaseResponse<>();
 		Users user = this.getUser();
 
-		response.setData(new UserResponse(user));
-		return new ResponseEntity<>(response, HttpStatus.OK);
+		Point point = pointService.findOneByUserId(user.getId());
 
+		response.setData(new UserResponse(user, point));
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@PostMapping("/change-password")
@@ -138,7 +143,8 @@ public class UserController extends BaseController {
 		}
 
 		/*
-		 * users.setPassword(BCrypt.hashpw(wrapper.getNewPassword(), BCrypt.gensalt(12)));
+		 * users.setPassword(BCrypt.hashpw(wrapper.getNewPassword(),
+		 * BCrypt.gensalt(12)));
 		 */
 		users.setPassword(Utils.encodeBase64(wrapper.getNewPassword()));
 		userService.update(users);

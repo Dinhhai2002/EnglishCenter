@@ -1,5 +1,10 @@
 package com.english_center.dao.impl;
 
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
@@ -27,6 +32,16 @@ public class PromotionDaoImpl extends AbstractDao<Integer, Promotion> implements
 	public void update(Promotion promotion) throws Exception {
 		this.getSession().update(promotion);
 
+	}
+
+	@Override
+	public List<Promotion> findAll() throws Exception {
+		CriteriaBuilder builder = this.getBuilder();
+		CriteriaQuery<Promotion> query = builder.createQuery(Promotion.class);
+		Root<Promotion> root = query.from(Promotion.class);
+		query.where(builder.equal(root.get("status"), 1));
+
+		return this.getSession().createQuery(query).getResultList();
 	}
 
 }

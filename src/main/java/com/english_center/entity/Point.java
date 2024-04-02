@@ -21,7 +21,7 @@ public class Point extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	private int point;
+	private long point;
 
 	@Column(name = "user_id")
 	private int userId;

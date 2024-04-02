@@ -1,5 +1,7 @@
 package com.english_center.service;
 
+import java.util.List;
+
 import com.english_center.entity.Promotion;
 
 public interface PromotionService {
@@ -8,4 +10,6 @@ public interface PromotionService {
 	Promotion findOne(int id) throws Exception;
 
 	void update(Promotion promotion) throws Exception;
+	
+	List<Promotion> findAll() throws Exception;
 }
