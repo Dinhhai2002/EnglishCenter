@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.english_center.common.utils.StringErrorValue;
@@ -46,11 +47,12 @@ public class CategoryBlogController extends BaseController {
 	}
 
 	@GetMapping("")
-	public ResponseEntity<BaseResponse<List<CategoryBlogResponse>>> findAll() throws Exception {
+	public ResponseEntity<BaseResponse<List<CategoryBlogResponse>>> findAll(
+			@RequestParam(name = "status", required = false, defaultValue = "-1") int status) throws Exception {
 
 		BaseResponse<List<CategoryBlogResponse>> response = new BaseResponse<>();
 
-		List<CategoryBlog> categoryBlogs = categoryBlogService.getAll();
+		List<CategoryBlog> categoryBlogs = categoryBlogService.getAll(status);
 
 		response.setData(new CategoryBlogResponse().mapToList(categoryBlogs));
 

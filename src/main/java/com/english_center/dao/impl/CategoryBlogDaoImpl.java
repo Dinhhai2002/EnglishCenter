@@ -35,11 +35,13 @@ public class CategoryBlogDaoImpl extends AbstractDao<Integer, CategoryBlog> impl
 	}
 
 	@Override
-	public List<CategoryBlog> getAll() throws Exception {
+	public List<CategoryBlog> getAll(int status) throws Exception {
 		CriteriaBuilder builder = this.getBuilder();
 		CriteriaQuery<CategoryBlog> query = builder.createQuery(CategoryBlog.class);
 		Root<CategoryBlog> root = query.from(CategoryBlog.class);
-//		query.where(builder.equal(root.get("name"), name));
+		if (status >= 0) {
+			query.where(builder.equal(root.get("status"), status));
+		}
 
 		return this.getSession().createQuery(query).getResultList();
 	}

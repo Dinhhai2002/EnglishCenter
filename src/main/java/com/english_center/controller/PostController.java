@@ -1,5 +1,7 @@
 package com.english_center.controller;
 
+import java.math.BigDecimal;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
 import com.english_center.entity.CategoryBlog;
+import com.english_center.entity.Image;
 import com.english_center.entity.Posts;
 import com.english_center.entity.Rating;
 import com.english_center.entity.Users;
@@ -24,6 +28,7 @@ import com.english_center.model.StoreProcedureListResult;
 import com.english_center.request.CRUDPostRequest;
 import com.english_center.response.BaseListDataResponse;
 import com.english_center.response.BaseResponse;
+import com.english_center.response.ImageResponse;
 import com.english_center.response.PostResponse;
 import com.english_center.service.PostService;
 import com.english_center.service.RatingService;
@@ -96,9 +101,42 @@ public class PostController extends BaseController {
 		post.setStatus(wrapper.getStatus());
 		post.setCategoryBlogId(wrapper.getCategoryBlogId());
 		post.setAuthorId(this.getUser().getId());
+		post.setPoint(BigDecimal.ZERO);
 
 		postService.create(post);
 		response.setData(new PostResponse(post));
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@PostMapping("/{id}/upload-banner")
+	public ResponseEntity<BaseResponse<ImageResponse>> create(@RequestParam(name = "file") MultipartFile file,
+			@PathVariable("id") int id) throws Exception {
+
+		BaseResponse<ImageResponse> response = new BaseResponse<>();
+		Users user = this.getUser();
+		Posts post = postService.findOne(id);
+
+		if (post == null) {
+			response.setStatus(HttpStatus.BAD_REQUEST);
+			response.setMessageError(StringErrorValue.POST_NOT_FOUND);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+
+		String fileName = iFirebaseImageService.save(file);
+
+		String imageUrl = iFirebaseImageService.getImageUrl(fileName);
+
+		Image image = new Image();
+		image.setUserId(user.getId());
+		image.setUrl(imageUrl);
+
+		imageService.create(image);
+		post.setBanner(imageUrl);
+
+		postService.update(post);
+
+		response.setData(new ImageResponse(image));
+
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

@@ -34,8 +34,8 @@ public class CategoryBlogServiceImpl implements CategoryBlogService {
 	}
 
 	@Override
-	public List<CategoryBlog> getAll() throws Exception {
-		return categoryBlogDao.getAll();
+	public List<CategoryBlog> getAll(int status) throws Exception {
+		return categoryBlogDao.getAll(status);
 	}
 
 	@Override

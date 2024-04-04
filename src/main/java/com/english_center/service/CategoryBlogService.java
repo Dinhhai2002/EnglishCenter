@@ -11,7 +11,7 @@ public interface CategoryBlogService {
 
 	void update(CategoryBlog categoryBlog) throws Exception;
 
-	List<CategoryBlog> getAll() throws Exception;
-	
+	List<CategoryBlog> getAll(int status) throws Exception;
+
 	CategoryBlog findByName(String categoryName) throws Exception;
 }
