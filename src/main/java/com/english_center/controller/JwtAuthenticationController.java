@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +28,7 @@ import com.english_center.common.utils.HttpService;
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
 import com.english_center.common.utils.Utils;
+import com.english_center.entity.CategoryBlog;
 import com.english_center.entity.CategoryExam;
 import com.english_center.entity.Chapter;
 import com.english_center.entity.Cities;
@@ -34,10 +36,13 @@ import com.english_center.entity.Comments;
 import com.english_center.entity.Course;
 import com.english_center.entity.Exam;
 import com.english_center.entity.Lessons;
+import com.english_center.entity.Posts;
+import com.english_center.entity.Rating;
 import com.english_center.entity.ReplyComments;
 import com.english_center.entity.TopicExam;
 import com.english_center.entity.UserRegister;
 import com.english_center.entity.Users;
+import com.english_center.model.PostModel;
 import com.english_center.model.StoreProcedureListResult;
 import com.english_center.request.CRUDUserRequest;
 import com.english_center.request.ConfirmOtpRequest;
@@ -48,6 +53,7 @@ import com.english_center.request.OTPRequest;
 import com.english_center.request.ResetPasswordRequest;
 import com.english_center.response.BaseListDataResponse;
 import com.english_center.response.BaseResponse;
+import com.english_center.response.CategoryBlogResponse;
 import com.english_center.response.CategoryExamResponse;
 import com.english_center.response.ChapterResponse;
 import com.english_center.response.CityResponse;
@@ -57,15 +63,28 @@ import com.english_center.response.DistrictResponse;
 import com.english_center.response.ExamResponse;
 import com.english_center.response.JwtResponse;
 import com.english_center.response.LessonsResponse;
+import com.english_center.response.PostResponse;
 import com.english_center.response.ReplyCommentsResponse;
 import com.english_center.response.TopicExamReponse;
 import com.english_center.response.UserResponse;
 import com.english_center.response.WardsResponse;
+import com.english_center.service.CategoryBlogService;
+import com.english_center.service.PostService;
+import com.english_center.service.RatingService;
 
 @RestController
 @RequestMapping("/api/v1/authentication")
 @CrossOrigin
 public class JwtAuthenticationController extends BaseController {
+
+	@Autowired
+	PostService postService;
+
+	@Autowired
+	CategoryBlogService categoryBlogService;
+	
+	@Autowired
+	RatingService ratingService;
 
 	@PostMapping("/login")
 	public ResponseEntity<BaseResponse<JwtResponse>> createAuthenticationToken(@RequestBody JwtRequest wrapper)
@@ -573,6 +592,70 @@ public class JwtAuthenticationController extends BaseController {
 
 		response.setData(new LessonsResponse(lessons, courseService.findOne(lessons.getCourseId()),
 				chapterService.findOne(lessons.getChapterId())));
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@GetMapping("/post")
+	public ResponseEntity<BaseResponse<BaseListDataResponse<PostResponse>>> getAll(
+			@RequestParam(name = "category_blog_id", required = false, defaultValue = "-1") int categoryBlogId,
+			@RequestParam(name = "key_search", required = false, defaultValue = "") String keySearch,
+			@RequestParam(name = "status", required = false, defaultValue = "-1") int status,
+			@RequestParam(name = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(name = "limit", required = false, defaultValue = "10") int limit) throws Exception {
+		BaseResponse<BaseListDataResponse<PostResponse>> response = new BaseResponse<>();
+		Pagination pagination = new Pagination(page, limit);
+		StoreProcedureListResult<PostModel> listPost = postService.spGPosts(categoryBlogId, keySearch, status,
+				pagination);
+
+		BaseListDataResponse<PostResponse> listData = new BaseListDataResponse<>();
+
+		listData.setList(new PostResponse().mapToListModel(listPost.getResult()));
+		listData.setTotalRecord(listPost.getTotalRecord());
+		listData.setLimit(limit);
+
+		response.setData(listData);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@GetMapping("/post/{id}")
+	public ResponseEntity<BaseResponse<PostResponse>> findOne(@PathVariable("id") int id,
+			@RequestParam(name = "is_authorize", required = false, defaultValue = "0") int isAuthorize)
+			throws Exception {
+
+		BaseResponse<PostResponse> response = new BaseResponse<>();
+
+		Posts post = postService.findOne(id);
+
+		if (post == null) {
+			response.setStatus(HttpStatus.BAD_REQUEST);
+			response.setMessageError(StringErrorValue.POST_NOT_FOUND);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+
+		Users users = userService.findOne(post.getAuthorId());
+		CategoryBlog categoryBlog = categoryBlogService.findOne(post.getCategoryBlogId());
+
+		Rating rating = new Rating();
+		if (isAuthorize == 1) {
+			rating = ratingService.findOneByUserAndPost(this.getUser().getId(), post.getId());
+		}
+
+		response.setData(new PostResponse(post, users, categoryBlog, rating));
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@GetMapping("/category-blog")
+	public ResponseEntity<BaseResponse<List<CategoryBlogResponse>>> findAllCategoryBlog(
+			@RequestParam(name = "status", required = false, defaultValue = "-1") int status) throws Exception {
+
+		BaseResponse<List<CategoryBlogResponse>> response = new BaseResponse<>();
+
+		List<CategoryBlog> categoryBlogs = categoryBlogService.getAll(status);
+
+		response.setData(new CategoryBlogResponse().mapToList(categoryBlogs));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

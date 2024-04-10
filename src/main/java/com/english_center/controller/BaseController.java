@@ -46,7 +46,6 @@ import com.english_center.response.ExamResponse;
 import com.english_center.security.ApplicationProperties;
 import com.english_center.security.JwtTokenUtil;
 import com.english_center.service.AudioService;
-import com.english_center.service.CategoryBlogService;
 import com.english_center.service.CategoryCourseService;
 import com.english_center.service.CategoryExamService;
 import com.english_center.service.ChapterService;
@@ -176,9 +175,6 @@ public class BaseController {
 
 	@Autowired
 	public ResultDetailService resultDetailService;
-
-	@Autowired
-	public CategoryBlogService categoryBlogService;
 
 	@Autowired
 	public Drive googleDrive;
