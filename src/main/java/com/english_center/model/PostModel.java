@@ -1,5 +1,7 @@
 package com.english_center.model;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -45,4 +47,9 @@ public class PostModel extends BaseEntity {
 	private String banner;
 
 	private int status;
+	
+	private BigDecimal point;
+
+	@Column(name = "count_rating")
+	private long countRating;
 }

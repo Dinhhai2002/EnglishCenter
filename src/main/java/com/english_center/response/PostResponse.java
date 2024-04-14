@@ -83,6 +83,8 @@ public class PostResponse {
 		this.banner = entity.getBanner();
 		this.createdAt = entity.getDateFormatVN(entity.getCreatedAt());
 		this.status = entity.getStatus();
+		this.pointAvg = entity.getPoint();
+		this.countRating = entity.getCountRating();
 	}
 
 	public PostResponse(Posts entity, Users users, CategoryBlog categoryBlog, Rating rating) {

@@ -55,7 +55,7 @@ public class CategoryExamDaoImpl extends AbstractDao<Integer, CategoryExam> impl
 	public List<CategoryExam> getAll() throws Exception {
 		CriteriaBuilder builder = this.getBuilder();
 		CriteriaQuery<CategoryExam> query = builder.createQuery(CategoryExam.class);
-//		Root<CategoryExam> root = query.from(CategoryExam.class);
+		Root<CategoryExam> root = query.from(CategoryExam.class);
 //		query.where(builder.equal(root.get("name"), name));
 
 		return this.getSession().createQuery(query).getResultList();
