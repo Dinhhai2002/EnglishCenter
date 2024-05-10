@@ -13,6 +13,10 @@ public class CategoryCourseResponse {
 
 	private String name;
 
+	private String description;
+
+	private int status;
+
 	public CategoryCourseResponse() {
 	}
 
@@ -20,6 +24,8 @@ public class CategoryCourseResponse {
 		super();
 		this.id = entity.getId();
 		this.name = entity.getName();
+		this.description = entity.getDescription();
+		this.status = entity.getStatus();
 	}
 
 	public List<CategoryCourseResponse> mapToList(List<CategoryCourse> entities) {

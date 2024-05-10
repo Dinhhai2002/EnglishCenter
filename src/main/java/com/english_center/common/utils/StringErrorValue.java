@@ -26,6 +26,7 @@ public class StringErrorValue {
 	// Category Course
 	public static final String CATEGORY_COURSE_NOT_FOUND = "Danh mục khóa học không tồn tại!";
 	public static final String CATEGORY_COURSE_IS_EXIST = "Danh mục khóa học đã tồn tại!";
+	public static final String CATEGORY_COURSE_IS_COURSE_ACTIVE = "Danh mục này đang có khóa học hoạt động.Vui lòng tắt trạng thái của các khóa học trước khi đổi trạng thái danh mục!";
 
 	// Category Exam
 	public static final String CATEGORY_EXAM_NOT_FOUND = "Danh mục kì thi không tồn tại!";

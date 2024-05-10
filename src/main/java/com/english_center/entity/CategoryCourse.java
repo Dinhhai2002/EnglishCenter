@@ -26,4 +26,8 @@ public class CategoryCourse extends BaseEntity {
 
 	private String name;
 
+	private String description;
+
+	private int status;
+
 }

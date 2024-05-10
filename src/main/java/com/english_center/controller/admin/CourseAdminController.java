@@ -45,13 +45,15 @@ public class CourseAdminController extends BaseController {
 	@GetMapping("")
 //	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	public ResponseEntity<BaseResponse<BaseListDataResponse<CourseResponse>>> getAll(
+			@RequestParam(name = "category_course_id", required = false, defaultValue = "-1") int categoryCourseId,
 			@RequestParam(name = "key_search", required = false, defaultValue = "") String keySearch,
 			@RequestParam(name = "status", required = false, defaultValue = "-1") int status,
 			@RequestParam(name = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(name = "limit", required = false, defaultValue = "10") int limit) throws Exception {
 		BaseResponse<BaseListDataResponse<CourseResponse>> response = new BaseResponse<>();
 		Pagination pagination = new Pagination(page, limit);
-		StoreProcedureListResult<Course> listCourse = courseService.spGCourse(keySearch, status, 1, pagination);
+		StoreProcedureListResult<Course> listCourse = courseService.spGCourse(categoryCourseId, keySearch, status, 1,
+				pagination);
 
 		BaseListDataResponse<CourseResponse> listData = new BaseListDataResponse<>();
 		Users currentUser = this.getUser();

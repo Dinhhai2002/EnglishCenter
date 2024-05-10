@@ -14,13 +14,13 @@ public interface CourseService {
 
 	List<Course> findAll() throws Exception;
 
-	StoreProcedureListResult<Course> spGCourse(String keySearch, int status, int isPagination, Pagination pagination)
-			throws Exception;
+	StoreProcedureListResult<Course> spGCourse(int categoryCourseId, String keySearch, int status, int isPagination,
+			Pagination pagination) throws Exception;
 
 	Course spUCreateCourse(String name, String description, BigDecimal price, int isFree) throws Exception;
 
 	Course spUUpdateCourse(int id, String name, int lessons, String description, BigDecimal price, int isFree,
 			BigDecimal discountPercent) throws Exception;
-	
+
 	Course findByName(String name) throws Exception;
 }

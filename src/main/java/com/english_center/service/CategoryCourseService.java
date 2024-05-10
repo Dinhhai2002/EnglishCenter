@@ -2,7 +2,9 @@ package com.english_center.service;
 
 import java.util.List;
 
+import com.english_center.common.utils.Pagination;
 import com.english_center.entity.CategoryCourse;
+import com.english_center.model.StoreProcedureListResult;
 
 public interface CategoryCourseService {
 	void create(CategoryCourse categoryCourse) throws Exception;
@@ -13,7 +15,8 @@ public interface CategoryCourseService {
 	
 	CategoryCourse findByName(String name) throws Exception;
 	
-	public List<CategoryCourse> findAllHavePagination(int page, int limit) throws Exception;
+//	public List<CategoryCourse> findAllHavePagination(int page, int limit) throws Exception;
+	StoreProcedureListResult<CategoryCourse> spGListCategoryCourse(String keySearch,int status,Pagination pagination) throws Exception;
 	
 	public List<CategoryCourse> findAll() throws Exception;
 }

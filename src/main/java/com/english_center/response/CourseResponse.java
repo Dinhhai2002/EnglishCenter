@@ -33,6 +33,9 @@ public class CourseResponse {
 	@JsonProperty("is_free")
 	private int isFree;
 
+	@JsonProperty("category_course_id")
+	private int categoryCourseId;
+
 	@JsonProperty("discount_percent")
 	private int discountPercent;
 
@@ -64,6 +67,7 @@ public class CourseResponse {
 		this.status = entity.getStatus();
 		this.duration = entity.getDuration();
 		this.isFree = entity.getIsFree();
+		this.categoryCourseId = entity.getCategoryCourseId();
 		this.discountPercent = entity.getDiscountPercent();
 	}
 
@@ -76,6 +80,7 @@ public class CourseResponse {
 		this.banner = entity.getBanner();
 		this.status = entity.getStatus();
 		this.isFree = entity.getIsFree();
+		this.categoryCourseId = entity.getCategoryCourseId();
 		this.discountPercent = entity.getDiscountPercent();
 		this.listChapterResponses = listChapter;
 		this.duration = entity.getDuration();
@@ -93,6 +98,7 @@ public class CourseResponse {
 		this.price = entity.getPrice();
 		this.banner = entity.getBanner();
 		this.status = entity.getStatus();
+		this.categoryCourseId = entity.getCategoryCourseId();
 		this.isFree = entity.getIsFree();
 		this.discountPercent = entity.getDiscountPercent();
 		this.duration = entity.getDuration();
@@ -112,6 +118,7 @@ public class CourseResponse {
 		this.banner = entity.getBanner();
 		this.status = entity.getStatus();
 		this.isFree = entity.getIsFree();
+		this.categoryCourseId = entity.getCategoryCourseId();
 		this.discountPercent = entity.getDiscountPercent();
 		this.listChapterResponses = listChapter;
 		this.duration = entity.getDuration();
@@ -132,6 +139,7 @@ public class CourseResponse {
 		this.status = entity.getStatus();
 		this.duration = entity.getDuration();
 		this.isFree = entity.getIsFree();
+		this.categoryCourseId = entity.getCategoryCourseId();
 		this.discountPercent = entity.getDiscountPercent();
 		this.typeUserUsing = typeUserUsing;
 	}

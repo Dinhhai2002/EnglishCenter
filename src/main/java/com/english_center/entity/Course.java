@@ -40,6 +40,9 @@ public class Course extends BaseEntity {
 	@Column(name = "is_free")
 	private int isFree;
 
+	@Column(name = "category_course_id")
+	private int categoryCourseId;
+
 	private int status;
 
 	private long duration;

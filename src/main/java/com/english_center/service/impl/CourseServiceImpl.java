@@ -47,9 +47,9 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public StoreProcedureListResult<Course> spGCourse(String keySearch, int status, int isPagination,
-			Pagination pagination) throws Exception {
-		return courseDao.spGCourse(keySearch, status, isPagination, pagination);
+	public StoreProcedureListResult<Course> spGCourse(int categoryCourseId, String keySearch, int status,
+			int isPagination, Pagination pagination) throws Exception {
+		return courseDao.spGCourse(categoryCourseId, keySearch, status, isPagination, pagination);
 	}
 
 	@Override

@@ -12,4 +12,8 @@ public class CRUDCategoryCourseRequest {
 	@Length(max = 255, message = "Không được phép lớn hơn 255 kí tự")
 	private String name;
 
+	@NotEmpty(message = "description không được phép để trống")
+	@Length(max = 255, message = "Không được phép lớn hơn 255 kí tự")
+	private String description;
+
 }

@@ -37,8 +37,7 @@ public class CourseDaoImpl extends AbstractDao<Integer, Course> implements Cours
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Course spUCreateCourse(String name, String description, BigDecimal price, int isFree)
-			throws Exception {
+	public Course spUCreateCourse(String name, String description, BigDecimal price, int isFree) throws Exception {
 		StoredProcedureQuery query = this.getSession().createStoredProcedureQuery("sp_u_create_course", Course.class)
 				.registerStoredProcedureParameter("_name", String.class, ParameterMode.IN)
 				.registerStoredProcedureParameter("_description", String.class, ParameterMode.IN)
@@ -112,9 +111,10 @@ public class CourseDaoImpl extends AbstractDao<Integer, Course> implements Cours
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public StoreProcedureListResult<Course> spGCourse(String keySearch, int status, int isPagination,
-			Pagination pagination) throws Exception {
+	public StoreProcedureListResult<Course> spGCourse(int categoryCourseId, String keySearch, int status,
+			int isPagination, Pagination pagination) throws Exception {
 		StoredProcedureQuery query = this.getSession().createStoredProcedureQuery("sp_g_list_course", Course.class)
+				.registerStoredProcedureParameter("categoryCourseId", Integer.class, ParameterMode.IN)
 				.registerStoredProcedureParameter("keySearch", String.class, ParameterMode.IN)
 				.registerStoredProcedureParameter("status", Integer.class, ParameterMode.IN)
 				.registerStoredProcedureParameter("isPagination", Integer.class, ParameterMode.IN)
@@ -125,6 +125,7 @@ public class CourseDaoImpl extends AbstractDao<Integer, Course> implements Cours
 				.registerStoredProcedureParameter("status_code", Integer.class, ParameterMode.OUT)
 				.registerStoredProcedureParameter("message_error", String.class, ParameterMode.OUT);
 
+		query.setParameter("categoryCourseId", categoryCourseId);
 		query.setParameter("keySearch", keySearch);
 		query.setParameter("status", status);
 		query.setParameter("isPagination", isPagination);
