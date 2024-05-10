@@ -82,7 +82,7 @@ public class JwtAuthenticationController extends BaseController {
 
 	@Autowired
 	CategoryBlogService categoryBlogService;
-	
+
 	@Autowired
 	RatingService ratingService;
 
@@ -618,7 +618,7 @@ public class JwtAuthenticationController extends BaseController {
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/post/{id}")
 	public ResponseEntity<BaseResponse<PostResponse>> findOne(@PathVariable("id") int id,
 			@RequestParam(name = "is_authorize", required = false, defaultValue = "0") int isAuthorize)
@@ -637,7 +637,7 @@ public class JwtAuthenticationController extends BaseController {
 		Users users = userService.findOne(post.getAuthorId());
 		CategoryBlog categoryBlog = categoryBlogService.findOne(post.getCategoryBlogId());
 
-		Rating rating = new Rating();
+		Rating rating = null;
 		if (isAuthorize == 1) {
 			rating = ratingService.findOneByUserAndPost(this.getUser().getId(), post.getId());
 		}

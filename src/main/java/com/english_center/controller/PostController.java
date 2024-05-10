@@ -63,7 +63,7 @@ public class PostController extends BaseController {
 		Users users = userService.findOne(post.getAuthorId());
 		CategoryBlog categoryBlog = categoryBlogService.findOne(post.getCategoryBlogId());
 
-		Rating rating = new Rating();
+		Rating rating = null;
 		if (isAuthorize == 1) {
 			rating = ratingService.findOneByUserAndPost(this.getUser().getId(), post.getId());
 		}
