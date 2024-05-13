@@ -601,13 +601,14 @@ public class JwtAuthenticationController extends BaseController {
 	@GetMapping("/post")
 	public ResponseEntity<BaseResponse<BaseListDataResponse<PostResponse>>> getAll(
 			@RequestParam(name = "category_blog_id", required = false, defaultValue = "-1") int categoryBlogId,
+			@RequestParam(name = "user_id", required = false, defaultValue = "-1") int userId,
 			@RequestParam(name = "key_search", required = false, defaultValue = "") String keySearch,
 			@RequestParam(name = "status", required = false, defaultValue = "-1") int status,
 			@RequestParam(name = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(name = "limit", required = false, defaultValue = "10") int limit) throws Exception {
 		BaseResponse<BaseListDataResponse<PostResponse>> response = new BaseResponse<>();
 		Pagination pagination = new Pagination(page, limit);
-		StoreProcedureListResult<PostModel> listPost = postService.spGPosts(categoryBlogId, keySearch, status,
+		StoreProcedureListResult<PostModel> listPost = postService.spGPosts(userId, categoryBlogId, keySearch, status,
 				pagination);
 
 		BaseListDataResponse<PostResponse> listData = new BaseListDataResponse<>();

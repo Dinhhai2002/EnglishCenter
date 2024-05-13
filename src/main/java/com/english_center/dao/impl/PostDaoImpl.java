@@ -51,9 +51,10 @@ public class PostDaoImpl extends AbstractDao<Integer, Posts> implements PostDao 
 	}
 
 	@Override
-	public StoreProcedureListResult<PostModel> spGPosts(int categoryBlogId, String keySearch, int status,
+	public StoreProcedureListResult<PostModel> spGPosts(int userId, int categoryBlogId, String keySearch, int status,
 			Pagination pagination) throws Exception {
 		StoredProcedureQuery query = this.getSession().createStoredProcedureQuery("sp_g_list_post", PostModel.class)
+				.registerStoredProcedureParameter("userId", Integer.class, ParameterMode.IN)
 				.registerStoredProcedureParameter("categoryBlogId", Integer.class, ParameterMode.IN)
 				.registerStoredProcedureParameter("keySearch", String.class, ParameterMode.IN)
 				.registerStoredProcedureParameter("status", Integer.class, ParameterMode.IN)
@@ -64,6 +65,7 @@ public class PostDaoImpl extends AbstractDao<Integer, Posts> implements PostDao 
 				.registerStoredProcedureParameter("status_code", Integer.class, ParameterMode.OUT)
 				.registerStoredProcedureParameter("message_error", String.class, ParameterMode.OUT);
 
+		query.setParameter("userId", userId);
 		query.setParameter("categoryBlogId", categoryBlogId);
 		query.setParameter("keySearch", keySearch);
 		query.setParameter("status", status);

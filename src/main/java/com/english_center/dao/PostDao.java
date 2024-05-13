@@ -16,5 +16,6 @@ public interface PostDao {
 
 	List<Posts> getAll() throws Exception;
 
-	StoreProcedureListResult<PostModel> spGPosts(int categoryBlogId, String keySearch, int status, Pagination pagination) throws Exception;
+	StoreProcedureListResult<PostModel> spGPosts(int userId, int categoryBlogId, String keySearch, int status,
+			Pagination pagination) throws Exception;
 }

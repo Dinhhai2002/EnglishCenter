@@ -42,9 +42,9 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public StoreProcedureListResult<PostModel> spGPosts(int categoryBlogId, String keySearch, int status,
+	public StoreProcedureListResult<PostModel> spGPosts(int userId, int categoryBlogId, String keySearch, int status,
 			Pagination pagination) throws Exception {
-		return postDao.spGPosts(categoryBlogId, keySearch, status, pagination);
+		return postDao.spGPosts(userId, categoryBlogId, keySearch, status, pagination);
 	}
 
 }
