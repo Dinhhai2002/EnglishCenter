@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.english_center.common.utils.Pagination;
 import com.english_center.dao.PromotionDao;
 import com.english_center.entity.Promotion;
+import com.english_center.model.StoreProcedureListResult;
 import com.english_center.service.PromotionService;
 
 @Service("PromotionService")
@@ -36,5 +38,11 @@ public class PromotionServiceImpl implements PromotionService {
 	@Override
 	public List<Promotion> findAll() throws Exception {
 		return promotionDao.findAll();
+	}
+
+	@Override
+	public StoreProcedureListResult<Promotion> spGPromotion(String keySearch, int status, Pagination pagination)
+			throws Exception {
+		return promotionDao.spGPromotion(keySearch, status, pagination);
 	}
 }

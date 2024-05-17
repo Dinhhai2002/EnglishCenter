@@ -24,4 +24,16 @@ public enum PromotionTypeEnum {
 			return PERCENT;
 		}
 	}
+
+	public String getName() {
+		switch (this) {
+		case PERCENT:
+			return "Phần trăm";
+		case CASH:
+			return "Tiền mặt";
+
+		default:
+			return "Phần trăm";
+		}
+	}
 }

@@ -131,10 +131,14 @@ public class StringErrorValue {
 	// promotion
 	public static final String PROMOTION_NOT_FOUND = "khuyến mãi không tồn tại!";
 	public static final String POINT_USER_NOT_PERMIT = "Số điểm của người dùng không đủ để áp dụng cho khuyến mãi này!";
+	public static final String NUMBER_PROMOTION_NOT_PERMIT = "Số lượng khuyến mãi hoạt động tối đa là 5!";
 
 	// Category Blog
 	public static final String CATEGORY_BLOG_NOT_FOUND = "Danh mục Blog không tồn tại!";
 	public static final String CATEGORY_BLOG_IS_EXIST = "Danh mục Blog đã tồn tại!";
+
+	// banner
+	public static final String BANNER_NOT_FOUND = "banner không tìm thấy!";
 
 	// image
 //	public static final String COMMENTS_NOT_FOUND = "Bình luận không tìm thấy!";
