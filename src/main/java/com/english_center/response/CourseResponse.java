@@ -20,6 +20,8 @@ public class CourseResponse {
 
 	private String description;
 
+	private String content;
+
 	private BigDecimal price;
 
 	private String banner;
@@ -62,6 +64,7 @@ public class CourseResponse {
 		this.name = entity.getName();
 		this.lessons = entity.getLessons();
 		this.description = entity.getDescription();
+		this.content = entity.getContent();
 		this.price = entity.getPrice();
 		this.banner = entity.getBanner();
 		this.status = entity.getStatus();
@@ -76,6 +79,7 @@ public class CourseResponse {
 		this.name = entity.getName();
 		this.lessons = entity.getLessons();
 		this.description = entity.getDescription();
+		this.content = entity.getContent();
 		this.price = entity.getPrice();
 		this.banner = entity.getBanner();
 		this.status = entity.getStatus();
@@ -95,6 +99,7 @@ public class CourseResponse {
 		this.name = entity.getName();
 		this.lessons = entity.getLessons();
 		this.description = entity.getDescription();
+		this.content = entity.getContent();
 		this.price = entity.getPrice();
 		this.banner = entity.getBanner();
 		this.status = entity.getStatus();
@@ -114,6 +119,7 @@ public class CourseResponse {
 		this.name = entity.getName();
 		this.lessons = entity.getLessons();
 		this.description = entity.getDescription();
+		this.content = entity.getContent();
 		this.price = entity.getPrice();
 		this.banner = entity.getBanner();
 		this.status = entity.getStatus();
@@ -134,6 +140,7 @@ public class CourseResponse {
 		this.name = entity.getName();
 		this.lessons = entity.getLessons();
 		this.description = entity.getDescription();
+		this.content = entity.getContent();
 		this.price = entity.getPrice();
 		this.banner = entity.getBanner();
 		this.status = entity.getStatus();

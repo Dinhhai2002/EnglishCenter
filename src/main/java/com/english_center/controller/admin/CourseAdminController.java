@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.english_center.common.enums.StatusEnum;
 import com.english_center.common.enums.UserCourseUsingStatusEnum;
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
@@ -80,6 +81,7 @@ public class CourseAdminController extends BaseController {
 
 		listData.setList(listCourseResponses);
 		listData.setTotalRecord(listCourse.getTotalRecord());
+		listData.setLimit(limit);
 
 		response.setData(listData);
 
@@ -98,7 +100,7 @@ public class CourseAdminController extends BaseController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 
-		if (course.getStatus() == 1) {
+		if (course.getStatus() == StatusEnum.ACTIVE.getValue()) {
 			List<UserCourse> userCourses = userCourseService.spGUserCourse(id, -1, -1, 0, 0, new Pagination(0, 20), 0)
 					.getResult();
 
@@ -109,7 +111,8 @@ public class CourseAdminController extends BaseController {
 			}
 		}
 
-		course.setStatus(course.getStatus() == 1 ? 0 : 1);
+		course.setStatus(course.getStatus() == StatusEnum.ACTIVE.getValue() ? StatusEnum.NOT_ACTIVE.getValue()
+				: StatusEnum.ACTIVE.getValue());
 
 		courseService.update(course);
 		return new ResponseEntity<>(response, HttpStatus.OK);

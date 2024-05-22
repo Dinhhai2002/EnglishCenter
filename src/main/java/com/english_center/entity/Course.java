@@ -32,6 +32,7 @@ public class Course extends BaseEntity {
 	private int lessons;
 
 	private String description;
+	private String content;
 
 	private BigDecimal price;
 

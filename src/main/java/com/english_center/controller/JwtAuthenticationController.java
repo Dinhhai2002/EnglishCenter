@@ -28,7 +28,9 @@ import com.english_center.common.utils.HttpService;
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
 import com.english_center.common.utils.Utils;
+import com.english_center.entity.Banner;
 import com.english_center.entity.CategoryBlog;
+import com.english_center.entity.CategoryCourse;
 import com.english_center.entity.CategoryExam;
 import com.english_center.entity.Chapter;
 import com.english_center.entity.Cities;
@@ -51,9 +53,11 @@ import com.english_center.request.JwtRequest;
 import com.english_center.request.OTPRegisterUserRequest;
 import com.english_center.request.OTPRequest;
 import com.english_center.request.ResetPasswordRequest;
+import com.english_center.response.BannerResponse;
 import com.english_center.response.BaseListDataResponse;
 import com.english_center.response.BaseResponse;
 import com.english_center.response.CategoryBlogResponse;
+import com.english_center.response.CategoryCourseResponse;
 import com.english_center.response.CategoryExamResponse;
 import com.english_center.response.ChapterResponse;
 import com.english_center.response.CityResponse;
@@ -68,6 +72,7 @@ import com.english_center.response.ReplyCommentsResponse;
 import com.english_center.response.TopicExamReponse;
 import com.english_center.response.UserResponse;
 import com.english_center.response.WardsResponse;
+import com.english_center.service.BannerService;
 import com.english_center.service.CategoryBlogService;
 import com.english_center.service.PostService;
 import com.english_center.service.RatingService;
@@ -85,6 +90,9 @@ public class JwtAuthenticationController extends BaseController {
 
 	@Autowired
 	RatingService ratingService;
+	
+	@Autowired
+	BannerService bannerService;
 
 	@PostMapping("/login")
 	public ResponseEntity<BaseResponse<JwtResponse>> createAuthenticationToken(@RequestBody JwtRequest wrapper)
@@ -659,6 +667,48 @@ public class JwtAuthenticationController extends BaseController {
 		List<CategoryBlog> categoryBlogs = categoryBlogService.getAll(status);
 
 		response.setData(new CategoryBlogResponse().mapToList(categoryBlogs));
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@GetMapping("/category-course")
+	public ResponseEntity<BaseResponse<BaseListDataResponse<CategoryCourseResponse>>> findAll(
+			@RequestParam(name = "key_search", required = false, defaultValue = "") String keySearch,
+			@RequestParam(name = "status", required = false, defaultValue = "-1") int status,
+			@RequestParam(name = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(name = "limit", required = false, defaultValue = "10") int limit) throws Exception {
+		BaseResponse<BaseListDataResponse<CategoryCourseResponse>> response = new BaseResponse<>();
+		Pagination pagination = new Pagination(page, limit);
+		StoreProcedureListResult<CategoryCourse> categoryCourses = categoryCourseService
+				.spGListCategoryCourse(keySearch, status, pagination);
+
+		BaseListDataResponse<CategoryCourseResponse> listData = new BaseListDataResponse<>();
+
+		listData.setList(new CategoryCourseResponse().mapToList(categoryCourses.getResult()));
+		listData.setTotalRecord(categoryCourses.getTotalRecord());
+
+		response.setData(listData);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	
+	@GetMapping("/banner")
+	public ResponseEntity<BaseResponse<BaseListDataResponse<BannerResponse>>> findAll(
+			@RequestParam(name = "status", required = false, defaultValue = "-1") int status,
+			@RequestParam(name = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(name = "limit", required = false, defaultValue = "10") int limit) throws Exception {
+
+		BaseResponse<BaseListDataResponse<BannerResponse>> response = new BaseResponse<>();
+
+		StoreProcedureListResult<Banner> banners = bannerService.getAll(status, new Pagination(page, limit));
+		BaseListDataResponse<BannerResponse> listData = new BaseListDataResponse<>();
+
+		listData.setList(new BannerResponse().mapToList(banners.getResult()));
+		listData.setTotalRecord(banners.getTotalRecord());
+		listData.setLimit(limit);
+
+		response.setData(listData);
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

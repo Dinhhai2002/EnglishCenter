@@ -19,15 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.english_center.common.enums.StatusEnum;
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
-import com.english_center.entity.CategoryCourse;
-import com.english_center.entity.Course;
 import com.english_center.entity.Promotion;
 import com.english_center.model.StoreProcedureListResult;
-import com.english_center.request.CRUDCategoryCourseRequest;
 import com.english_center.request.CRUDPromotionRequest;
 import com.english_center.response.BaseListDataResponse;
 import com.english_center.response.BaseResponse;
-import com.english_center.response.CourseResponse;
 import com.english_center.response.PromotionResponse;
 import com.english_center.service.PromotionService;
 

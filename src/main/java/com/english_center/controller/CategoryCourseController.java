@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.english_center.common.enums.StatusEnum;
 import com.english_center.common.utils.Pagination;
 import com.english_center.common.utils.StringErrorValue;
 import com.english_center.entity.CategoryCourse;
@@ -94,14 +95,16 @@ public class CategoryCourseController extends BaseController {
 		}
 		List<Course> listCourse = courseService.spGCourse(id, "", 1, 0, new Pagination(0, 20)).getResult();
 
-		if (!listCourse.isEmpty() && categoryCourse.getStatus() == 1) {
+		if (!listCourse.isEmpty() && categoryCourse.getStatus() == StatusEnum.ACTIVE.getValue()) {
 			response.setData(new CourseResponse().mapToList(listCourse));
 			response.setStatus(HttpStatus.BAD_REQUEST);
 			response.setMessageError(StringErrorValue.CATEGORY_COURSE_IS_COURSE_ACTIVE);
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 
-		categoryCourse.setStatus(categoryCourse.getStatus() == 1 ? 0 : 1);
+		categoryCourse
+				.setStatus(categoryCourse.getStatus() == StatusEnum.ACTIVE.getValue() ? StatusEnum.NOT_ACTIVE.getValue()
+						: StatusEnum.ACTIVE.getValue());
 
 		categoryCourseService.update(categoryCourse);
 
