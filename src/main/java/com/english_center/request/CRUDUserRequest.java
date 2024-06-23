@@ -18,7 +18,7 @@ public class CRUDUserRequest {
 
 	@NotEmpty(message = "userName không được phép để trống")
 	@Length(max = 255, message = "user_name Không được phép lớn hơn 255 kí tự")
-	@Pattern(regexp = "^[a-zA-Z 0-9 ]*$", message = "userName không chứa kí tự bất kì kí tự đặc biệt nào!")
+//	@Pattern(regexp = "^[a-zA-Z 0-9 ]*$", message = "userName không chứa kí tự bất kì kí tự đặc biệt nào!")
 	@JsonProperty("user_name")
 	private String userName;
 

@@ -40,6 +40,7 @@ public class ResultDetailDaoImpl extends AbstractDao<Integer, ResultDetail> impl
 		CriteriaQuery<ResultDetail> query = builder.createQuery(ResultDetail.class);
 		Root<ResultDetail> root = query.from(ResultDetail.class);
 		query.where(builder.equal(root.get("resultId"), resultId));
+		query.orderBy(builder.asc(root.get("sort")));
 
 		return this.getSession().createQuery(query).getResultList();
 	}

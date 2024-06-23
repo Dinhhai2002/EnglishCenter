@@ -9,13 +9,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
 @Table(name = "course")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Course extends BaseEntity {
 
 	/**
