@@ -90,7 +90,7 @@ public class JwtAuthenticationController extends BaseController {
 
 	@Autowired
 	RatingService ratingService;
-	
+
 	@Autowired
 	BannerService bannerService;
 
@@ -691,8 +691,7 @@ public class JwtAuthenticationController extends BaseController {
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
-	
+
 	@GetMapping("/banner")
 	public ResponseEntity<BaseResponse<BaseListDataResponse<BannerResponse>>> findAll(
 			@RequestParam(name = "status", required = false, defaultValue = "-1") int status,
@@ -701,7 +700,7 @@ public class JwtAuthenticationController extends BaseController {
 
 		BaseResponse<BaseListDataResponse<BannerResponse>> response = new BaseResponse<>();
 
-		StoreProcedureListResult<Banner> banners = bannerService.getAll(status, new Pagination(page, limit));
+		StoreProcedureListResult<Banner> banners = bannerService.getAll(0, status, new Pagination(page, limit));
 		BaseListDataResponse<BannerResponse> listData = new BaseListDataResponse<>();
 
 		listData.setList(new BannerResponse().mapToList(banners.getResult()));

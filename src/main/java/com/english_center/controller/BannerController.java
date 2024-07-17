@@ -49,13 +49,14 @@ public class BannerController extends BaseController {
 
 	@GetMapping("")
 	public ResponseEntity<BaseResponse<BaseListDataResponse<BannerResponse>>> findAll(
+			@RequestParam(name = "is_deleted", required = false, defaultValue = "-1") int isDeleted,
 			@RequestParam(name = "status", required = false, defaultValue = "-1") int status,
 			@RequestParam(name = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(name = "limit", required = false, defaultValue = "10") int limit) throws Exception {
 
 		BaseResponse<BaseListDataResponse<BannerResponse>> response = new BaseResponse<>();
 
-		StoreProcedureListResult<Banner> banners = bannerService.getAll(status, new Pagination(page, limit));
+		StoreProcedureListResult<Banner> banners = bannerService.getAll(isDeleted,status, new Pagination(page, limit));
 		BaseListDataResponse<BannerResponse> listData = new BaseListDataResponse<>();
 
 		listData.setList(new BannerResponse().mapToList(banners.getResult()));
@@ -140,6 +141,25 @@ public class BannerController extends BaseController {
 		}
 
 		banner.setStatus(banner.getStatus() == 1 ? 0 : 1);
+
+		bannerService.update(banner);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@PostMapping("/{id}/delete")
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
+	public ResponseEntity<BaseResponse<BannerResponse>> deleted(@PathVariable("id") int id) throws Exception {
+		BaseResponse<BannerResponse> response = new BaseResponse<>();
+		Banner banner = bannerService.findOne(id);
+
+		if (banner == null) {
+			response.setStatus(HttpStatus.BAD_REQUEST);
+			response.setMessageError(StringErrorValue.BANNER_NOT_FOUND);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+
+		banner.setIsDeleted(banner.getIsDeleted() == 0 ? 1 : 0);
 
 		bannerService.update(banner);
 

@@ -1,7 +1,5 @@
 package com.english_center.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,8 +34,8 @@ public class BannerServiceImpl implements BannerService {
 	}
 
 	@Override
-	public StoreProcedureListResult<Banner> getAll(int status, Pagination pagination) throws Exception {
-		return bannerDao.getAll(status, pagination);
+	public StoreProcedureListResult<Banner> getAll(int isDeleted, int status, Pagination pagination) throws Exception {
+		return bannerDao.getAll(isDeleted, status, pagination);
 	}
 
 }

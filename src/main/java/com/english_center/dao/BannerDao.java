@@ -3,7 +3,6 @@ package com.english_center.dao;
 import com.english_center.common.utils.Pagination;
 import com.english_center.entity.Banner;
 import com.english_center.model.StoreProcedureListResult;
-import java.util.List;
 
 public interface BannerDao {
 	void create(Banner banner) throws Exception;
@@ -12,5 +11,5 @@ public interface BannerDao {
 
 	void update(Banner banner) throws Exception;
 
-	StoreProcedureListResult<Banner> getAll(int status, Pagination pagination) throws Exception;
+	StoreProcedureListResult<Banner> getAll(int isDeleted, int status, Pagination pagination) throws Exception;
 }

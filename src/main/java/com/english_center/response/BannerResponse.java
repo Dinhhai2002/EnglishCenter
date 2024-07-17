@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.english_center.entity.Banner;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
@@ -15,6 +16,9 @@ public class BannerResponse {
 
 	private int status;
 
+	@JsonProperty("is_deleted")
+	private int isDeleted;
+
 	public BannerResponse() {
 	}
 
@@ -22,6 +26,7 @@ public class BannerResponse {
 		this.id = entity.getId();
 		this.url = entity.getUrl();
 		this.status = entity.getStatus();
+		this.isDeleted = entity.getIsDeleted();
 	}
 
 	public List<BannerResponse> mapToList(List<Banner> entities) {

@@ -1,5 +1,6 @@
 package com.english_center.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,4 +27,7 @@ public class Banner extends BaseEntity {
 	private String url;
 
 	private int status;
+
+	@Column(name = "is_deleted")
+	private int isDeleted;
 }

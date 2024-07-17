@@ -35,12 +35,15 @@ public class BannerDaoImpl extends AbstractDao<Integer, Banner> implements Banne
 	}
 
 	@Override
-	public StoreProcedureListResult<Banner> getAll(int status, Pagination pagination) throws Exception {
+	public StoreProcedureListResult<Banner> getAll(int isDeleted, int status, Pagination pagination) throws Exception {
 		CriteriaBuilder builder = this.getBuilder();
 		CriteriaQuery<Banner> query = builder.createQuery(Banner.class);
 //		CriteriaQuery<Banner> countQuery = builder.createQuery(Banner.class);
 		Root<Banner> root = query.from(Banner.class);
 		int totalRecord = this.getSession().createQuery(query).getResultList().size();
+		if (isDeleted >= 0) {
+			query.where(builder.equal(root.get("isDeleted"), isDeleted));
+		}
 		if (status >= 0) {
 			query.where(builder.equal(root.get("status"), status));
 		}
